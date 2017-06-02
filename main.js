@@ -55,35 +55,11 @@ $(function () {
     try {
       var nl = $('#command-box').val();
       var spec = JSON.parse(editor.getValue());
-      // ################################################
-      // TODO: Change this to the real thing
-      var spec1 = JSON.parse(editor.getValue());
-      spec1.mark = 'point';
-      var spec2 = JSON.parse(editor.getValue());
-      spec2.mark = 'line';
-      var spec3 = JSON.parse(editor.getValue());
-      spec3.mark = 'square';
-      var spec4 = JSON.parse(editor.getValue());
-      spec4.mark = 'bar';
-      var candidates = [
-        {
-          'spec': spec1,
-          'rep': 'CHANGE mark TO "point"'
-        },
-        {
-          'spec': spec2,
-          'rep': 'CHANGE mark TO "line"'
-        },
-        {
-          'spec': spec3,
-          'rep': 'CHANGE mark TO "square"'
-        },
-        {
-          'spec': spec4,
-          'rep': 'CHANGE mark TO "bar"'
-        },
-      ];
-      drawCandidates(candidates);
+      $.get('http://jonsson.stanford.edu:8405/sempre?q=(:context%20' + encodeURIComponent(JSON.stringify(JSON.stringify(spec))) + ')', function (result) {
+        $.get('http://jonsson.stanford.edu:8405/sempre?q=(:q%20%22' + encodeURIComponent(nl) + '%22)', function (result) {
+          drawCandidates(result.candidates);
+        });
+      });
     } catch (error) {
       $('#err').text('ERROR while semantic parsing: ' + error);
     }
@@ -98,22 +74,25 @@ $(function () {
   // Candidate drawing
   function drawCandidates(candidates) {
     $('#display-candidates').empty();
+    $('#display-candidates').append(
+      $('<div>').text('' + candidates.length + ' results'));
     candidates.forEach(function (candidate) {
       var candidateDiv = $('<div class=candidate-div>')
         .appendTo('#display-candidates');
-      var candidateRep = $('<div class=candidate-rep>')
-        .appendTo(candidateDiv).text(candidate.rep);
+      //var candidateRep = $('<div class=candidate-rep>')
+      //  .appendTo(candidateDiv).text(candidate.rep);
       var candidateVis = $('<div class=candidate-vis>')
         .appendTo(candidateDiv);
       var candidateErr = $('<div class=candidate-err>')
         .appendTo(candidateDiv);
-      parseVega(candidate.spec, candidateVis[0], candidateErr[0]);
+      parseVega(candidate.formula, candidateVis[0], candidateErr[0]);
       var candidateUse = $('<button>').text('USE')
         .appendTo(candidateDiv)
         .click(function () {
           $('#display-candidates').empty();
-          editor.setValue(JSON.stringify(candidate.spec, null, '  '), -1);
+          editor.setValue(JSON.stringify(candidate.formula, null, '  '), -1);
           parseVegaFromAce();
+          $('#command-box').val('');
         });
     });
   }

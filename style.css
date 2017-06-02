@@ -30,7 +30,7 @@ html, body {
 }
 #display-editor, #display-main, #display-choices {
   flex-basis: 32%;
-  margin: 1em;
+  margin: .5em;
 }
 
 #display-editor {
