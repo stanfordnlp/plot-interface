@@ -51,12 +51,26 @@ $(function () {
   // ################################
   // FAKE semantic parsing
 
+  function parseQueryString() {
+      var str = window.location.search;
+      var objURL = {};
+
+      str.replace(
+          new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
+          function( $0, $1, $2, $3 ){
+              objURL[ $1 ] = $3;
+          }
+      );
+      return objURL;
+  };
+  var local = ('local' in parseQueryString())
+  var url = local? 'http://localhost:8405' : 'http://jonsson.stanford.edu:8405';
+
   function parseNL() {
     try {
       var nl = $('#command-box').val();
       var spec = JSON.parse(editor.getValue());
-      // var url = 'http://jonsson.stanford.edu:8405';
-      var url = 'http://localhost:8405';
+
       $.get(url+'/sempre?q=' + encodeURIComponent(JSON.stringify(['context', spec])), function (result) {
         $.get(url+'/sempre?q=' + encodeURIComponent(JSON.stringify(['q', nl])), function (result) {
           drawCandidates(result.candidates);
