@@ -55,8 +55,10 @@ $(function () {
     try {
       var nl = $('#command-box').val();
       var spec = JSON.parse(editor.getValue());
-      $.get('http://jonsson.stanford.edu:8405/sempre?q=(:context%20' + encodeURIComponent(JSON.stringify(JSON.stringify(spec))) + ')', function (result) {
-        $.get('http://jonsson.stanford.edu:8405/sempre?q=(:q%20%22' + encodeURIComponent(nl) + '%22)', function (result) {
+      // var url = 'http://jonsson.stanford.edu:8405';
+      var url = 'http://localhost:8405';
+      $.get(url+'/sempre?q=' + encodeURIComponent(JSON.stringify(['context', spec])), function (result) {
+        $.get(url+'/sempre?q=' + encodeURIComponent(JSON.stringify(['q', nl])), function (result) {
           drawCandidates(result.candidates);
         });
       });
