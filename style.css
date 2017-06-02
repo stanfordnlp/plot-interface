@@ -1,0 +1,61 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#wrapper {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+#command-div {
+  margin: 1em;
+}
+#command-box, #submit-button {
+  font-size: 150%;
+}
+#command-box {
+  width: 50%;
+}
+
+#display-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: row;
+  align-items: stretch;
+}
+#display-editor, #display-main, #display-choices {
+  flex-basis: 32%;
+  margin: 1em;
+}
+
+#display-editor {
+  display: flex;
+  flex-flow: column;
+}
+#editor-menu {
+  margin-bottom: 1em;
+}
+#editor {
+  flex-grow: 1;
+}
+
+#display-choices {
+  position: relative;
+}
+#display-candidates {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+.candidate-div {
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+}
