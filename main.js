@@ -101,12 +101,12 @@ $(function () {
         .appendTo(candidateDiv);
       var candidateErr = $('<div class=candidate-err>')
         .appendTo(candidateDiv);
-      parseVega(candidate.formula, candidateVis[0], candidateErr[0]);
+      parseVega(candidate.value, candidateVis[0], candidateErr[0]);
       var candidateUse = $('<button>').text('USE')
         .appendTo(candidateDiv)
         .click(function () {
           $('#display-candidates').empty();
-          editor.setValue(JSON.stringify(candidate.formula, null, '  '), -1);
+          editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);
           parseVegaFromAce();
           $('#command-box').val('');
         });
