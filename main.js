@@ -58,13 +58,19 @@ $(function () {
       str.replace(
           new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
           function( $0, $1, $2, $3 ){
-              objURL[ $1 ] = $3;
+              objURL[ $1 ] = $3.replace(/\/$/, "");
           }
       );
       return objURL;
   };
-  var local = ('local' in parseQueryString())
-  var url = local? 'http://localhost:8405' : 'http://jonsson.stanford.edu:8405';
+  var args = parseQueryString();
+  if ('host' in args) {
+    var url = 'http://' + args['host'] + ':8405';
+  } else if ('local' in args) {
+    var url = 'http://localhost:8405';
+  } else {
+    var url = 'http://jonsson.stanford.edu:8405';
+  }
 
   function parseNL() {
     try {
