@@ -14,9 +14,10 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-json.js"></script>
   
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="main.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
@@ -181,14 +182,49 @@
  'center',
  'horizontal',
  'vertical'];
- $( "#command-box" ).autocomplete({
-      source: availableTags
+    function split( val ) {
+      return val.split(" ");
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#command-box" )
+      // don't navigate away from the field on tab when selecting an item
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( " " );
+          return false;
+        }
+      });
+      $.ui.autocomplete.filter = function (array, term) {
+    var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(term), "i");
+    return $.grep(array, function (value) {
+        return matcher.test(value.label || value.value || value);
     });
-  $.ui.autocomplete.filter = function (array, term) {
-  var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(term), "i");
-  return $.grep(array, function (value) {
-    return matcher.test(value.label || value.value || value);
-  });
 };
   } );
   </script>
@@ -196,8 +232,10 @@
 <body>
   <div id=wrapper>
     <div id=command-div>
+      <div class="ui-widget">
       <input type=text id=command-box placeholder="Type stuff here">
       <button id=submit-button>Submit</button>
+        </div>
     </div>
     <div id=display-wrapper>
       <div id=display-editor>
@@ -218,3 +256,4 @@
   </div>
 </body>
 </html>
+
