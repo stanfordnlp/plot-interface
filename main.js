@@ -1,10 +1,59 @@
+var editor;
+
 $(function () {
 
   // ################################
   // ACE stuff
 
-  var editor = ace.edit("editor");
+  editor = ace.edit("editor");
   editor.getSession().setMode("ace/mode/json");
+  
+  // Undo / Redo
+  editor.on('input', function () {
+    var um = editor.getSession().getUndoManager();
+    $('#undo-button').attr('disabled', !um.hasUndo());
+    $('#redo-button').attr('disabled', !um.hasRedo());
+  });
+
+  $('#undo-button').click(function () { editor.undo(); });
+  $('#redo-button').click(function () { editor.redo(); });
+
+  // ################################
+  // Autocomplete
+
+  $("#command-box").on("keydown", function(event) {
+      // don't navigate away from the field on tab when selecting an item
+      if (event.keyCode === $.ui.keyCode.TAB &&
+            $(this).autocomplete( "instance" ).menu.active ) {
+        event.preventDefault();
+      }
+    }).autocomplete({
+      minLength: 1,
+      source: function(request, response) {
+        if (request.term.endsWith(' ')) {
+          response([]);
+        } else {
+          var lastWord = request.term.split(' ').pop();
+          var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(lastWord), "i");
+          response(availableTags.filter(function (x) {
+            return matcher.test(x);
+          }));
+        }
+      },
+      focus: function() {
+        // prevent value inserted on focus
+        return false;
+      },
+      select: function(event, ui) {
+        var terms = this.value.split(' ');
+        // remove the last fragment
+        terms.pop();
+        // add the selected item
+        terms.push(ui.item.value);
+        this.value = terms.join(" ");
+        return false;
+      }
+    });
 
   // ################################
   // Vega stuff
@@ -49,7 +98,7 @@ $(function () {
   $('#parse-button').click(parseVegaFromAce);
 
   // ################################
-  // FAKE semantic parsing
+  // Semantic parsing
 
   function parseQueryString() {
       var str = window.location.search;
