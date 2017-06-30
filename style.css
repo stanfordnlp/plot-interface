@@ -3,6 +3,7 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: Helvetica, Arial, sans-serif;
+  color: #222;
 }
 
 #wrapper {
@@ -16,8 +17,8 @@ html, body {
 #command-div {
   display: flex; 
   flex-flow: row;
-  border-bottom: 2px solid #BBB;
-  box-shadow: 0 0 3px #AAA;
+  border-bottom: 1px solid #CCC;
+  box-shadow: 0 0 3px #BBB;
   z-index: 20;
 }
 #command-box {
@@ -52,14 +53,18 @@ html, body {
   flex-flow: column;
 }
 #editor-menu {
-  padding: 5px;
+  padding: 8px 5px;
   text-align: right;
   background-color: #f6f6f7;
 }
 #editor {
   flex-grow: 1;
-  border-top: 1px solid #CCC;
-  border-right: 1px solid #CCC;
+  border-top: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+}
+
+#err {
+  margin-bottom: 1em;
 }
 
 #display-choices {
