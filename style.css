@@ -57,6 +57,12 @@ html, body {
   text-align: right;
   background-color: #f6f6f7;
 }
+#editor-menu button {
+  text-align: center;
+}
+#editor-menu .shortcut {
+  font-size: 65%;
+}
 #editor {
   flex-grow: 1;
   border-top: 1px solid #DDD;

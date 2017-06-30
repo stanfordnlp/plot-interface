@@ -106,6 +106,10 @@ $(function () {
     }
   }
   $('#parse-button').click(parseVegaFromAce);
+  editor.commands.addCommand({
+      exec: parseVegaFromAce,
+      bindKey: {win: "ctrl-enter", mac: "cmd-enter"}
+  });
 
   // ################################
   // Semantic parsing
