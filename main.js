@@ -33,9 +33,9 @@ $(function () {
       return false;
     }
   }).autocomplete({
-    minLength: 1,
+    minLength: 0,
     source: function(request, response) {
-      if (request.term.endsWith(' ')) {
+      if (request.term == '' || request.term.endsWith(' ')) {
         response([]);
       } else {
         var lastWord = request.term.split(' ').pop();
