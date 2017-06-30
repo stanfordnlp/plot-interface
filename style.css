@@ -59,9 +59,11 @@ html, body {
 }
 #editor-menu button {
   text-align: center;
+  font-weight: bold;
 }
 #editor-menu .shortcut {
   font-size: 65%;
+  font-weight: normal;
 }
 #editor {
   flex-grow: 1;
@@ -69,10 +71,11 @@ html, body {
   border-right: 1px solid #DDD;
 }
 
-#err {
-  margin-bottom: 1em;
+#err, .candidate-err {
+  font-size: 90%;
+  margin-bottom: .8em;
 }
-.err {
+.fatal {
   color: #A00;
   font-size: 80%;
 }
@@ -95,6 +98,12 @@ html, body {
   padding: 10px;
   margin: 5px;
   background-color: #fcfcfd;
+}
+.candidate-lf {
+  margin-bottom: .8em;
+  font-size: 90%;
+  color: #050;
+  font-family: monospace;
 }
 .paginate-footer {
   display: table;

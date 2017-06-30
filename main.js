@@ -19,7 +19,7 @@ $(function () {
   $('#redo-button').click(function () { editor.redo(); });
 
   // ################################
-  // Autocomplete
+  // Input box and Autocomplete
 
   $("#command-box").on("keydown", function(event) {
     // don't navigate away from the field on tab when selecting an item
@@ -60,6 +60,13 @@ $(function () {
     }
   });
 
+  // Ctrl+M to focus
+  $(document).keyup(function (event) {
+    if ((event.ctrlKey || event.metaKey) && (event.which == 77 || event.which == 109)) {
+      $('#command-box').focus();
+    }
+  });
+
   // ################################
   // Vega stuff
 
@@ -85,14 +92,14 @@ $(function () {
 
   function parseVega(spec, visDiv, errDiv, successCallback) {
     if (typeof spec === 'string' && !spec.startsWith('{')) {
-      $(errDiv).text('ERROR: Invalid spec ' + spec).addClass('err');
+      $(errDiv).text('ERROR: Invalid spec ' + spec).addClass('fatal');
       return;
     }
     vega.embed(visDiv, spec, opt, function(error, result) {
       if (error != null) {
-        $(errDiv).text('ERROR while rendering: ' + error).addClass('err');
+        $(errDiv).text('ERROR while rendering: ' + error).addClass('fatal');
       } else {
-        $(errDiv).text('DONE rendering.').removeClass('err');
+        $(errDiv).text('DONE rendering.').removeClass('fatal');
         if (successCallback !== undefined) successCallback();
       }
     });
@@ -102,7 +109,7 @@ $(function () {
     try {
       parseVega(JSON.parse(editor.getValue()), '#vis', '#err');
     } catch (error) {
-      $('#err').text('ERROR while parsing JSON: ' + error).addClass('err');
+      $('#err').text('ERROR while parsing JSON: ' + error).addClass('fatal');
     }
   }
   $('#parse-button').click(parseVegaFromAce);
@@ -197,11 +204,13 @@ $(function () {
           (function (i) {
             var candidate = candidates[i];
             var candidateDiv = $('<div class=candidate-div>').appendTo(page);
-            var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
+            var candidateLf = $('<div class=candidate-lf>').appendTo(candidateDiv)
+              .text(candidate.formula);
             var candidateErr = $('<div class=candidate-err>').appendTo(candidateDiv);
+            var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
             parseVega(candidate.value, candidateVis[0], candidateErr[0], function () {
               if (candidateVis.children().eq(0).height() == 0) {
-                candidateErr.text('ERROR: Nothing is rendered').addClass('err');
+                candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
                 return;
               }
               $('<button>').text('USE').appendTo(candidateDiv)
