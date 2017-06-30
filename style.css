@@ -2,6 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 #wrapper {
@@ -13,13 +14,22 @@ html, body {
 }
 
 #command-div {
-  margin: 1em;
-}
-#command-box, #submit-button {
-  font-size: 150%;
+  display: flex; 
+  flex-flow: row;
+  border-bottom: 2px solid #BBB;
+  box-shadow: 0 0 3px #AAA;
+  z-index: 20;
 }
 #command-box {
-  width: 50%;
+  padding: 5px 10px;
+  flex-grow: 1;
+  border: none;
+  font-size: 150%;
+}
+#submit-button {
+  margin: 5px;
+  padding: 5px;
+  font-size: 120%;
 }
 
 #display-wrapper {
@@ -29,8 +39,12 @@ html, body {
   align-items: stretch;
 }
 #display-editor, #display-main, #display-choices {
-  flex-basis: 32%;
-  margin: .5em;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+#display-main {
+  background-color: #f6f6f7;
+  padding: 20px;
 }
 
 #display-editor {
@@ -38,10 +52,14 @@ html, body {
   flex-flow: column;
 }
 #editor-menu {
-  margin-bottom: 1em;
+  padding: 5px;
+  text-align: right;
+  background-color: #f6f6f7;
 }
 #editor {
   flex-grow: 1;
+  border-top: 1px solid #CCC;
+  border-right: 1px solid #CCC;
 }
 
 #display-choices {
