@@ -169,6 +169,10 @@ $(function () {
 
   // Candidate drawing
   function drawCandidates(candidates) {
+    // Filter out errors from server
+    candidates = candidates.filter(function(x) { 
+      return !(typeof x.value == 'string' && x.value.indexOf("BADJAVA") == 0);
+    })
     if (candidates.length === 0) {
       $('#display-candidates').empty().append($('<div class=num-results>')
           .text('No results.'));
