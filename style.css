@@ -43,6 +43,9 @@ html, body {
   flex-grow: 1;
   flex-basis: 0;
 }
+#display-editor, #display-main {
+  background-color: #f6f6f7;
+}
 #display-main {
   background-color: #f6f6f7;
   padding: 20px;
@@ -55,7 +58,6 @@ html, body {
 #editor-menu {
   padding: 8px 5px;
   text-align: right;
-  background-color: #f6f6f7;
 }
 #editor-menu button {
   text-align: center;
@@ -67,8 +69,46 @@ html, body {
 }
 #editor {
   flex-grow: 1;
-  border-top: 1px solid #DDD;
-  border-right: 1px solid #DDD;
+  border: 1px solid #DDD;
+}
+#display-table {
+  /* Magic: https://stackoverflow.com/a/25045641 */
+  width: 0;
+  min-width: 100%;
+}
+#display-table #table-title {
+  margin: 10px;
+}
+#display-table #table-wrapper {
+  overflow: auto;
+  margin: 10px;
+  max-height: 300px;
+}
+#display-table table {
+  border-collapse: collapse;
+  font-size: 90%;
+  border: 1px solid #ddd;
+}
+#display-table th, #display-table td {
+  border: 1px dotted #eee;
+  padding: 3px 5px;
+  white-space: nowrap;
+}
+#display-table th {
+  text-align: left;
+  background-color: #bda;
+  cursor: pointer;
+}
+#display-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+#display-table td:nth-child(even) {
+  background-color: #fffffa;
+}
+#display-table td:nth-child(odd) {
+  background-color: #f2f2ed;
 }
 
 #err, .candidate-err {

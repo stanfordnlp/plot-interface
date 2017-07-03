@@ -68,6 +68,57 @@ $(function () {
   });
 
   // ################################
+  // Display data table
+
+  var lastDataSource = null, MAX_TABLE_RECORDS = 20;
+
+  function clearTable() {
+    $('#table-wrapper').empty();
+    $('#table-title').empty().append(
+        '<strong>Data</strong> No data loaded');
+  }
+
+  // Read JSON data and draw the table
+  function displayTableFromData(data) {
+    $('#table-wrapper').empty();
+    var table = $('<table>').appendTo('#table-wrapper');
+    var keys = Object.keys(data[0]);
+    keys.sort();
+    keys.forEach(function (key) {
+      if (key == '_id') return;
+      var row = $('<tr>').appendTo(table);
+      $('<th>').text(key).attr('title', key).appendTo(row)
+        .click(function () {
+          $('#command-box').val(($('#command-box').val().trim() + ' ' + key).trim());
+        });
+      data.slice(0, MAX_TABLE_RECORDS).forEach(function (datum, i) {
+        $('<td>').text(datum[key]).attr('title', datum[key]).appendTo(row);
+      });
+    });
+    $('#table-title').empty().append(
+        '<strong>Data</strong> Showing 1-' +
+        Math.min(MAX_TABLE_RECORDS, data.length) + 
+        ' out of ' + data.length + ' records');
+  }
+
+  // Read the spec, grab the data, and call displayTableFromData if needed
+  function displayTableFromSpec(spec) {
+    if (spec.data && spec.data.values) {
+      // If local data is used, always draw a table
+      displayTableFromData(spec.data.values);
+      lastDataSource = null;
+    } else if (spec.data && spec.data.url) {
+      // If the URL was not changed, do not redraw
+      if (spec.data.url == lastDataSource) return;
+      $.get(spec.data.url, displayTableFromData);
+      lastDataSource = spec.data.url;
+    } else {
+      clearTable();
+      lastDataSource = null;
+    }
+  }
+
+  // ################################
   // Vega stuff
 
   var vlSpec = {
@@ -107,7 +158,9 @@ $(function () {
 
   function parseVegaFromAce() {
     try {
-      parseVega(JSON.parse(editor.getValue()), '#vis', '#err');
+      var spec = JSON.parse(editor.getValue());
+      parseVega(spec, '#vis', '#err');
+      displayTableFromSpec(spec);
     } catch (error) {
       $('#err').text('ERROR while parsing JSON: ' + error).addClass('fatal');
     }
