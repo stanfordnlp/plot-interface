@@ -64,7 +64,7 @@ html, body {
   font-weight: bold;
 }
 #editor-menu .shortcut {
-  font-size: 65%;
+  font-size: 70%;
   font-weight: normal;
 }
 #editor {
@@ -80,7 +80,6 @@ html, body {
   margin: 10px;
 }
 #display-table #table-title .small {
-  margin-top: 10px;
   font-size: 80%;
   color: #777;
 }
@@ -96,7 +95,8 @@ html, body {
 }
 #display-table th, #display-table td {
   border: 1px dotted #eee;
-  padding: 3px 5px;
+  padding: 3px 4px;
+  line-height: 1.2;
   white-space: nowrap;
 }
 #display-table th {
