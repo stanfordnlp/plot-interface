@@ -79,6 +79,11 @@ html, body {
 #display-table #table-title {
   margin: 10px;
 }
+#display-table #table-title .small {
+  margin-top: 10px;
+  font-size: 80%;
+  color: #777;
+}
 #display-table #table-wrapper {
   overflow: auto;
   margin: 10px;

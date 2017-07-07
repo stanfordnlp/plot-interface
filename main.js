@@ -98,7 +98,8 @@ $(function () {
     $('#table-title').empty().append(
         '<strong>Data</strong> Showing 1-' +
         Math.min(MAX_TABLE_RECORDS, data.length) + 
-        ' out of ' + data.length + ' records');
+        ' out of ' + data.length + ' records<br>' +
+        '<span class=small>Click on a field name to use it in the query</span>');
   }
 
   // Read the spec, grab the data, and call displayTableFromData if needed
@@ -121,30 +122,28 @@ $(function () {
   // ################################
   // Vega stuff
 
-  var vlSpec = {
-    "data": {
-      "values": [
-        {"a": "C", "b": 7},
-        {"a": "D", "b": 3},
-        {"a": "E", "b": 8},
-      ]
-    },
-    "mark": "bar",
-    "encoding": {
-      "y": {"field": "a", "type": "nominal"},
-      "x": {"field": "b", "type": "quantitative"}
-    }
-  };
-
   var opt = {
     "mode": "vega-lite",
     "actions": false,
   };
 
+  /** Use Vega-Lite to generate graph
+    Args:
+      spec (string or object): Vega-Lite JSON spec
+      visDiv (DOM Element or JQuery Object): container for the graph
+      errDiv (DOM Element or JQuery Object): container for the error message
+          (or success message)
+      successCallback (function; optional): a function to call when the graph
+          is successfully rendered
+    */
   function parseVega(spec, visDiv, errDiv, successCallback) {
-    if (typeof spec === 'string' && !spec.startsWith('{')) {
-      $(errDiv).text('ERROR: Invalid spec ' + spec).addClass('fatal');
-      return;
+    if (typeof spec === 'string') {
+      try {
+        spec = JSON.parse(spec);
+      } catch (err) {
+        $(errDiv).text('ERROR: Invalid spec ' + spec).addClass('fatal');
+        return;
+      }
     }
     vega.embed(visDiv, spec, opt, function(error, result) {
       if (error != null) {
@@ -156,6 +155,7 @@ $(function () {
     });
   }
 
+  // call parseVega and displayTableFromSpec on the editor content
   function parseVegaFromAce() {
     try {
       var spec = JSON.parse(editor.getValue());
@@ -175,17 +175,18 @@ $(function () {
   // Semantic parsing
 
   function parseQueryString() {
-      var str = window.location.search;
-      var objURL = {};
+    var str = window.location.search;
+    var objURL = {};
 
-      str.replace(
-          new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
-          function( $0, $1, $2, $3 ){
-              objURL[ $1 ] = $3.replace(/\/$/, "");
-          }
-      );
-      return objURL;
+    str.replace(
+      new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
+      function( $0, $1, $2, $3 ){
+        objURL[ $1 ] = $3.replace(/\/$/, "");
+      }
+    );
+    return objURL;
   };
+  // Set the server location
   var args = parseQueryString();
   if ('host' in args) {
     var url = 'http://' + args['host'] + ':8405';
@@ -207,6 +208,15 @@ $(function () {
                 drawCandidates(result.candidates);
               });
           });
+
+      /* Single request version ...
+      var data = {
+        'q': JSON.stringify(['q', nl, spec]),
+      }
+      $.post(url+'/sempre', data, function (result) {
+        drawCandidates(result.candidates);
+      });
+      */
     } catch (error) {
       $('#err').text('ERROR while semantic parsing: ' + error);
     }
@@ -218,9 +228,12 @@ $(function () {
     }
   });
 
+
+  // ################################
+  // Candidate drawing
+
   var CANDIDATES_PER_PAGE = 10;
 
-  // Candidate drawing
   function drawCandidates(candidates) {
     // Filter out errors from server
     candidates = candidates.filter(function(x) { 
@@ -232,6 +245,7 @@ $(function () {
       return;
     }
 
+    // Divide results into pages; draw the pages lazily
     var pages = [], currentPageId = -1,
         numPages = Math.ceil(candidates.length / CANDIDATES_PER_PAGE);
     $('#display-candidates').empty();
@@ -250,11 +264,13 @@ $(function () {
       })(i);
     }
 
+    // Function for drawing a page
     function drawPaginatedCandidates(pageId) {
       if (currentPageId == pageId) return;
       var start = pageId * CANDIDATES_PER_PAGE;
       var end = Math.min(start + CANDIDATES_PER_PAGE, candidates.length);
       if (!pages[pageId]) {
+        // If we haven't drawn the page yet, draw it
         var page = $('<div class=results-page>').appendTo(resultsDiv);
         for (var i = start; i < end; i++) {
           // Closure :(
@@ -265,24 +281,26 @@ $(function () {
               .text(candidate.formula);
             var candidateErr = $('<div class=candidate-err>').appendTo(candidateDiv);
             var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
-            parseVega(candidate.value, candidateVis[0], candidateErr[0], function () {
-              if (candidateVis.children().eq(0).height() == 0) {
-                candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
-                return;
-              }
-              $('<button>').text('USE').appendTo(candidateDiv)
-                .click(function () {
-                  pages = [];     // Throw all rendered pages away
-                  $('#display-candidates').empty();
-                  editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);
-                  parseVegaFromAce();
-                  $('#command-box').val('');
-                })
+            parseVega(JSON.stringify(candidate.value),
+              candidateVis[0], candidateErr[0], function () {
+                if (candidateVis.children().eq(0).height() == 0) {
+                  candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
+                  return;
+                }
+                $('<button>').text('USE').appendTo(candidateDiv)
+                  .click(function () {
+                    pages = [];     // Throw all rendered pages away
+                    $('#display-candidates').empty();
+                    editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);
+                    parseVegaFromAce();
+                    $('#command-box').val('');
+                  })
             });
           })(i);
         }
         pages[pageId] = page;
       }
+      // Show the page
       resultsDiv.children().hide();
       pages[pageId].show();
       numResultsDiv.text('Showing ' + (start+1) + '-' + (end) + ' of ' + candidates.length);
@@ -291,13 +309,32 @@ $(function () {
       $('#display-candidates').scrollTop(0);
       currentPageId = pageId;
     }
+
+    // Finally, draw page 0
     drawPaginatedCandidates(0);
   }
 
 
   // ################################
   // Initialize
-  editor.setValue(JSON.stringify(vlSpec, null, '  '), -1);
+
+  // Initial spec
+  var initialSpec = {
+    "data": {
+      "values": [
+        {"a": "C", "b": 7},
+        {"a": "D", "b": 3},
+        {"a": "E", "b": 8},
+      ]
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {"field": "a", "type": "nominal"},
+      "x": {"field": "b", "type": "quantitative"}
+    }
+  };
+
+  editor.setValue(JSON.stringify(initialSpec, null, '  '), -1);
   parseVegaFromAce();
 
 
