@@ -9,7 +9,7 @@ AJAX usually does not work with the `file://` protocol, so you need to start a s
 * Clone the repository
 * Get example datasets
     ```
-    run svn checkout https://github.com/vega/vega-editor/trunk/data
+    svn checkout https://github.com/vega/vega-editor/trunk/data
     ```
 * Inside the root directory, run
 
