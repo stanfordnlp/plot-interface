@@ -122,7 +122,7 @@ $(function () {
   // ################################
   // Vega stuff
 
-  var opt = {
+  var vegaOpt = {
     "mode": "vega-lite",
     "actions": false,
   };
@@ -133,26 +133,34 @@ $(function () {
       visDiv (DOM Element or JQuery Object): container for the graph
       errDiv (DOM Element or JQuery Object): container for the error message
           (or success message)
-      successCallback (function; optional): a function to call when the graph
-          is successfully rendered
+      onFulfilled (function; optional): a function taking a Vega View instance;
+          will be called when rendering succeeds
+      onRejected (function; optional): a function taking an exception;
+          will be called when rendering fails
     */
-  function parseVega(spec, visDiv, errDiv, successCallback) {
+  function parseVega(spec, visDiv, errDiv, onFulfilled, onRejected) {
     if (typeof spec === 'string') {
       try {
         spec = JSON.parse(spec);
       } catch (err) {
         $(errDiv).text('ERROR: Invalid spec ' + spec).addClass('fatal');
+        if (onRejected !== undefined) onRejected(err);
         return;
       }
     }
-    vega.embed(visDiv, spec, opt, function(error, result) {
-      if (error != null) {
-        $(errDiv).text('ERROR while rendering: ' + error).addClass('fatal');
-      } else {
+    vega.embed(visDiv, spec, vegaOpt).then(
+      // Success
+      function (value) {
+        //console.log(['SUCCESS', value]);
         $(errDiv).text('DONE rendering.').removeClass('fatal');
-        if (successCallback !== undefined) successCallback();
-      }
-    });
+        if (onFulfilled !== undefined) onFulfilled(value);
+      },
+      // Failure
+      function (reason) {
+        //console.log(['FAILURE', reason]);
+        $(errDiv).text('ERROR while rendering: ' + reason.message).addClass('fatal');
+        if (onRejected !== undefined) onRejected(reason);
+      });
   }
 
   // call parseVega and displayTableFromSpec on the editor content
@@ -306,7 +314,7 @@ $(function () {
       numResultsDiv.text('Showing ' + (start+1) + '-' + (end) + ' of ' + candidates.length);
       numPagesDiv.text('Page ' + (pageId+1) + ' of ' + numPages);
       pageLinks.children().addClass('clickable').eq(pageId).removeClass('clickable');
-      $('#display-candidates').scrollTop(0);
+      $('#display-candidates').animate({scrollTop: 0}, 200);
       currentPageId = pageId;
     }
 
@@ -336,6 +344,5 @@ $(function () {
 
   editor.setValue(JSON.stringify(initialSpec, null, '  '), -1);
   parseVegaFromAce();
-
 
 });

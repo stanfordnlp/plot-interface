@@ -117,12 +117,12 @@ html, body {
 }
 
 #err, .candidate-err {
-  font-size: 90%;
+  font-size: 80%;
   margin-bottom: .8em;
+  color: #444;
 }
 .fatal {
   color: #A00;
-  font-size: 80%;
 }
 
 .num-results, .paginate-footer {
