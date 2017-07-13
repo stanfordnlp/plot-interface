@@ -314,7 +314,7 @@ $(function () {
       numResultsDiv.text('Showing ' + (start+1) + '-' + (end) + ' of ' + candidates.length);
       numPagesDiv.text('Page ' + (pageId+1) + ' of ' + numPages);
       pageLinks.children().addClass('clickable').eq(pageId).removeClass('clickable');
-      $('#display-candidates').animate({scrollTop: 0}, 200);
+      $('#display-candidates').animate({scrollTop: 0}, 600);
       currentPageId = pageId;
     }
 
