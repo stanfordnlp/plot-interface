@@ -7,6 +7,9 @@
   vertical-align: middle;
   width: 50px;
 }
+.diff-slider-quickdiff {
+  margin-left: 8px;
+}
 .diff-slider-overlay {
   position: absolute;
   top: 0;

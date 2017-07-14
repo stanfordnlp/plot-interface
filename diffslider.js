@@ -27,4 +27,29 @@ function diffSlider(controlDiv, baseCanvas, anotherCanvas) {
       }
       overlaidCanvas.css('opacity', value);
     });
+  // Quick Diff
+  var quickDivCanvas;
+  var quickDivButton = $('<button class=diff-slider-quickdiff>')
+    .text('Quick diff')
+    .appendTo(controlDiv)
+    .mousedown(function () {
+      if (!quickDivCanvas) {
+        // Get information about the baseCanvas
+        var baseWidth = baseCanvas.prop('width'),
+            baseHeight = baseCanvas.prop('height');
+        // Create an image overlay
+        quickDivCanvas = $('<canvas>')
+          .prop({width: baseWidth, height: baseHeight})
+          .addClass('diff-slider-overlay')
+          .css('mix-blend-mode', 'difference')
+          .appendTo(baseCanvas.parent());
+        var ctx = quickDivCanvas[0].getContext('2d');
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, baseWidth, baseHeight);
+        ctx.drawImage(anotherCanvas[0], 0, 0);
+      }
+      quickDivCanvas.show();
+    }).mouseup(function() {
+      if (quickDivCanvas) quickDivCanvas.hide();
+    });
 }
