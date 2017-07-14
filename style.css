@@ -150,6 +150,9 @@ html, body {
   color: #050;
   font-family: monospace;
 }
+.candidate-vis {
+  position: relative;
+}
 .paginate-footer {
   display: table;
 }

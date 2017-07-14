@@ -295,10 +295,16 @@ $(function () {
             var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
             parseVega(JSON.stringify(candidate.value),
               candidateVis[0], candidateErr[0], function () {
-                if (candidateVis.children().eq(0).height() == 0) {
+                if (candidateVis.children('canvas').height() == 0) {
                   candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
                   return;
                 }
+                // Image diff slider
+                diffSlider(
+                  $('<div>').appendTo(candidateDiv),
+                  candidateVis.children('canvas'),
+                  $('#vis > canvas')
+                  );
                 $('<button>').text('USE').appendTo(candidateDiv)
                   .click(function () {
                     pages = [];     // Throw all rendered pages away
