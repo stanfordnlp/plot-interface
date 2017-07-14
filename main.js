@@ -110,8 +110,14 @@ $(function () {
       lastDataSource = null;
     } else if (spec.data && spec.data.url) {
       // If the URL was not changed, do not redraw
-      if (spec.data.url == lastDataSource) return;
-      $.get(spec.data.url, displayTableFromData);
+      var url = spec.data.url;
+      if (url == lastDataSource) return;
+      if (url.endsWith('.csv'))
+        d3.csv(url, displayTableFromData);
+      else if (url.endsWith('.tsv'))
+        d3.tsv(url, displayTableFromData);
+      else
+        d3.json(url, displayTableFromData);
       lastDataSource = spec.data.url;
     } else {
       clearTable();
@@ -151,13 +157,11 @@ $(function () {
     vega.embed(visDiv, spec, vegaOpt).then(
       // Success
       function (value) {
-        //console.log(['SUCCESS', value]);
         $(errDiv).text('DONE rendering.').removeClass('fatal');
         if (onFulfilled !== undefined) onFulfilled(value);
       },
       // Failure
       function (reason) {
-        //console.log(['FAILURE', reason]);
         $(errDiv).text('ERROR while rendering: ' + reason.message).addClass('fatal');
         if (onRejected !== undefined) onRejected(reason);
       });
