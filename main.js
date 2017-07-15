@@ -240,6 +240,28 @@ $(function () {
     }
   });
 
+  // ################################
+  // Collecting user utterances
+
+  function collectUserUtterances(candidate) {
+    var collectionDiv = $('#utterance-collection-modal');
+    var candidateDiv = buildCandidateDiv(candidate).appendTo(collectionDiv);
+
+    // add input boxes
+    var numUtterances = 3;
+    for (var i = 0; i < numUtterances; i++) {
+      var input = $('<input type=text class=utterance>').appendTo(collectionDiv);
+    }
+
+    // Button to submit and close the modal
+    var closeButton = $('<button>').text('SUBMIT').appendTo(collectionDiv);
+    closeButton.click(function () {
+      collectionDiv.css("display", "none");
+      collectionDiv.empty();
+    });
+
+    collectionDiv.css("display", "flex");
+  }
 
   // ################################
   // Candidate drawing
@@ -313,6 +335,7 @@ $(function () {
             candidateDiv = buildCandidateDiv(candidate);
             $('<button>').text('USE').appendTo(candidateDiv)
               .click(function () {
+                collectUserUtterances(candidate);
                 pages = [];     // Throw all rendered pages away
                 $('#display-candidates').empty();
                 editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);

@@ -184,4 +184,12 @@ html, body {
   height: 100%;
   overflow: auto;
   background-color: rgba(0,0,0,0.4);
+  flex-direction: column;
+  align-items: center;
+}
+
+.utterance {
+  margin: 20px;
+  width: 85%;
+  font-size: 100%;
 }
