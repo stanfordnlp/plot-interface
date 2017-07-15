@@ -186,10 +186,20 @@ html, body {
   background-color: rgba(0,0,0,0.4);
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .utterance {
   margin: 20px;
   width: 85%;
+  font-size: 100%;
+}
+
+#utterance-collection-prompt {
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  background-color: #fcfcfd;
   font-size: 100%;
 }

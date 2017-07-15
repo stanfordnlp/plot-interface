@@ -245,17 +245,30 @@ $(function () {
 
   function collectUserUtterances(candidate) {
     var collectionDiv = $('#utterance-collection-modal');
+
+    $('<div id=utterance-collection-prompt>')
+      .text('Please describe the change you are making.')
+      .appendTo(collectionDiv);
+
     var candidateDiv = buildCandidateDiv(candidate).appendTo(collectionDiv);
 
     // add input boxes
     var numUtterances = 3;
+    var utteranceInputs = [];
     for (var i = 0; i < numUtterances; i++) {
-      var input = $('<input type=text class=utterance>').appendTo(collectionDiv);
+      var utteranceInput = $('<input type=text class=utterance>').appendTo(collectionDiv);
+      utteranceInput.attr("placeholder", 'Description #' + (i + 1));
+      utteranceInputs.push(utteranceInput);
     }
 
     // Button to submit and close the modal
-    var closeButton = $('<button>').text('SUBMIT').appendTo(collectionDiv);
-    closeButton.click(function () {
+    var submitButton = $('<button>').text('SUBMIT').appendTo(collectionDiv);
+    submitButton.click(function () {
+      var utterances = utteranceInputs.map(function(input) {return input.val();});
+
+      // TODO: send utterances and candidate to server
+      // TODO: check that utterances are valid, complete
+
       collectionDiv.css("display", "none");
       collectionDiv.empty();
     });
