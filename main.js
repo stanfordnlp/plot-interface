@@ -246,6 +246,28 @@ $(function () {
 
   var CANDIDATES_PER_PAGE = 10;
 
+  function buildCandidateDiv(candidate) {
+    var candidateDiv = $('<div class=candidate-div>');
+    var candidateLf = $('<div class=candidate-lf>').appendTo(candidateDiv)
+      .text(candidate.formula);
+    var candidateErr = $('<div class=candidate-err>').appendTo(candidateDiv);
+    var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
+    parseVega(JSON.stringify(candidate.value),
+      candidateVis[0], candidateErr[0], function () {
+        if (candidateVis.children('canvas').height() == 0) {
+          candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
+          return;
+        }
+        // Image diff slider
+        diffSlider(
+          $('<div>').appendTo(candidateDiv),
+          candidateVis.children('canvas'),
+          $('#vis > canvas')
+        );
+      });
+    return candidateDiv;
+  }
+
   function drawCandidates(candidates) {
     // Filter out errors from server
     candidates = candidates.filter(function(x) { 
@@ -276,28 +298,6 @@ $(function () {
       })(i);
     }
     
-    function buildCandidateDiv(candidate) {
-      var candidateDiv = $('<div class=candidate-div>');
-      var candidateLf = $('<div class=candidate-lf>').appendTo(candidateDiv)
-        .text(candidate.formula);
-      var candidateErr = $('<div class=candidate-err>').appendTo(candidateDiv);
-      var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
-      parseVega(JSON.stringify(candidate.value),
-        candidateVis[0], candidateErr[0], function () {
-          if (candidateVis.children('canvas').height() == 0) {
-            candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
-            return;
-          }
-          // Image diff slider
-          diffSlider(
-            $('<div>').appendTo(candidateDiv),
-            candidateVis.children('canvas'),
-            $('#vis > canvas')
-          );
-      });
-      return candidateDiv;
-    }
-
     // Function for drawing a page
     function drawPaginatedCandidates(pageId) {
       if (currentPageId == pageId) return;
