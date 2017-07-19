@@ -250,7 +250,7 @@ $(function () {
       .text('Please describe the change you are making.')
       .appendTo(collectionDiv);
 
-    var candidateDiv = buildCandidateDiv(candidate).appendTo(collectionDiv);
+    buildCandidateDiv(candidate).appendTo(collectionDiv);
 
     // add input boxes
     var numUtterances = 3;
