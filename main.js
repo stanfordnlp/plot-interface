@@ -346,15 +346,21 @@ $(function () {
           (function (i) {
             var candidate = candidates[i];
             candidateDiv = buildCandidateDiv(candidate);
-            $('<button>').text('USE').appendTo(candidateDiv)
+
+            $('<button>').text('LABEL').appendTo(candidateDiv)
               .click(function () {
                 collectUserUtterances(candidate);
+              });
+
+            $('<button>').text('USE').appendTo(candidateDiv)
+              .click(function () {
                 pages = [];     // Throw all rendered pages away
                 $('#display-candidates').empty();
                 editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);
                 parseVegaFromAce();
                 $('#command-box').val('');
               });
+
             candidateDiv.appendTo(page);
           })(i);
         }
