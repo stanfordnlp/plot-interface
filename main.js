@@ -265,9 +265,19 @@ $(function () {
     var submitButton = $('<button>').text('SUBMIT').appendTo(collectionDiv);
     submitButton.click(function () {
       var utterances = utteranceInputs.map(function(input) {return input.val();});
-
-      // TODO: send utterances and candidate to server
       // TODO: check that utterances are valid, complete
+
+      utterances.forEach(function(utter) {
+        var data = {
+          // TODO: where to get targetValue and context?
+          // Is this right?
+          // var context = JSON.parse(editor.getValue());
+          'q': JSON.stringify(['accept', {"utterance": utter, "targetValue": null, "context": null}])
+        };
+        $.post(url+'/sempre', data, function () {
+          console.log("Data uploaded to server.")
+        });
+      });
 
       collectionDiv.css("display", "none");
       collectionDiv.empty();
