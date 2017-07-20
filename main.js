@@ -284,8 +284,8 @@ $(function () {
         });
       });
 
-      collectionDiv.css("display", "none");
-      collectionDiv.empty();
+      closeCallback();
+    });
 
     // Button to cancel
     var cancelButton = $('<button>').text('CANCEL').appendTo(collectionDiv);
