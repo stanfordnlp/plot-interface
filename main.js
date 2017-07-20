@@ -161,8 +161,6 @@ $(function () {
   var args = parseQueryString();
   if ('host' in args) {
     var url = 'http://' + args['host'] + ':8405';
-  } else if ('local' in args) {
-    var url = 'http://localhost:8405';
   } else {
     var url = 'http://jonsson.stanford.edu:8405';
   }
@@ -232,7 +230,7 @@ $(function () {
         var context = JSON.parse(editor.getValue());
         var targetValue = candidate.value;
         var data = {
-          'q': JSON.stringify(['accept', {"utterance": utter, "targetValue": targetValue, "context": context}])
+          'q': JSON.stringify(['accept', {"type": "label", "utterance": utter, "targetValue": targetValue, "context": context}])
         };
         $.post(url+'/sempre', data, function () {
           console.log("Data uploaded to server.")
@@ -327,14 +325,22 @@ $(function () {
             var candidate = candidates[i];
             candidateDiv = buildCandidateDiv(candidate);
 
-            $('<button>').text('LABEL').appendTo(candidateDiv)
+            $('<button>').text('Label').appendTo(candidateDiv)
               .click(function () {
                 collectUserUtterances(candidate);
               });
 
-            $('<button>').text('USE').appendTo(candidateDiv)
+            $('<button>').text('Use').appendTo(candidateDiv)
               .click(function () {
                 pages = [];     // Throw all rendered pages away
+                var context = JSON.parse(editor.getValue());
+                var targetValue = candidate.value;
+                var data = {
+                  'q': JSON.stringify(['accept', {"type": "commit", "utterance": $('#command-box').val(), "targetValue": targetValue, "context": context}])
+                };
+                $.post(url+'/sempre', data, function () {
+                  console.log("Data uploaded to server.")
+                });
                 $('#display-candidates').empty();
                 editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);
                 parseVegaFromAce();
