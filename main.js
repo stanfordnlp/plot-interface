@@ -194,11 +194,87 @@ $(function () {
     }
   });
 
+  // ################################
+  // Collecting user utterances
+
+  function collectUserUtterances(candidate) {
+    var collectionDiv = $('#utterance-collection-modal');
+
+    $('<div id=utterance-collection-prompt>')
+      .text('Please describe the change you are making.')
+      .appendTo(collectionDiv);
+
+    buildCandidateDiv(candidate).appendTo(collectionDiv);
+
+    // add input boxes
+    var numUtterances = 1;
+    var utteranceInputs = [];
+    for (var i = 0; i < numUtterances; i++) {
+      var utteranceInput = $('<input type=text class=utterance>').appendTo(collectionDiv);
+      utteranceInput.attr("placeholder", 'Description #' + (i + 1));
+      utteranceInputs.push(utteranceInput);
+    }
+
+    var closeCallback = function () {
+      collectionDiv.css("display", "none");
+      collectionDiv.empty();
+    };
+
+    // Button to submit
+    var submitButton = $('<button>').text('SUBMIT').appendTo(collectionDiv);
+    submitButton.click(function () {
+      var utterances = utteranceInputs.map(function(input) {return input.val();});
+      // TODO: check that utterances are valid, complete
+
+      utterances.forEach(function (utter) {
+        var context = JSON.parse(editor.getValue());
+        var targetValue = candidate.value;
+        var data = {
+          'q': JSON.stringify(['accept', {"utterance": utter, "targetValue": targetValue, "context": context}])
+        };
+        $.post(url+'/sempre', data, function () {
+          console.log("Data uploaded to server.")
+        });
+      });
+
+      closeCallback();
+    });
+
+    // Button to cancel
+    var cancelButton = $('<button>').text('CANCEL').appendTo(collectionDiv);
+    cancelButton.click(function () {
+      closeCallback();
+    });
+
+    collectionDiv.css("display", "flex");
+  }
 
   // ################################
   // Candidate drawing
 
   var CANDIDATES_PER_PAGE = 10;
+
+  function buildCandidateDiv(candidate) {
+    var candidateDiv = $('<div class=candidate-div>');
+    var candidateLf = $('<div class=candidate-lf>').appendTo(candidateDiv)
+      .text(candidate.formula);
+    var candidateErr = $('<div class=candidate-err>').appendTo(candidateDiv);
+    var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
+    parseVega(JSON.stringify(candidate.value),
+      candidateVis[0], candidateErr[0], function () {
+        if (candidateVis.children('canvas').height() == 0) {
+          candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
+          return;
+        }
+        // Image diff slider
+        diffSlider(
+          $('<div>').appendTo(candidateDiv),
+          candidateVis.children('canvas'),
+          $('#vis > canvas')
+        );
+      });
+    return candidateDiv;
+  }
 
   function drawCandidates(candidates) {
     // Filter out errors from server
@@ -229,7 +305,7 @@ $(function () {
           });
       })(i);
     }
-
+    
     // Function for drawing a page
     function drawPaginatedCandidates(pageId) {
       if (currentPageId == pageId) return;
@@ -242,32 +318,23 @@ $(function () {
           // Closure :(
           (function (i) {
             var candidate = candidates[i];
-            var candidateDiv = $('<div class=candidate-div>').appendTo(page);
-            var candidateLf = $('<div class=candidate-lf>').appendTo(candidateDiv)
-              .text(candidate.formula);
-            var candidateErr = $('<div class=candidate-err>').appendTo(candidateDiv);
-            var candidateVis = $('<div class=candidate-vis>').appendTo(candidateDiv);
-            parseVega(JSON.stringify(candidate.value),
-              candidateVis[0], candidateErr[0], function () {
-                if (candidateVis.children('canvas').height() == 0) {
-                  candidateErr.text('ERROR: Nothing is rendered').addClass('fatal');
-                  return;
-                }
-                // Image diff slider
-                diffSlider(
-                  $('<div>').appendTo(candidateDiv),
-                  candidateVis.children('canvas'),
-                  $('#vis > canvas')
-                  );
-                $('<button>').text('USE').appendTo(candidateDiv)
-                  .click(function () {
-                    pages = [];     // Throw all rendered pages away
-                    $('#display-candidates').empty();
-                    editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);
-                    parseVegaFromAce();
-                    $('#command-box').val('');
-                  })
-            });
+            candidateDiv = buildCandidateDiv(candidate);
+
+            $('<button>').text('LABEL').appendTo(candidateDiv)
+              .click(function () {
+                collectUserUtterances(candidate);
+              });
+
+            $('<button>').text('USE').appendTo(candidateDiv)
+              .click(function () {
+                pages = [];     // Throw all rendered pages away
+                $('#display-candidates').empty();
+                editor.setValue(JSON.stringify(candidate.value, null, '  '), -1);
+                parseVegaFromAce();
+                $('#command-box').val('');
+              });
+
+            candidateDiv.appendTo(page);
           })(i);
         }
         pages[pageId] = page;
