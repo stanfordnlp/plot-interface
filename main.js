@@ -272,12 +272,11 @@ $(function () {
       var utterances = utteranceInputs.map(function(input) {return input.val();});
       // TODO: check that utterances are valid, complete
 
-      utterances.forEach(function(utter) {
+      utterances.forEach(function (utter) {
+        var context = JSON.parse(editor.getValue());
+        var targetValue = candidate.value;
         var data = {
-          // TODO: where to get targetValue and context?
-          // Is this right?
-          // var context = JSON.parse(editor.getValue());
-          'q': JSON.stringify(['accept', {"utterance": utter, "targetValue": null, "context": null}])
+          'q': JSON.stringify(['accept', {"utterance": utter, "targetValue": targetValue, "context": context}])
         };
         $.post(url+'/sempre', data, function () {
           console.log("Data uploaded to server.")
