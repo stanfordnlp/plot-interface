@@ -261,7 +261,12 @@ $(function () {
       utteranceInputs.push(utteranceInput);
     }
 
-    // Button to submit and close the modal
+    var closeCallback = function () {
+      collectionDiv.css("display", "none");
+      collectionDiv.empty();
+    };
+
+    // Button to submit
     var submitButton = $('<button>').text('SUBMIT').appendTo(collectionDiv);
     submitButton.click(function () {
       var utterances = utteranceInputs.map(function(input) {return input.val();});
@@ -281,6 +286,11 @@ $(function () {
 
       collectionDiv.css("display", "none");
       collectionDiv.empty();
+
+    // Button to cancel
+    var cancelButton = $('<button>').text('CANCEL').appendTo(collectionDiv);
+    cancelButton.click(function () {
+      closeCallback();
     });
 
     collectionDiv.css("display", "flex");
