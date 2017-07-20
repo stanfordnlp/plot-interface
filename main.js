@@ -253,7 +253,7 @@ $(function () {
     buildCandidateDiv(candidate).appendTo(collectionDiv);
 
     // add input boxes
-    var numUtterances = 3;
+    var numUtterances = 1;
     var utteranceInputs = [];
     for (var i = 0; i < numUtterances; i++) {
       var utteranceInput = $('<input type=text class=utterance>').appendTo(collectionDiv);
