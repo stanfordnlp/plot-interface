@@ -1,5 +1,30 @@
 var editor;
 
+function parseQueryString() {
+  var str = window.location.search;
+  var objURL = {};
+  str.replace(
+    new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
+    function( $0, $1, $2, $3 ){
+      objURL[ $1 ] = $3.replace(/\/$/, "");
+    }
+  );
+  return objURL;
+};
+// Set the server location
+var args = parseQueryString();
+if ('host' in args) {
+  var url = 'http://' + args['host'] + ':8405';
+} else {
+  var url = 'http://jonsson.stanford.edu:8405';
+}
+function appendParams(data) {
+  data['sessionId']=args['uid'];
+  data['sid']=args['sid'];
+  return data;
+}
+mturk.check(0);
+
 $(function () {
 
   // ################################
@@ -146,25 +171,6 @@ $(function () {
   // ################################
   // Semantic parsing
 
-  function parseQueryString() {
-    var str = window.location.search;
-    var objURL = {};
-    str.replace(
-      new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
-      function( $0, $1, $2, $3 ){
-        objURL[ $1 ] = $3.replace(/\/$/, "");
-      }
-    );
-    return objURL;
-  };
-  // Set the server location
-  var args = parseQueryString();
-  if ('host' in args) {
-    var url = 'http://' + args['host'] + ':8405';
-  } else {
-    var url = 'http://jonsson.stanford.edu:8405';
-  }
-
   function parseNL() {
     try {
       var utterance = $('#command-box').val();
@@ -177,7 +183,7 @@ $(function () {
           'fields': fields,
         }]),
       }
-      $.post(url+'/sempre', data, function (result) {
+      $.post(url+'/sempre', appendParams(data), function (result) {
         drawCandidates(result.candidates);
       });
     } catch (error) {
@@ -232,8 +238,9 @@ $(function () {
         var data = {
           'q': JSON.stringify(['accept', {"type": "label", "utterance": utter, "targetValue": targetValue, "context": context}])
         };
-        $.post(url+'/sempre', data, function () {
-          console.log("Data uploaded to server.")
+        $.post(url+'/sempre', appendParams(data), function () {
+          mturk.check(1);
+          console.log("Data uploaded to server.");
         });
       });
 
@@ -338,7 +345,7 @@ $(function () {
                 var data = {
                   'q': JSON.stringify(['accept', {"type": "commit", "utterance": $('#command-box').val(), "targetValue": targetValue, "context": context}])
                 };
-                $.post(url+'/sempre', data, function () {
+                $.post(url+'/sempre', appendParams(data), function () {
                   console.log("Data uploaded to server.")
                 });
                 $('#display-candidates').empty();
