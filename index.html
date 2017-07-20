@@ -12,7 +12,7 @@
   <!-- ACE -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-json.js"></script>
-  
+
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" type="text/css" href="diffslider.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -52,10 +52,17 @@
       </div>
     </div>
 
-    <div id=utterance-collection-modal class=modal>
+    <div id=details-modal class=modal>
       <!--populated by JavaScript-->
+      <div id=details-inner>
+        <div id=details-body></div>
+        <div id=details-utterances></div>
+        <div id=details-footer>
+          <button id=details-submit>Submit<br><span class=shortcut>Enter</span></button>
+          <button id=details-cancel>Cancel<br><span class=shortcut>ESC</span></button>
+        </div>
+      </div>
     </div>
   </div>
 </body>
 </html>
-

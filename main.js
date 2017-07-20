@@ -7,7 +7,7 @@ $(function () {
 
   editor = ace.edit("editor");
   editor.getSession().setMode("ace/mode/json");
-  
+
   // Undo / Redo
   editor.on('input', function () {
     var um = editor.getSession().getUndoManager();
@@ -57,7 +57,7 @@ $(function () {
     });
     $('#table-title').empty().append(
         '<strong>Data</strong> Showing 1-' +
-        Math.min(MAX_TABLE_RECORDS, data.length) + 
+        Math.min(MAX_TABLE_RECORDS, data.length) +
         ' out of ' + data.length + ' records<br>' +
         '<span class=small>Click on a field name to use it in the query</span>');
   }
@@ -198,30 +198,28 @@ $(function () {
   // Collecting user utterances
 
   function collectUserUtterances(candidate) {
-    var collectionDiv = $('#utterance-collection-modal');
+    var detailsBody = $('#details-body');
+    var detailsUtterances = $('#details-utterances');
+    var collectionModal = $('#details-modal');
 
-    $('<div id=utterance-collection-prompt>')
-      .text('Please describe the change you are making.')
-      .appendTo(collectionDiv);
-
-    buildCandidateDiv(candidate).appendTo(collectionDiv);
-
+    buildCandidateDiv(candidate).appendTo(detailsBody);
     // add input boxes
     var numUtterances = 1;
     var utteranceInputs = [];
     for (var i = 0; i < numUtterances; i++) {
-      var utteranceInput = $('<input type=text class=utterance>').appendTo(collectionDiv);
-      utteranceInput.attr("placeholder", 'Description #' + (i + 1));
+      var utteranceInput = $('<input type=text class=utterance>').appendTo(detailsUtterances);
+      utteranceInput.attr("placeholder", 'describe what changed in this plot' );
       utteranceInputs.push(utteranceInput);
     }
 
     var closeCallback = function () {
-      collectionDiv.css("display", "none");
-      collectionDiv.empty();
+      collectionModal.css("display", "none");
+      detailsBody.empty();
+      detailsUtterances.empty();
     };
 
     // Button to submit
-    var submitButton = $('<button>').text('SUBMIT').appendTo(collectionDiv);
+    var submitButton = $('#details-submit'); //$('<button>').text('Submit').appendTo(detailsBody);
     submitButton.click(function () {
       var utterances = utteranceInputs.map(function(input) {return input.val();});
       // TODO: check that utterances are valid, complete
@@ -241,12 +239,17 @@ $(function () {
     });
 
     // Button to cancel
-    var cancelButton = $('<button>').text('CANCEL').appendTo(collectionDiv);
+    var cancelButton = $('#details-cancel'); // $('<button>').text('Cancel').appendTo(detailsBody);
     cancelButton.click(function () {
       closeCallback();
     });
-
-    collectionDiv.css("display", "flex");
+    ($(document)).keyup(function (e) {
+      if (e.keyCode === 27) {
+        closeCallback();
+        return;
+      }
+    });
+    collectionModal.css("display", "flex");
   }
 
   // ################################
@@ -278,7 +281,7 @@ $(function () {
 
   function drawCandidates(candidates) {
     // Filter out errors from server
-    candidates = candidates.filter(function(x) { 
+    candidates = candidates.filter(function(x) {
       return !(typeof x.value == 'string' && x.value.indexOf("BADJAVA") == 0);
     })
     if (candidates.length === 0) {
@@ -305,7 +308,7 @@ $(function () {
           });
       })(i);
     }
-    
+
     // Function for drawing a page
     function drawPaginatedCandidates(pageId) {
       if (currentPageId == pageId) return;
