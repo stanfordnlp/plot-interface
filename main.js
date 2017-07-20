@@ -201,25 +201,29 @@ $(function () {
     var detailsBody = $('#details-body');
     var detailsUtterances = $('#details-utterances');
     var collectionModal = $('#details-modal');
-
+    var submitButton = $('#details-submit');
+    var closeCallback = function () {
+      collectionModal.css("display", "none");
+      detailsBody.empty();
+      detailsUtterances.empty();
+    };
+    closeCallback(); // workaround for sticky label button, (keep pressing enter after clicking label)
     buildCandidateDiv(candidate).appendTo(detailsBody);
     // add input boxes
     var numUtterances = 1;
     var utteranceInputs = [];
     for (var i = 0; i < numUtterances; i++) {
       var utteranceInput = $('<input type=text class=utterance>').appendTo(detailsUtterances);
+      utteranceInput.keydown(function (e) {
+        if (e.keyCode === 13) {
+          submitButton.click();
+        }
+      });
       utteranceInput.attr("placeholder", 'describe what changed in this plot' );
       utteranceInputs.push(utteranceInput);
     }
 
-    var closeCallback = function () {
-      collectionModal.css("display", "none");
-      detailsBody.empty();
-      detailsUtterances.empty();
-    };
-
     // Button to submit
-    var submitButton = $('#details-submit'); //$('<button>').text('Submit').appendTo(detailsBody);
     submitButton.click(function () {
       var utterances = utteranceInputs.map(function(input) {return input.val();});
       // TODO: check that utterances are valid, complete
@@ -243,7 +247,7 @@ $(function () {
     cancelButton.click(function () {
       closeCallback();
     });
-    ($(document)).keyup(function (e) {
+    $(document).keyup(function (e) {
       if (e.keyCode === 27) {
         closeCallback();
         return;
