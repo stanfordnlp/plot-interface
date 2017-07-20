@@ -19,4 +19,5 @@ AJAX usually does not work with the `file://` protocol, so you need to start a s
 
     Change `8000` to some other port number as needed
 * Navigate to [`http://localhost:8000`](http://localhost:8000) (Note `http`, not `https`)
-* Try utterances such as _"new"_ and _"change mark to line"_
+* To query a local server instead of our default server, use [`http://localhost:8000/?host=localhost`](http://localhost:8000/?host=localhost)
+* Try utterances such as _"new car"_ and _"background red"_
