@@ -28,7 +28,7 @@ $(function () {
   // ################################
   // Display data table
 
-  var lastDataSource = null, MAX_TABLE_RECORDS = 20;
+  var lastDataSource = null, lastFields = null, MAX_TABLE_RECORDS = 20;
 
   function clearTable() {
     $('#table-wrapper').empty();
@@ -40,10 +40,12 @@ $(function () {
   function displayTableFromData(data) {
     $('#table-wrapper').empty();
     var table = $('<table>').appendTo('#table-wrapper');
-    var keys = Object.keys(data[0]);
-    keys.sort();
-    keys.forEach(function (key) {
+    var fields = Object.keys(data[0]);
+    fields.sort();
+    lastFields = [];
+    fields.forEach(function (key) {
       if (key == '_id') return;
+      lastFields.push(key);
       var row = $('<tr>').appendTo(table);
       $('<th>').text(key).attr('title', key).appendTo(row)
         .click(function () {
@@ -169,11 +171,12 @@ $(function () {
     try {
       var utterance = $('#command-box').val();
       var spec = JSON.parse(editor.getValue());
+      var fields = lastFields;
       var data = {
         'q': JSON.stringify(['q', {
           'utterance': utterance,
           'context': spec,
-          'fields': [],
+          'fields': fields,
         }]),
       }
       $.post(url+'/sempre', data, function (result) {
