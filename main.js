@@ -3,7 +3,7 @@ var editor;
 $(function () {
 
   // ################################
-  // ACE stuff
+  // Input and spec editor
 
   editor = ace.edit("editor");
   editor.getSession().setMode("ace/mode/json");
@@ -18,49 +18,7 @@ $(function () {
   $('#undo-button').click(function () { editor.undo(); });
   $('#redo-button').click(function () { editor.redo(); });
 
-  // ################################
-  // Input box and Autocomplete
-
-  $("#command-box").on("keydown", function(event) {
-    // don't navigate away from the field on tab when selecting an item
-    if (event.keyCode === $.ui.keyCode.TAB &&
-          $(this).autocomplete("instance").menu.active) {
-      event.preventDefault();
-    }
-  }).on("keyup", function (event) {
-    if (event.keyCode === $.ui.keyCode.ENTER) {
-      $('#command-box').autocomplete('close');
-      return false;
-    }
-  }).autocomplete({
-    minLength: 0,
-    source: function(request, response) {
-      if (request.term == '' || request.term.endsWith(' ')) {
-        response([]);
-      } else {
-        var lastWord = request.term.split(' ').pop();
-        var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(lastWord), "i");
-        response(availableTags.filter(function (x) {
-          return matcher.test(x);
-        }));
-      }
-    },
-    focus: function() {
-      // prevent value inserted on focus
-      return false;
-    },
-    select: function(event, ui) {
-      var terms = this.value.split(' ');
-      // remove the last fragment
-      terms.pop();
-      // add the selected item
-      terms.push(ui.item.value);
-      this.value = terms.join(" ");
-      return false;
-    }
-  });
-
-  // Ctrl+M to focus
+  // Ctrl+M to focus on the input
   $(document).keyup(function (event) {
     if ((event.ctrlKey || event.metaKey) && (event.which == 77 || event.which == 109)) {
       $('#command-box').focus();
@@ -189,7 +147,6 @@ $(function () {
   function parseQueryString() {
     var str = window.location.search;
     var objURL = {};
-
     str.replace(
       new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
       function( $0, $1, $2, $3 ){
@@ -210,25 +167,18 @@ $(function () {
 
   function parseNL() {
     try {
-      var nl = $('#command-box').val();
+      var utterance = $('#command-box').val();
       var spec = JSON.parse(editor.getValue());
-
-      $.get(url+'/sempre?q=' + encodeURIComponent(JSON.stringify(['context', spec])),
-          function (result) {
-            $.get(url+'/sempre?q=' + encodeURIComponent(JSON.stringify(['q', nl])),
-              function (result) {
-                drawCandidates(result.candidates);
-              });
-          });
-
-      /* Single request version ...
       var data = {
-        'q': JSON.stringify(['q', nl, spec]),
+        'q': JSON.stringify(['q', {
+          'utterance': utterance,
+          'context': spec,
+          'fields': [],
+        }]),
       }
       $.post(url+'/sempre', data, function (result) {
         drawCandidates(result.candidates);
       });
-      */
     } catch (error) {
       $('#err').text('ERROR while semantic parsing: ' + error);
     }
@@ -237,6 +187,7 @@ $(function () {
   $('#command-box').keydown(function (e) {
     if (e.keyCode === 13) {
       parseNL();
+      return;
     }
   });
 

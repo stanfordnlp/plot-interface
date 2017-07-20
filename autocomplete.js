@@ -1,3 +1,49 @@
+$(function() {
+
+  // ################################
+  // Input box and Autocomplete
+
+  $("#command-box").on("keydown", function(event) {
+    // don't navigate away from the field on tab when selecting an item
+    if (event.keyCode === $.ui.keyCode.TAB &&
+          $(this).autocomplete("instance").menu.active) {
+      event.preventDefault();
+    }
+  }).on("keyup", function (event) {
+    if (event.keyCode === $.ui.keyCode.ENTER) {
+      $('#command-box').autocomplete('close');
+      return false;
+    }
+  }).autocomplete({
+    minLength: 0,
+    source: function(request, response) {
+      if (request.term == '' || request.term.endsWith(' ')) {
+        response([]);
+      } else {
+        var lastWord = request.term.split(' ').pop();
+        var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(lastWord), "i");
+        response(availableTags.filter(function (x) {
+          return matcher.test(x);
+        }));
+      }
+    },
+    focus: function() {
+      // prevent value inserted on focus
+      return false;
+    },
+    select: function(event, ui) {
+      var terms = this.value.split(' ');
+      // remove the last fragment
+      terms.pop();
+      // add the selected item
+      terms.push(ui.item.value);
+      this.value = terms.join(" ");
+      return false;
+    }
+  });
+
+});
+
 var availableTags = [
  'symbol',
  'gradient',
