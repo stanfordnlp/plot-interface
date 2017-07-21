@@ -173,26 +173,6 @@ export function parseSEMPRE(valid) {
   return listqadedup;
 }
 
-// function sempreFormat(ques) {
-//   return ques.replace(/\+/g, " __+ ")
-//     .replace(/\(/g, " [ ")
-//     .replace(/\)/g, " ] ")
-//     .replace(/\+/g, " + ")
-//     .replace(/-/g, " - ")
-//     .replace(/\*/g, " * ")
-//     .replace(/\//g, " / ");
-// }
-//
-// export function formatQuery(ques) {
-//   const sanity = ques.replace(/(\+|-|%|;)/g, " $1 ")
-//     .replace(/(\(|\))/g, "") // disables commands
-//     .replace(/"/g, "")
-//     .replace(/=/g, "= ")
-//     .replace(/(>|<)/g, " $1")
-//     .replace(/(>|<)(?!=)/g, "$1 ")
-//     .replace(/([^><])=/g, "$1 =");
-//   return sanity;
-// }
 
 export function SEMPREquery(cmds, callback) {
   const cmdstr = []

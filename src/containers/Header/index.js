@@ -7,8 +7,8 @@ import "./styles.css"
 const Header = ({ query, signedIn, sessionId, email, dispatch }) => (
   <div className="Header">
     <div className="Header-logo">
-      <span>Voxelurn</span>
-      <span className="Header-sublogo">a Stanford NLP project</span>
+      <span>Plotting</span>
+      <span className="Header-sublogo"> some smart text</span>
     </div>
     <div className="Header-nav">
       <Link to={{ pathname: "/build", query: query }} activeClassName="active"><div>Plot</div></Link>

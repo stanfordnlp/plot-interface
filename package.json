@@ -15,8 +15,8 @@
     "react-scripts": "0.9.0"
   },
   "dependencies": {
-    "color-name": "^1.1.2",
     "classnames": "^2.2.5",
+    "color-name": "^1.1.2",
     "deep-equal": "^1.0.1",
     "hashids": "^1.1.1",
     "isomer": "^0.2.6",
@@ -34,7 +34,10 @@
     "redux": "^3.6.0",
     "redux-persist": "^4.1.0",
     "redux-thunk": "^2.1.0",
-    "socket.io-client": "^1.7.2"
+    "socket.io-client": "^1.7.2",
+    "vega": "^3.0.0-rc3",
+    "vega-embed": "^3.0.0-beta.19",
+    "vega-lite": "^2.0.0-beta.10"
   },
   "scripts": {
     "start": "NODE_PATH=./src react-scripts start",
