@@ -1,0 +1,219 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #222;
+}
+
+#wrapper {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+#command-div {
+  display: flex;
+  flex-flow: row;
+  border-bottom: 1px solid #CCC;
+  box-shadow: 0 0 3px #BBB;
+  z-index: 20;
+}
+#command-box {
+  padding: 5px 10px;
+  flex-grow: 1;
+  border: none;
+  font-size: 150%;
+}
+#submit-button {
+  margin: 5px;
+  padding: 5px;
+  font-size: 120%;
+}
+
+#display-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: row;
+  align-items: stretch;
+}
+#display-editor, #display-main, #display-choices {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+#display-editor, #display-main {
+  background-color: #f6f6f7;
+}
+#display-main {
+  background-color: #f6f6f7;
+  padding: 20px;
+}
+
+#display-editor {
+  display: flex;
+  flex-flow: column;
+}
+#editor-menu {
+  padding: 8px 5px;
+  text-align: right;
+}
+#editor-menu button {
+  text-align: center;
+  font-weight: bold;
+}
+#editor-menu .shortcut {
+  font-size: 70%;
+  font-weight: normal;
+}
+#editor {
+  flex-grow: 1;
+  border: 1px solid #DDD;
+}
+#display-table {
+  /* Magic: https://stackoverflow.com/a/25045641 */
+  width: 0;
+  min-width: 100%;
+}
+#display-table #table-title {
+  margin: 10px;
+}
+#display-table #table-title .small {
+  font-size: 80%;
+  color: #777;
+}
+#display-table #table-wrapper {
+  overflow: auto;
+  margin: 10px;
+  max-height: 300px;
+}
+#display-table table {
+  border-collapse: collapse;
+  font-size: 90%;
+  border: 1px solid #ddd;
+}
+#display-table th, #display-table td {
+  border: 1px dotted #eee;
+  padding: 3px 4px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+#display-table th {
+  text-align: left;
+  background-color: #bda;
+  cursor: pointer;
+}
+#display-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+#display-table td:nth-child(even) {
+  background-color: #fffffa;
+}
+#display-table td:nth-child(odd) {
+  background-color: #f2f2ed;
+}
+
+#err, .candidate-err {
+  font-size: 80%;
+  margin-bottom: .8em;
+  color: #444;
+}
+.fatal {
+  color: #A00;
+}
+
+.num-results, .paginate-footer {
+  margin: 10px;
+}
+#display-choices {
+  position: relative;
+}
+#display-candidates {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+.candidate-div {
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  background-color: #fcfcfd;
+}
+.candidate-lf {
+  margin-bottom: .8em;
+  font-size: 90%;
+  color: #050;
+  font-family: monospace;
+}
+.candidate-vis {
+  position: relative;
+}
+.paginate-footer {
+  display: table;
+}
+.paginate-footer > div {
+  display: table-cell;
+  width: 100%;
+}
+.paginate-footer > div:last-child {
+  text-align: right;
+}
+.paginate-link {
+  padding: 8px;
+}
+.paginate-link.clickable {
+  color: #07C;
+  cursor: pointer;
+}
+.paginate-link.clickable:hover {
+  background-color: #f6f6f7;
+  text-decoration: underline;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.utterance {
+  margin: 10px;
+  width: 95%;
+  font-size: 100%;
+}
+
+#details-body {
+  justify-content: center;
+  max-height: 450px;
+  max-width: 650px;
+  overflow-y: scroll;
+}
+#details-inner {
+  background-color: #fcfcfd;
+}
+
+#details-footer {
+  padding: 8px 5px;
+  align-items: center;
+}
+#details-footer button {
+  text-align: center;
+  font-weight: bold;
+}
+#details-footer .shortcut {
+  font-size: 70%;
+  font-weight: normal;
+}
