@@ -1,0 +1,52 @@
+{
+  "name": "plot-interface",
+  "description": "web interface for the plotting project",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stanfordnlp/plot-interface.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stanfordnlp/plot-interface/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^0.12.0",
+    "react-addons-perf": "^15.4.2",
+    "react-scripts": "0.9.0"
+  },
+  "dependencies": {
+    "color-name": "^1.1.2",
+    "classnames": "^2.2.5",
+    "deep-equal": "^1.0.1",
+    "hashids": "^1.1.1",
+    "isomer": "^0.2.6",
+    "lz-string": "^1.4.4",
+    "moment": "^2.17.1",
+    "mousetrap": "^1.6.0",
+    "normalize.css": "^5.0.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-inlinesvg": "^0.5.4",
+    "react-onclickoutside": "^5.9.0",
+    "react-redux": "^4.4.5",
+    "react-router": "^3.0.1",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.6.0",
+    "redux-persist": "^4.1.0",
+    "redux-thunk": "^2.1.0",
+    "socket.io-client": "^1.7.2"
+  },
+  "scripts": {
+    "start": "NODE_PATH=./src react-scripts start",
+    "start:local": "REACT_APP_SEMPRE_SERVER=http://localhost:8405 NODE_PATH=./src react-scripts start",
+    "build": "NODE_PATH=./src react-scripts build",
+    "build:local": "REACT_APP_SEMPRE_SERVER=http://localhost:8405 NODE_PATH=./src react-scripts build",
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages --dist build --repo http://www.github.com/sidaw/voxelurn --remove static",
+    "deploy:local": "gh-pages --dist build --repo http://www.github.com/sidaw/voxelurn-local --remove static",
+    "deploy:clean": "rm -rf node_modules/gh-pages/.cache"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  }
+}
