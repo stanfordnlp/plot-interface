@@ -21,3 +21,9 @@ AJAX usually does not work with the `file://` protocol, so you need to start a s
 * Navigate to [`http://localhost:8000`](http://localhost:8000) (Note `http`, not `https`)
 * To query a local server instead of our default server, use [`http://localhost:8000/?host=localhost`](http://localhost:8000/?host=localhost)
 * Try utterances such as _"new car"_ and _"background red"_
+
+## Turking guide
+
+* require ?uid=workerId&sid=assignmentId
+
+* sid is used to retrieve session storage, and expected to be unique.

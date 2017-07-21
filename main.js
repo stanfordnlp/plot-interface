@@ -228,6 +228,7 @@ $(function () {
     }
 
     // Button to submit
+    submitButton.off();
     submitButton.click(function () {
       var utterances = utteranceInputs.map(function(input) {return input.val();});
       // TODO: check that utterances are valid, complete
@@ -239,8 +240,8 @@ $(function () {
           'q': JSON.stringify(['accept', {"type": "label", "utterance": utter, "targetValue": targetValue, "context": context}])
         };
         $.post(url+'/sempre', appendParams(data), function () {
-          mturk.check(1);
           console.log("Data uploaded to server.");
+          mturk.check(1);
         });
       });
 
@@ -249,6 +250,7 @@ $(function () {
 
     // Button to cancel
     var cancelButton = $('#details-cancel'); // $('<button>').text('Cancel').appendTo(detailsBody);
+    cancelButton.off();
     cancelButton.click(function () {
       closeCallback();
     });
