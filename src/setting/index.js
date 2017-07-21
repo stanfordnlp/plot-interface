@@ -1,5 +1,6 @@
 import React from "react"
 import Blocks, { computeDiff, computeEquality } from "./BlocksWorld"
+import Vega from "./Vega"
 
 import "./styles.css"
 
@@ -8,7 +9,7 @@ export const equalityCheck = computeEquality
 
 /* Must render the currentState */
 const Setting = (props) => (
-  <Blocks {...props} />
+  <Vega {...props} />
 )
 
 export default Setting
