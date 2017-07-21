@@ -10,9 +10,6 @@ import CommandBar from "containers/CommandBar"
 import { STATUS } from "constants/strings"
 import { genTarget } from "helpers/util"
 import StatusMsg from "components/StatusMsg"
-import Target from "components/Target"
-import SharePanel from "components/SharePanel"
-import Win from "components/Win"
 
 import "./styles.css"
 
@@ -178,7 +175,7 @@ class Build extends Component {
   }
 
   render() {
-    const { status, responses, history, current_history_idx, task } = this.props
+    const { status, responses, history, current_history_idx } = this.props
 
     /* The current state should be the history element at the last position, or
      * the one selected by the current_history_idx */
@@ -219,14 +216,6 @@ class Build extends Component {
             </div>
           </div>
         </div>
-        {task === "target" ?
-          <Target target={this.state.target} possibleSteps={this.state.possSteps} />
-          :
-          <SharePanel />
-        }
-        {this.state.win &&
-          <Win targetIdx={this.state.targetIdx} nSteps={history.length} nBlocks={currentState.length} restart={() => this.props.dispatch(Actions.clear())} />
-        }
       </div>
     );
   }

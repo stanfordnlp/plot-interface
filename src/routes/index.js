@@ -7,6 +7,7 @@ import Help from "./Help"
 const Routes = ({ history }) => (
   <Router history={history}>
     <Route path="/" component={Layout}>
+      <IndexRedirect to="build" />
       <Route path="build" component={Build} />
       <Route path="help" component={Help} />
     </Route>
