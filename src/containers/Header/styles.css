@@ -77,3 +77,11 @@
 .Header-login img {
   height: 30px;
 }
+
+.CommandBar {
+  position: fixed;
+  width: 80%;
+  position: absolute;
+  top: 0px;
+  left: 0%;
+}

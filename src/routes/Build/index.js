@@ -3,7 +3,6 @@ import Actions from "actions/world"
 import { connect } from "react-redux"
 import Mousetrap from "mousetrap"
 import Setting from "setting"
-import CommandBar from "containers/CommandBar"
 import { STATUS } from "constants/strings"
 import "./styles.css"
 
@@ -11,7 +10,6 @@ class Build extends Component {
   static propTypes = {
     /* Injected by Redux */
     status: PropTypes.string,
-    historyLen: PropTypes.number,
     responses: PropTypes.array,
     dispatch: PropTypes.func,
   }
@@ -70,11 +68,6 @@ class Build extends Component {
     );
     return (
       <div className="Build">
-        <div className="Build-command">
-          <CommandBar
-            onClick={(query) => this.handleQuery(query)}
-            handleShiftClick={() => this.handleShiftClick()} />
-        </div>
         <div className="Build-world">
           {plots}
         </div>
@@ -85,8 +78,6 @@ class Build extends Component {
 
 const mapStateToProps = (state) => ({
   status: state.world.status,
-  historyLen: state.world.history.length,
-  history: state.world.history,
   responses: state.world.responses,
   current_history_idx: state.world.current_history_idx
 })
