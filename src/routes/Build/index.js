@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Actions from "actions/world"
-import LoggerActions from "actions/logger"
 import { connect } from "react-redux"
 import Mousetrap from "mousetrap"
-import History from "containers/History"
 import Setting from "setting"
 import CommandBar from "containers/CommandBar"
 import { STATUS } from "constants/strings"
@@ -68,26 +66,6 @@ class Build extends Component {
     }
   }
 
-  upSelected() {
-    const selectedResp = this.state.selectedResp
-    if (selectedResp < this.props.responses.length - 1) {
-      this.setState({ selectedResp: selectedResp + 1 })
-      this.props.dispatch(LoggerActions.log({ type: "scroll", msg: { dir: "up" } }))
-    }
-  }
-
-  downSelected() {
-    const selectedResp = this.state.selectedResp
-    if (selectedResp > 0) {
-      this.setState({ selectedResp: selectedResp - 1 })
-      this.props.dispatch(LoggerActions.log({ type: "scroll", msg: { dir: "down" } }))
-    }
-  }
-
-  closeDefine() {
-    this.props.dispatch(Actions.closeDefine())
-  }
-
   render() {
     const { status, responses, history, current_history_idx } = this.props
 
@@ -100,14 +78,14 @@ class Build extends Component {
     if (status === STATUS.ACCEPT && !responses[this.state.selectedResp].error) {
       currentState = responses[this.state.selectedResp].value
     }
-
+    let plots = responses.map(r =>
+      (
+        <Setting blocks={r.value}/>
+      )
+    );
     return (
       <div className="Build">
-        <div className="Build-world">
-          <Setting blocks={currentState} width={1650} height={1200} isoConfig={{ canvasWidth: 1650, canvasHeight: 1200, numUnits: 40 }} />
-        </div>
         <div className="Build-command">
-          <History />
           <CommandBar
             onClick={(query) => this.handleQuery(query)}
             handleShiftClick={() => this.handleShiftClick()}
@@ -127,6 +105,10 @@ class Build extends Component {
               }
             </div>
           </div>
+        </div>
+
+        <div className="Build-world">
+          {plots}
         </div>
       </div>
     );

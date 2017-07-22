@@ -1,16 +1,12 @@
 import React from "react"
-import specs from '../constants/specs'
-import VegaLite from 'react-vega-lite';
-
+import Plot from './plot'
 import "./styles.css"
 
 /* Must render the currentState */
 const Setting = (props) => {
-  console.log(props.blocks);
   return (
   <div>
-    <span>Results returned {JSON.stringify(props.blocks)} </span>
-    <VegaLite spec={props.blocks}/>
+    <Plot spec={props.blocks} renderer={"canvas"} error={false}/>
   </div>
 )}
 

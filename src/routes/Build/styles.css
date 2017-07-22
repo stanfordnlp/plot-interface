@@ -8,20 +8,25 @@
 }
 
 .Build > div {
+  position: fixed;
   width: 100%;
 }
 
 div.Build-command {
+  position: fixed;
   width: 80%;
   position: absolute;
-  bottom: 50px;
-  left: 10%;
+  top: 0px;
+  left: 0%;
 }
 
 div.Build-world {
+  top: 100px;
+  position: absolute;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .Build-status {
