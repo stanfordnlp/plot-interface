@@ -14,7 +14,6 @@ class Build extends Component {
     historyLen: PropTypes.number,
     responses: PropTypes.array,
     dispatch: PropTypes.func,
-    query: PropTypes.string
   }
 
   componentDidMount() {
@@ -66,7 +65,7 @@ class Build extends Component {
      * the one selected by the current_history_idx */
     let plots = responses.map(r =>
       (
-        <Setting spec={r.value} onAccept={(spec) => this.accept(spec)}/>
+        <Setting spec={r.value}/>
       )
     );
     return (
@@ -88,7 +87,6 @@ const mapStateToProps = (state) => ({
   status: state.world.status,
   historyLen: state.world.history.length,
   history: state.world.history,
-  query: state.world.query,
   responses: state.world.responses,
   current_history_idx: state.world.current_history_idx
 })

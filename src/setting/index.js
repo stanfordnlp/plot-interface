@@ -6,7 +6,7 @@ import "./styles.css"
 const Setting = (props) => {
   return (
   <div>
-    <Plot spec={props.spec} onAccept={props.onAccept} renderer={"canvas"} error={false}/>
+    <Plot spec={props.spec} renderer={"canvas"} error={false}/>
   </div>
 )}
 
