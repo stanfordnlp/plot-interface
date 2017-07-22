@@ -1,25 +1,10 @@
 import Constants from "constants/actions"
-import { SEMPREquery, parseSEMPRE } from "helpers/sempre"
+import { SEMPREquery } from "helpers/sempre"
 import Logger from "actions/logger"
-import { blocksEqual } from "helpers/blocks"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
 
-function sendContext(history, current_history_idx, sessionId) {
-  let contextCommand = "(:context)"
-
-  if (history.length > 0) {
-    const idx = current_history_idx >= 0 && current_history_idx < history.length ? current_history_idx : history.length - 1
-    const currentState = history[idx].value
-    const prevState = JSON.stringify(JSON.stringify(currentState.map(c => ([c.x, c.y, c.z, c.color, c.names]))))
-    contextCommand = `(:context ${prevState})`
-  }
-
-  const contextCmds = { q: contextCommand, sessionId: sessionId }
-
-  return SEMPREquery(contextCmds)
-}
 
 const Actions = {
   setQuery: (query) => {
@@ -75,45 +60,26 @@ const Actions = {
         type: Constants.SET_STATUS,
         status: STATUS.LOADING
       })
-
-      return sendContext(history, current_history_idx, sessionId)
-        .then((eh) => {
-          const query = `(:q ${JSON.stringify(q)})`
-          const cmds = { q: query, sessionId: sessionId }
-
-          return SEMPREquery(cmds)
-            .then((response) => {
-              if (response.lines && response.lines.length > 0) {
-                /* Alert any errors in the query */
-                alert(response.lines.join("; "))
-              }
-
-              const formval = parseSEMPRE(response.candidates)
-
-              if (formval === null || formval === undefined) {
-                dispatch(Logger.log({ type: "tryFail", msg: { query: q } }))
-                return false
-              } else {
-                /* Remove no-ops */
-                const idx = current_history_idx >= 0 && current_history_idx < history.length ? current_history_idx : history.length - 1
-                const currentValue = history[idx].value
-                const responses = formval.filter((a) => {
-                  return !blocksEqual(a.value, currentValue)
-                })
-
-                dispatch(Logger.log({ type: "try", msg: { query: q, responses: formval.length } }))
-                dispatch({
-                  type: Constants.TRY_QUERY,
-                  responses: responses
-                })
-                return true
-              }
-            })
+      return SEMPREquery({ q: JSON.stringify(['q', q, '{}']), sessionId: sessionId })
+      .then((response) => {
+        const candidates = response.candidates
+        /* Remove no-ops */
+        const idx = current_history_idx >= 0 && current_history_idx < history.length ? current_history_idx : history.length - 1
+        const currentValue = history[idx].value
+        const responses = candidates.filter((a) => {
+          return a.value!==currentValue
         })
-        .catch((e) => {
-          console.log("tryQuery error?", e)
-          return false
+        dispatch(Logger.log({ type: "try", msg: { query: q, responses: responses.length } }))
+        dispatch({
+          type: Constants.TRY_QUERY,
+          responses: responses
         })
+        return true
+      })
+      .catch((e) => {
+        console.log("tryQuery error?", e)
+        return false
+      })
     }
   },
 
@@ -196,24 +162,24 @@ const Actions = {
 
       /* Submit the define command */
       SEMPREquery({ q: sempreQuery, sessionId: sessionId })
-        .then((r) => {
-          if (r.lines && r.lines.length > 0) {
-            /* Display errors and quit if there errors */
-            alert(`There were error(s) in this definition: ${r.lines.join(", ")}`)
-            return
-          }
+      .then((r) => {
+        if (r.lines && r.lines.length > 0) {
+          /* Display errors and quit if there errors */
+          alert(`There were error(s) in this definition: ${r.lines.join(", ")}`)
+          return
+        }
 
-          const { formula: topFormula } = r.candidates[0]
+        const { formula: topFormula } = r.candidates[0]
 
-          dispatch(Logger.log({ type: "define", msg: { defineAs: defineAs, idx: idx, length: defineHist.length, formula: topFormula } }))
+        dispatch(Logger.log({ type: "define", msg: { defineAs: defineAs, idx: idx, length: defineHist.length, formula: topFormula } }))
 
-          dispatch({
-            type: Constants.DEFINE,
-            text: defineAs,
-            idx: idx,
-            formula: topFormula
-          })
+        dispatch({
+          type: Constants.DEFINE,
+          text: defineAs,
+          idx: idx,
+          formula: topFormula
         })
+      })
     }
   },
 

@@ -9,6 +9,7 @@ const specs = {
     ]
   },
   "mark": "bar",
+  "background": "red",
   "encoding": {
     "x": {"field": "a", "type": "ordinal"},
     "y": {"field": "b", "type": "quantitative"}

@@ -182,7 +182,7 @@ export function SEMPREquery(cmds, callback) {
     }
   }
 
-  return fetch(`${SEMPRE_SERVER_URL}/sempre?format=lisp2json&${cmdstr.join("&")}`)
+  return fetch(`${SEMPRE_SERVER_URL}/sempre?${cmdstr.join("&")}`)
     .then((response) => {
       return response.json()
     })

@@ -8,7 +8,7 @@ const Header = ({ query, signedIn, sessionId, email, dispatch }) => (
   <div className="Header">
     <div className="Header-logo">
       <span>Plotting</span>
-      <span className="Header-sublogo"> some smart text</span>
+      <span className="Header-sublogo">catch phrase</span>
     </div>
     <div className="Header-nav">
       <Link to={{ pathname: "/build", query: query }} activeClassName="active"><div>Plot</div></Link>

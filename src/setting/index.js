@@ -1,15 +1,17 @@
 import React from "react"
-import Blocks, { computeDiff, computeEquality } from "./BlocksWorld"
-import Vega from "./Vega"
+import specs from '../constants/specs'
+import VegaLite from 'react-vega-lite';
 
 import "./styles.css"
 
-export const diff = computeDiff
-export const equalityCheck = computeEquality
-
 /* Must render the currentState */
-const Setting = (props) => (
-  <Vega {...props} />
-)
+const Setting = (props) => {
+  console.log(props.blocks);
+  return (
+  <div>
+    <span>Results returned {JSON.stringify(props.blocks)} </span>
+    <VegaLite spec={props.blocks}/>
+  </div>
+)}
 
 export default Setting
