@@ -92,14 +92,11 @@ const Actions = {
     }
   },
 
-  accept: (text, spec) => {
+  accept: (utterance, spec) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { responses } = getState().world
 
-      const selected = spec
-
-      if (selected.error) {
+      if (spec.error) {
         alert("You can't accept a response with an error in it. Please accept another response or try a different query.")
         dispatch({
           type: Constants.SET_STATUS,
@@ -108,12 +105,12 @@ const Actions = {
         return
       }
 
-      const query = ['accept', {utterance: text, context:spec, targetValue:spec }]
+      const query = ['accept', {utterance: utterance, context:spec, targetValue:spec }]
       SEMPREquery({ q: query, sessionId: sessionId }, () => { })
 
       dispatch({
         type: Constants.ACCEPT,
-        el: { ...selected, text }
+        el: { ...spec, utterance }
       })
 
       return true

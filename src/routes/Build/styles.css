@@ -17,7 +17,7 @@ div.Build-world {
   top: 100px;
   position: absolute;
   display: flex;
-  align-items: stretch;
+  /*align-items: stretch;*/
   align-content: flex-start;
   flex-wrap: wrap;
 }

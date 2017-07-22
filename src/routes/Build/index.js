@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import Actions from "actions/world"
 import { connect } from "react-redux"
 import Mousetrap from "mousetrap"
-import Setting from "setting"
+import Plot from "plot/Plot"
 import { STATUS } from "constants/strings"
+import Target from "components/Target"
 import "./styles.css"
 
 class Build extends Component {
@@ -12,6 +13,7 @@ class Build extends Component {
     status: PropTypes.string,
     responses: PropTypes.array,
     dispatch: PropTypes.func,
+    history: PropTypes.array
   }
 
   componentDidMount() {
@@ -63,7 +65,7 @@ class Build extends Component {
      * the one selected by the current_history_idx */
     let plots = responses.map(r =>
       (
-        <Setting spec={r.value}/>
+        <Plot spec={r.value}/>
       )
     );
     return (
@@ -71,6 +73,7 @@ class Build extends Component {
         <div className="Build-world">
           {plots}
         </div>
+        <Target target={this.getCurrentState()} />
       </div>
     );
   }
@@ -79,6 +82,7 @@ class Build extends Component {
 const mapStateToProps = (state) => ({
   status: state.world.status,
   responses: state.world.responses,
+  history: state.world.history,
   current_history_idx: state.world.current_history_idx
 })
 

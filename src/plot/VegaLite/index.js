@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import * as vega from 'vega';
 import Error from '../error';
 import * as VegaConsts from '../../constants/vega'
 import * as vl from 'vega-lite';
-import {MdClose, MdCheck, MdContentCopy, MdEdit} from 'react-icons/lib/md'
 import "./styles.css"
 
-export default class Plot extends React.Component {
+export default class VegaLite extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
     renderer: PropTypes.string,
     mode: PropTypes.string,
-    onAccept: PropTypes.func
+    dispatch: PropTypes.func
   }
 
   constructor(props) {
@@ -53,21 +53,9 @@ export default class Plot extends React.Component {
     this.renderVega(this.props);
   }
 
-  accept() {
-    console.log('checking')
-
-  }
-
-  renderChart() {
-    const {iconSize} = this.config;
+  render() {
     return (
-      <div className='chart-container'>
-        <div className='chart-header'>
-           <MdCheck className='chart-button' size={iconSize} onClick={() => this.props.onAccept(this.props.spec)}/>
-           <MdClose className='chart-button' size={iconSize}/>
-           <MdEdit className='chart-button' size={iconSize}/>
-           <MdContentCopy className='chart-button' size={iconSize}/>
-        </div>
+      <div className='chart-outer'>
         <Error />
         <div className='chart'>
           <div ref='chart'>
@@ -75,11 +63,5 @@ export default class Plot extends React.Component {
         </div>
       </div>
     );
-  }
-
-  render() {
-      return (
-        this.renderChart()
-      );
   }
 }
