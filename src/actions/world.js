@@ -60,7 +60,7 @@ const Actions = {
         type: Constants.SET_STATUS,
         status: STATUS.LOADING
       })
-      return SEMPREquery({ q: JSON.stringify(['q', q, '{}']), sessionId: sessionId })
+      return SEMPREquery({ q: ['q', q, '{}'], sessionId: sessionId })
       .then((response) => {
         const candidates = response.candidates
         /* Remove no-ops */
@@ -92,12 +92,12 @@ const Actions = {
     }
   },
 
-  accept: (text, selectedResp) => {
+  accept: (text, spec) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { responses } = getState().world
 
-      const selected = responses[selectedResp]
+      const selected = spec
 
       if (selected.error) {
         alert("You can't accept a response with an error in it. Please accept another response or try a different query.")
@@ -108,10 +108,8 @@ const Actions = {
         return
       }
 
-      const query = `(:accept ${JSON.stringify(text)} ${selected.formulas.map(f => JSON.stringify(f)).join(" ")})`
+      const query = ['accept', {utterance: text, context:spec, targetValue:spec }]
       SEMPREquery({ q: query, sessionId: sessionId }, () => { })
-
-      dispatch(Logger.log({ type: "accept", msg: { query: text, rank: selected.rank, formula: selected.formula } }))
 
       dispatch({
         type: Constants.ACCEPT,
@@ -119,67 +117,6 @@ const Actions = {
       })
 
       return true
-    }
-  },
-
-  acceptNone: (text) => {
-    return (dispatch, getState) => {
-      const { sessionId } = getState().user
-      const { responses } = getState().world
-
-      const formulas = responses.reduce((acc, r) => acc.concat(r.formulas), [])
-
-      const query = `(:reject ${JSON.stringify(text)} ${formulas.map(f => JSON.stringify(f)).join(" ")})`
-      SEMPREquery({ q: query, sessionId: sessionId }, () => { })
-
-      dispatch(Logger.log({ type: "acceptNone", msg: { query: text } }))
-    }
-  },
-
-  define: (idx) => {
-    return (dispatch, getState) => {
-      const { sessionId } = getState().user
-      const { history, query } = getState().world
-
-      if (idx === history.length - 1) {
-        alert("You cannot define the first history item because you must have something to define it as!")
-        return
-      }
-      const text = history[idx] !== undefined ? history[idx].text : ""
-      const defineAs = text !== "" ? text : query
-
-      const defineHist = history.slice(idx + 1, history.length).map(h => [h.text, h.formula]).filter(h => h.type !== "pin")
-
-      // scope multiline definitions by default
-      let mode = ":def"
-      if (defineHist.length <= 1) {
-        mode = ":def_ret"
-      } else if (defineHist.length === history.length - 2) {
-        mode = ":def_iso"
-      }
-
-      const sempreQuery = `(${mode} "${defineAs}" ${JSON.stringify(JSON.stringify(defineHist))})`
-
-      /* Submit the define command */
-      SEMPREquery({ q: sempreQuery, sessionId: sessionId })
-      .then((r) => {
-        if (r.lines && r.lines.length > 0) {
-          /* Display errors and quit if there errors */
-          alert(`There were error(s) in this definition: ${r.lines.join(", ")}`)
-          return
-        }
-
-        const { formula: topFormula } = r.candidates[0]
-
-        dispatch(Logger.log({ type: "define", msg: { defineAs: defineAs, idx: idx, length: defineHist.length, formula: topFormula } }))
-
-        dispatch({
-          type: Constants.DEFINE,
-          text: defineAs,
-          idx: idx,
-          formula: topFormula
-        })
-      })
     }
   },
 
@@ -202,78 +139,6 @@ const Actions = {
     }
   },
 
-  closeDefine: () => {
-    return (dispatch) => {
-      dispatch(Logger.log({ type: "closeDefine" }))
-
-      dispatch({
-        type: Constants.CLOSE_DEFINE
-      })
-    }
-  },
-
-  openDefine: (idx) => {
-    return (dispatch, getState) => {
-      dispatch(Logger.log({ type: "openDefine", msg: { idx } }))
-
-      dispatch({
-        type: Constants.OPEN_DEFINE,
-        defineN: idx
-      })
-    }
-  },
-
-  setDefineN: (idx) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.SET_DEFINE_N,
-        defineN: idx
-      })
-    }
-  },
-
-  setPin: () => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.SET_PIN
-      })
-    }
-  },
-
-  markPin: (idx) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.MARK_PIN,
-        idx
-      })
-    }
-  },
-
-  injectPin: (idx) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.INJECT_PIN,
-        idx
-      })
-    }
-  },
-
-  removePin: (idx) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.REMOVE_PIN,
-        idx
-      })
-    }
-  },
-
-  removeLast: () => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.REMOVE_LAST
-      })
-    }
-  },
 
   clear: () => {
     return (dispatch, getState) => {

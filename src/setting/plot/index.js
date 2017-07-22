@@ -9,9 +9,10 @@ import "./styles.css"
 
 export default class Plot extends React.Component {
   static propTypes = {
-    vegaSpec: PropTypes.object,
+    spec: PropTypes.object,
     renderer: PropTypes.string,
-    mode: PropTypes.string
+    mode: PropTypes.string,
+    onAccept: PropTypes.func
   }
 
   constructor(props) {
@@ -54,7 +55,7 @@ export default class Plot extends React.Component {
 
   accept() {
     console.log('checking')
-    
+
   }
 
   renderChart() {
@@ -62,7 +63,7 @@ export default class Plot extends React.Component {
     return (
       <div className='chart-container'>
         <div className='chart-header'>
-           <MdCheck className='chart-button' size={iconSize} onClick={() => this.accept()}/>
+           <MdCheck className='chart-button' size={iconSize} onClick={() => this.props.onAccept(this.props.spec)}/>
            <MdClose className='chart-button' size={iconSize}/>
            <MdEdit className='chart-button' size={iconSize}/>
            <MdContentCopy className='chart-button' size={iconSize}/>
