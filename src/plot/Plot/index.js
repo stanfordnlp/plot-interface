@@ -12,7 +12,7 @@ class Plot extends React.Component {
     spec: PropTypes.object,
     renderer: PropTypes.string,
     mode: PropTypes.string,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
   }
 
   constructor(props) {
@@ -22,8 +22,9 @@ class Plot extends React.Component {
 
 
   accept() {
-    this.props.dispatch(Actions.accept());
-    console.log('accepting')
+    this.props.dispatch(Actions.accept(this.props.spec));
+    console.log('Plot.accept')
+    console.log(this.props.spec)
 
   }
 

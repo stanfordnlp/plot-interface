@@ -11,13 +11,17 @@ export default class VegaLite extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
     renderer: PropTypes.string,
-    mode: PropTypes.string,
     dispatch: PropTypes.func
   }
 
   constructor(props) {
     super(props)
-    this.config = { iconSize: 20 }
+    const defaultProps = {
+      renderer: VegaConsts.RENDERERS.Canvas,
+      iconSize: 20
+    }
+
+    this.config = {...defaultProps, ...this.props }
   }
 
   renderVega(props) {
@@ -35,7 +39,7 @@ export default class VegaLite extends React.Component {
       view = new vega.View(runtime)
       .logLevel(vega.Warn)
       .initialize(this.refs.chart)
-      .renderer(props.renderer)
+      .renderer(this.config.renderer)
       view.run();
     } catch (err) {
       console.log(err.toString());
@@ -55,7 +59,7 @@ export default class VegaLite extends React.Component {
 
   render() {
     return (
-      <div className='chart-outer'>
+      <div>
         <Error />
         <div className='chart'>
           <div ref='chart'>

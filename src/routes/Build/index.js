@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import Mousetrap from "mousetrap"
 import Plot from "plot/Plot"
 import { STATUS } from "constants/strings"
-import Target from "components/Target"
+import Editor from "components/Editor"
 import "./styles.css"
 
 class Build extends Component {
@@ -51,21 +51,14 @@ class Build extends Component {
     this.props.dispatch(Actions.accept(this.props.query, spec))
   }
 
-  getCurrentState() {
-    const {history, current_history_idx } = this.props
-    let idx = current_history_idx >= 0 ? current_history_idx : history.length - 1
-    if (idx > history.length - 1) idx = history.length - 1
-    return history[idx].value
-  }
-
   render() {
     const {responses } = this.props
 
     /* The current state should be the history element at the last position, or
      * the one selected by the current_history_idx */
-    let plots = responses.map(r =>
+    let plots = responses.map((r, ind) =>
       (
-        <Plot spec={r.value}/>
+        <Plot spec={r.value} key={ind}/>
       )
     );
     return (
@@ -73,7 +66,7 @@ class Build extends Component {
         <div className="Build-world">
           {plots}
         </div>
-        <Target target={this.getCurrentState()} />
+        <Editor/>
       </div>
     );
   }

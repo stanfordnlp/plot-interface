@@ -3,7 +3,7 @@ import { STATUS } from "constants/strings"
 import specs from "constants/specs"
 
 const initialState = {
-  history: [{ text: "basic plot", value: specs}],
+  history: [{ text: "initial plot", value: specs}],
   responses: [],
   current_history_idx: -1,
   status: STATUS.TRY,
