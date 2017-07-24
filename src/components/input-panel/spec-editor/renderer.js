@@ -1,5 +1,5 @@
 import React from 'react';
-import {MODES} from '../../../constants';
+import {MODES} from '../../../constants/vega';
 import MonacoEditor from 'react-monaco-editor';
 import {hashHistory} from 'react-router';
 import parser from 'vega-schema-url-parser';
@@ -71,7 +71,7 @@ export default class Editor extends React.Component {
    manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <div className="editor-header"> 
+        <div className="editor-header">
           <button id='parse-button' onClick={() => this.props.parseSpec(true)}>Parse</button>
         </div>
       )
@@ -86,38 +86,45 @@ export default class Editor extends React.Component {
       schema = JSON.parse(spec).$schema;
     } catch (err) {
       console.warn('Error parsing json string');
-    } 
+    }
     if (schema) {
       parsedMode = parser(schema).library;
-    }  
+    }
     if (parsedMode === MODES.Vega || (!parsedMode && this.props.mode === MODES.Vega)) {
       this.props.updateVegaSpec(spec);
     } else if (parsedMode === MODES.VegaLite || (!parsedMode && this.props.mode === MODES.VegaLite)) {
       this.props.updateVegaLiteSpec(spec);
     }
   }
- 
+
   render() {
+    const requireConfig = {
+        url: 'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.1/require.min.js',
+        paths: {
+          'vs': 'http://www.google.com/somethingelse/vs'
+        }
+      };
     return (
       <div className={'full-height-wrapper'}>
         {this.manualParseSpec()}
         <MonacoEditor
+          requireConfig={requireConfig}
           language='json'
-          key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
-            gist: this.props.gist}))}
-          options={{
-            folding: true,
-            scrollBeyondLastLine: true,
-            wordWrap: true,
-            wrappingIndent: 'same',
-            automaticLayout: true,
-            autoIndent: true,
-            cursorBlinking: 'smooth',
-            lineNumbersMinChars: 4
-          }}
-          defaultValue={this.props.value}
-          onChange={debounce(this.handleEditorChange, 700).bind(this)}
-          editorWillMount={this.editorWillMount.bind(this)}
+          // key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
+          //   gist: this.props.gist}))}
+          // options={{
+          //   folding: true,
+          //   scrollBeyondLastLine: true,
+          //   wordWrap: true,
+          //   wrappingIndent: 'same',
+          //   automaticLayout: true,
+          //   autoIndent: true,
+          //   cursorBlinking: 'smooth',
+          //   lineNumbersMinChars: 4
+          // }}
+          // defaultValue={this.props.value}
+          // onChange={debounce(this.handleEditorChange, 700).bind(this)}
+          // editorWillMount={this.editorWillMount.bind(this)}
         />
       </div>
     );

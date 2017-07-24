@@ -12,8 +12,7 @@ class Plot extends React.Component {
     spec: PropTypes.object,
     renderer: PropTypes.string,
     mode: PropTypes.string,
-    dispatch: PropTypes.func,
-    showTools: PropTypes.boolean
+    showTools: PropTypes.bool
   }
 
   constructor(props) {
@@ -26,7 +25,6 @@ class Plot extends React.Component {
     this.props.dispatch(Actions.accept(this.props.spec));
     console.log('Plot.accept')
     console.log(this.props.spec)
-
   }
 
   renderChart() {
@@ -34,12 +32,13 @@ class Plot extends React.Component {
     const {spec} = this.props;
     return (
       <div className='chart-container'>
-        {showTools===true? <div className='chart-header'>
-           <MdCheck className='chart-button' size={iconSize} onClick={() => this.accept()}/>
-           <MdClose className='chart-button' size={iconSize}/>
-           <MdEdit className='chart-button' size={iconSize}/>
-           <MdContentCopy className='chart-button' size={iconSize}/>
-        </div>
+        {showTools===true?
+          <div className='chart-header'>
+             <MdCheck className='chart-button' size={iconSize} onClick={() => this.accept()}/>
+             <MdClose className='chart-button' size={iconSize}/>
+             <MdEdit className='chart-button' size={iconSize}/>
+             <MdContentCopy className='chart-button' size={iconSize}/>
+          </div>
         : null}
         <VegaLite spec={spec} />
       </div>

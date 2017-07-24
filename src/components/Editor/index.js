@@ -1,29 +1,19 @@
 import React from "react"
 import {connect} from "react-redux";
 import classnames from "classnames"
-import VegaLite from "plot/VegaLite"
+import SpecEditor from "components/input-panel"
 import Plot from "plot/Plot"
 
 import "./styles.css"
 
 class Editor extends React.Component {
   static propTypes = {
-    history: React.PropTypes.array,
-    current_history_idx: React.PropTypes.number,
+    context: React.PropTypes.object,
   }
 
   constructor(props) {
     super(props)
     this.state = { collapsed: false }
-  }
-
-  getCurrentState() {
-    const {history, current_history_idx } = this.props
-    let idx = current_history_idx >= 0 ? current_history_idx : history.length - 1
-    if (idx > history.length - 1) idx = history.length - 1
-    console.log(current_history_idx);
-    console.log(history[idx]);
-    return history[idx].value
   }
 
   render() {
@@ -39,7 +29,10 @@ class Editor extends React.Component {
           </div>
         </div>
         <div className="Target-struct">
-          <Plot spec={this.getCurrentState()} showTools={false}/>
+          <Plot spec={this.props.context} showTools={false}/>
+        </div>
+        <div className="Target-struct">
+          <SpecEditor/>
         </div>
       </div>
     )
@@ -47,7 +40,6 @@ class Editor extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  history: state.world.history,
-  current_history_idx: state.world.current_history_idx
+  context: state.world.context
 })
 export default connect(mapStateToProps)(Editor)

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Actions from "actions/world"
 import { connect } from "react-redux"
-import Mousetrap from "mousetrap"
 import Plot from "plot/Plot"
 import { STATUS } from "constants/strings"
 import Editor from "components/Editor"
@@ -11,22 +10,9 @@ class Build extends Component {
   static propTypes = {
     /* Injected by Redux */
     status: PropTypes.string,
+    context: PropTypes.object,
     responses: PropTypes.array,
     dispatch: PropTypes.func,
-    history: PropTypes.array
-  }
-
-  componentDidMount() {
-    /* Bind Ctrl+Z and Crtl+Shift+Z to Undo and Redo actions respectively */
-    Mousetrap.prototype.stopCallback = () => false;
-    Mousetrap.bind("command+z", (e) => { e.preventDefault(); this.props.dispatch(Actions.undo()) })
-    Mousetrap.bind("command+shift+z", (e) => { e.preventDefault(); this.props.dispatch(Actions.redo()) })
-  }
-
-  componentWillUnmount() {
-    /* Clean up the key undo+redo bindings */
-    Mousetrap.unbind("command+z")
-    Mousetrap.unbind("command+shift+z")
   }
 
   handleQuery(query) {
@@ -47,15 +33,8 @@ class Build extends Component {
     }
   }
 
-  accept(spec) {
-    this.props.dispatch(Actions.accept(this.props.query, spec))
-  }
-
   render() {
     const {responses } = this.props
-
-    /* The current state should be the history element at the last position, or
-     * the one selected by the current_history_idx */
     let plots = responses.map((r, ind) =>
       (
         <Plot spec={r.value} key={ind}/>
@@ -75,8 +54,7 @@ class Build extends Component {
 const mapStateToProps = (state) => ({
   status: state.world.status,
   responses: state.world.responses,
-  history: state.world.history,
-  current_history_idx: state.world.current_history_idx
+  context: state.world.context
 })
 
 export default connect(mapStateToProps)(Build)
