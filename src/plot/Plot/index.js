@@ -13,11 +13,12 @@ class Plot extends React.Component {
     renderer: PropTypes.string,
     mode: PropTypes.string,
     dispatch: PropTypes.func,
+    showTools: PropTypes.boolean
   }
 
   constructor(props) {
     super(props)
-    this.config = { iconSize: 20 }
+    this.config = { showTools: true, iconSize: 20, ...props }
   }
 
 
@@ -29,16 +30,17 @@ class Plot extends React.Component {
   }
 
   renderChart() {
-    const {iconSize} = this.config;
+    const {iconSize, showTools} = this.config;
     const {spec} = this.props;
     return (
       <div className='chart-container'>
-        <div className='chart-header'>
+        {showTools===true? <div className='chart-header'>
            <MdCheck className='chart-button' size={iconSize} onClick={() => this.accept()}/>
            <MdClose className='chart-button' size={iconSize}/>
            <MdEdit className='chart-button' size={iconSize}/>
            <MdContentCopy className='chart-button' size={iconSize}/>
         </div>
+        : null}
         <VegaLite spec={spec} />
       </div>
     );
