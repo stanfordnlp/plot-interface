@@ -85,7 +85,7 @@ const Actions = {
   },
 
   updateSpec: (spec) => {
-    return (dispatch, getState) => {
+    return (dispatch) => {
       const currLogger = new LocalLogger();
       try {
         spec = JSON.parse(spec);

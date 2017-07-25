@@ -1,9 +1,17 @@
 export class LocalLogger {
-  warns = [];
-  infos = [];
-  debugs = [];
+  constructor() {
+    this.errors = [];
+    this.warns = [];
+    this.infos = [];
+    this.debugs = [];
+  }
 
   level() {
+    return this;
+  }
+
+  error(...args) {
+    this.errors.push(...args);
     return this;
   }
 

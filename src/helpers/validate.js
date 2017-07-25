@@ -1,5 +1,6 @@
 import Ajv from 'ajv';
-
+import {LocalLogger} from '../helpers/logger'
+import * as vl from 'vega-lite';
 const ajv = new Ajv({
   jsonPointers: true,
   allErrors: false
@@ -26,4 +27,21 @@ export function validateVega(spec, logger) {
       logger.warn(`Validation: ${error.dataPath} ${error.message}`);
     }
   }
+}
+
+export function parseAndCheckStr(jsonStr) {
+  return parseWithErrors(JSON.parse(jsonStr))
+}
+
+export function parseWithErrors(spec) {
+  const currLogger = new LocalLogger();
+  let vegaSpec
+  try {
+    validateVegaLite(spec, currLogger);
+    vegaSpec = vl.compile(spec, currLogger).spec;
+    validateVega(vegaSpec, currLogger);
+  } catch (e) {
+    currLogger.error(e.message);
+  }
+  return {'vegaSpec': vegaSpec, logger: currLogger}
 }
