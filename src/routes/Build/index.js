@@ -5,6 +5,7 @@ import Plot from "plot/Plot"
 import { STATUS } from "constants/strings"
 import Editor from "components/Editor"
 import "./styles.css"
+import SplitPane from 'react-split-pane';
 
 class Build extends Component {
   static propTypes = {
