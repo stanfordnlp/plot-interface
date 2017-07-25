@@ -3,7 +3,9 @@ import { SEMPREquery } from "helpers/sempre"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
-
+import * as vl from 'vega-lite';
+import {validateVegaLite} from '../helpers/validate';
+import {LocalLogger} from '../helpers/logger'
 
 const Actions = {
   setQuery: (query) => {
@@ -67,6 +69,23 @@ const Actions = {
         target: spec
       })
       return true
+    }
+  },
+
+  updateSpec: (spec) => {
+    return (dispatch, getState) => {
+      const currLogger = new LocalLogger();
+      try {
+        spec = JSON.parse(spec);
+        validateVegaLite(spec, currLogger);
+        vl.compile(spec, currLogger);
+      } catch (e) {
+        console.warn(e);
+      }
+      dispatch({
+        type: Constants.ACCEPT,
+        target: spec
+      })
     }
   },
 

@@ -41,7 +41,18 @@ class Build extends Component {
         <Plot spec={r.value} key={ind}/>
       )
     );
+    const splitPane = true;
     return (
+      splitPane?
+      <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
+          <SplitPane split="vertical" minSize={300} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
+            <Editor/>
+            <div className="Candidates">
+              {plots}
+            </div>
+          </SplitPane>
+      </div>
+      :
       <div className="Build">
         <div className="Build-world">
           {plots}

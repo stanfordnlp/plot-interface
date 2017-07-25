@@ -13,11 +13,11 @@
 }
 
 
-div.Build-world {
-  top: 100px;
+div.Candidates {
+  top: 0px;
   position: absolute;
   display: flex;
-  /*align-items: stretch;*/
+  align-items: stretch;
   align-content: flex-start;
   flex-wrap: wrap;
 }
