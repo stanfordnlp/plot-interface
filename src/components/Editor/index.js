@@ -18,7 +18,7 @@ class Editor extends React.Component {
 
   render() {
     return (
-     <SplitPane split="horizontal" minSize={250} defaultSize={250}
+     <SplitPane split="horizontal" minSize={30} defaultSize={250}
         pane1Style={{display: 'flex', overflow: 'scroll'}} className='main-pane'>
        <div className="editor-chart"><VegaLite spec={this.props.context} key='current-plot' /></div>
        <SpecEditor key='spec-editor' spec={this.props.context}/>

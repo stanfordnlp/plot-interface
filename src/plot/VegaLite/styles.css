@@ -1,5 +1,5 @@
 .chart {
-  padding: 5px;
+  padding: 0px;
   display: inline-block;
 }
 .chart .vega-bindings {
@@ -22,4 +22,9 @@
 .chart .vega-bind-radio label {
   margin-left: 0;
   margin-right: 4px;
+}
+
+.display-errors {
+  font-size: 0.5em;
+  color: red;
 }

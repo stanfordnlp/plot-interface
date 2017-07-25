@@ -10,7 +10,8 @@ import "./styles.css"
 class Plot extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
-    context: PropTypes.object,
+    formula: PropTypes.string,
+
     renderer: PropTypes.string,
     mode: PropTypes.string,
     showTools: PropTypes.bool
@@ -20,6 +21,17 @@ class Plot extends React.Component {
     super(props)
     this.config = { showTools: true, iconSize: 20, ...props }
     this.state = { overlay: false, show: true, ...props}
+    //
+    // if (this.state.spec) {
+    //   try {
+    //     console.log('current spec', JSON.stringify(this.state.spec));
+    //     promiseWithErrors(this.state.spec)
+    //     .then(v => {console.log("promise returned")})
+    //     .catch(v => {console.log("promise errored")});
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   }
 
   compare(showContext) {
@@ -43,6 +55,7 @@ class Plot extends React.Component {
 
   renderChart() {
     const {iconSize, showTools} = this.config;
+
     return (
       <div className='chart-container'>
         {showTools===true?
@@ -55,6 +68,7 @@ class Plot extends React.Component {
              />
           </div>
         : null}
+        <div className='canonical'>{this.state.formula}</div>
         <div className='all-overlays'>
           <div className='overlay-container1'>
             <VegaLite spec={this.props.spec} />
@@ -77,6 +91,5 @@ class Plot extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  context: state.world.context
 })
 export default connect(mapStateToProps)(Plot);

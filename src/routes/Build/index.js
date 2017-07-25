@@ -38,19 +38,19 @@ class Build extends Component {
     const {responses } = this.props
     let plots = responses.map((r, ind) =>
       (
-        <Plot spec={r.value} key={ind}/>
+        <Plot spec={r.value} formula={r.formula} key={ind}/>
       )
     );
     const splitPane = true;
     return (
       splitPane?
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-          <SplitPane split="vertical" minSize={300} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
-            <Editor/>
-            <div className="Candidates">
-              {plots}
-            </div>
-          </SplitPane>
+        <SplitPane split="vertical" minSize={300} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
+          <Editor/>
+          <div className="Candidates">
+            {plots}
+          </div>
+        </SplitPane>
       </div>
       :
       <div className="Build">

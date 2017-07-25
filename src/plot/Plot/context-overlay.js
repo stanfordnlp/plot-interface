@@ -32,9 +32,6 @@ class ContextOverlay extends React.Component {
         return <VegaLite spec={this.props.context}/>
     else return null
   }
-  componentDidUpdate() {
-    console.log("update contextoverlay");
-  }
 }
 
 const mapStateToProps = (state) => ({

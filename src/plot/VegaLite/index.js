@@ -21,14 +21,12 @@ export default class VegaLite extends React.Component {
     }
 
     this.config = {...defaultProps, ...this.props }
-    const mod = props.spec;
-    if (mod.data.url && !mod.data.url.startsWith(VegaConsts.DATAURL)) {
-      mod.data.url = VegaConsts.DATAURL + mod.data.url;
+    if (props.spec === undefined) {
+      console.log('VegaLite undefined sepc');
     }
-    const {vegaSpec, logger} = parseWithErrors(mod)
-    const hasError = logger.warns.length > 0
+    const {vegaSpec, logger} = parseWithErrors(props.spec)
+    const hasError = logger.warns.length > 0 || logger.errors.length > 0
     this.state = {vegaSpec: vegaSpec, logger: logger, hasError: hasError}
-    console.log(this.state.hasError)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,6 +40,7 @@ export default class VegaLite extends React.Component {
   }
 
   renderVega(state) {
+    // if (this.state.hasError) return;
     this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
     let runtime;
     let view;
@@ -53,22 +52,31 @@ export default class VegaLite extends React.Component {
       .initialize(this.refs.chart)
       .renderer(this.config.renderer);
       view.run()
+
+      // view.toSVG().then(svg => {console.log('renderVega.toSVG %s', svg)})
+      // this.setState({view: view});
       // console.log(view.scenegraph())
       // console.log(view._runtime)
-      // view.toCanvas()
-      // .then(function(svg) { console.log('render') })
-      // .catch(err => {console.log(err.toString())})
     } catch (err) {
-      console.log(err.toString());
+      console.log('VegaLite.error %s', err.toString());
       // throw err;
     }
     this.refs.chart.style.width = 'auto';
+
 
     // window.VEGA_DEBUG.view = view;
   }
 
   componentDidMount() {
     this.renderVega(this.state);
+    // try {
+    //   this.state.view.toSVG()
+    //   .then(svg => {this.setState({svg: svg}); console.log('resolving promise')})
+    //   .catch(err => {console.log(err.toString())})
+    // } catch (err) {
+    //   console.log(err.toString());
+    //   // throw err;
+    // }
   }
 
   componentDidUpdate() {
@@ -79,13 +87,17 @@ export default class VegaLite extends React.Component {
     // if (this.state.hasError) return (
     //   <div ref='chart'>{[...this.state.logger.errors, ...this.state.logger.warns]}</div>
     // )
+    const errorwarnings = this.state.logger.errors.concat(this.state.logger.warns);
     return (
       <div>
         <div className='chart'>
           <div ref='chart'>
           </div>
         </div>
+        <div className='display-errors'>
+        {this.state.hasError?  errorwarnings : "clean" }
+        </div>
       </div>
-    );
+    )
   }
 }

@@ -15,9 +15,18 @@
   left: 0;
   top: 0;
 }
+
 .overlay-container2 {
   position: absolute;
   z-index: 2;
   left: 0;
   top: 0;
+}
+
+.canonical {
+  margin-top: 7px;
+  margin: 5px;
+  width: inherit;
+  font-size: 10px;
+  color: green;
 }

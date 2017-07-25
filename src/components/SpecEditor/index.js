@@ -49,7 +49,7 @@ class InputPanel extends React.Component {
           name="spec-editor"
           onChange={this.onChange}
           style={{ width: '100%' }}
-          // editorProps={{$blockScrolling: true}}
+          editorProps={{$blockScrolling: true}}
         />
       </div>
     )

@@ -1,6 +1,8 @@
 import Ajv from 'ajv';
 import {LocalLogger} from '../helpers/logger'
 import * as vl from 'vega-lite';
+import * as vega from 'vega';
+
 const ajv = new Ajv({
   jsonPointers: true,
   allErrors: false
@@ -42,6 +44,19 @@ export function parseWithErrors(spec) {
     validateVega(vegaSpec, currLogger);
   } catch (e) {
     currLogger.error(e.message);
+    return {vegaSpec: {}, logger: currLogger}
   }
-  return {'vegaSpec': vegaSpec, logger: currLogger}
+  return {vegaSpec: vegaSpec, logger: currLogger}
+}
+
+export function promiseWithErrors(spec) {
+  let retval = parseWithErrors(spec);
+  let view = new vega.View(retval.vegaSpec)
+  .logLevel(vega.Warn)
+  .initialize();
+  view.run();
+
+  return view.toSVG()
+    //.then(function(svg) { console.log('got svg'); return {'svg': svg, ...retval} })
+    //.catch(function(err) { console.error(err); return {'svg': null, ...retval}});
 }
