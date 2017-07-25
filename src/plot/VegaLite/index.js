@@ -30,12 +30,8 @@ export default class VegaLite extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const mod = nextProps.spec;
-    if (mod.data.url && !mod.data.url.startsWith(VegaConsts.DATAURL)) {
-      mod.data.url = VegaConsts.DATAURL + mod.data.url;
-    }
-    const {vegaSpec, logger} = parseWithErrors(mod)
-    const hasError = logger.warns.length > 0
+    const {vegaSpec, logger} = parseWithErrors(nextProps.spec)
+    const hasError = logger.warns.length > 0 || logger.errors.length > 0
     this.setState({vegaSpec: vegaSpec, logger: logger, hasError: hasError})
   }
 
