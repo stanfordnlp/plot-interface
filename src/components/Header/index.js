@@ -10,11 +10,10 @@ const Header = ({ query, signedIn, sessionId, email, dispatch }) => (
   <div className="Header">
      <CommandBar
         onClick={(query) => dispatch(Actions.tryQuery(query))} />
-    <div className="Header-logo">
+    {/* <div className="Header-logo">
       <span>Plotting</span>
       <span className="Header-sublogo">catch phrase</span>
-    </div>
-
+    </div> */}
     <div className="Header-nav">
       <Link to={{ pathname: "/build", query: query }} activeClassName="active"><div>Plot</div></Link>
       <Link to={{ pathname: "/help", query: query }} activeClassName="active"><div>Help</div></Link>

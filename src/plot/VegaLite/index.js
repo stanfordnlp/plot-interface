@@ -17,7 +17,7 @@ export default class VegaLite extends React.Component {
   constructor(props) {
     super(props)
     const defaultProps = {
-      renderer: VegaConsts.RENDERERS.Canvas,
+      renderer: VegaConsts.RENDERERS.SVG,
       iconSize: 20
     }
 
@@ -34,7 +34,6 @@ export default class VegaLite extends React.Component {
         mod.data.url = VegaConsts.DATAURL + mod.data.url;
       }
       const vegaSpec = vl.compile(mod).spec;
-      console.log(vegaSpec);
       runtime = vega.parse(vegaSpec);
       view = new vega.View(runtime)
       .logLevel(vega.Warn)

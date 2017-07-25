@@ -19,7 +19,7 @@ class Plot extends React.Component {
   constructor(props) {
     super(props)
     this.config = { showTools: true, iconSize: 20, ...props }
-    this.state = { overlay: false}
+    this.state = { overlay: false, show: true, ...props}
   }
 
   compare(showContext) {
@@ -31,18 +31,24 @@ class Plot extends React.Component {
     this.props.dispatch(Actions.accept(this.props.spec));
   }
 
+  remove() {
+    this.props.dispatch(Actions.reject(this.props.spec));
+    this.setState({show: false})
+  }
+
   // this is a horrible workaround to stop re-rendering of the whole component
   toggle = () => {
     this.contextOverlay.toggle() // do stuff
   };
+
   renderChart() {
     const {iconSize, showTools} = this.config;
     return (
       <div className='chart-container'>
         {showTools===true?
           <div className='chart-header'>
+             <MdClose className='md-button' size={iconSize} onClick={() => this.remove()}/>
              <MdCheck className='md-button' size={iconSize} onClick={() => this.accept()}/>
-             <MdClose className='md-button' size={iconSize}/>
              <MdEdit className='md-button' size={iconSize}/>
              <MdCompare className='md-button' size={iconSize}
               onClick={this.toggle}
@@ -62,9 +68,11 @@ class Plot extends React.Component {
   }
 
   render() {
-      return (
-        this.renderChart()
-      );
+    if (!this.state.show)
+      return null;
+    return (
+      this.renderChart()
+    );
   }
 }
 

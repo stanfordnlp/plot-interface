@@ -72,6 +72,18 @@ const Actions = {
     }
   },
 
+  reject: (spec) => {
+    return (dispatch, getState) => {
+      const { sessionId } = getState().user
+      const { query, context } = getState().world
+
+      const q = ['reject', {utterance: query, context:context, targetValue:spec }]
+      SEMPREquery({ q: q, sessionId: sessionId }, () => { })
+
+      return true
+    }
+  },
+
   updateSpec: (spec) => {
     return (dispatch, getState) => {
       const currLogger = new LocalLogger();

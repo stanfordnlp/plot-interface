@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux"
 import Actions from "actions/user"
-import Header from "containers/Header"
+import Header from "components/Header"
 
 import "normalize.css"
 import "./styles.css"
