@@ -18,7 +18,7 @@ class LabelModal extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {isOpen: false}
+    this.state = {isOpen: props.isOpen, onClose: props.onClose}
   }
 
   submit() {
@@ -36,7 +36,7 @@ class LabelModal extends Component {
   render() {
     return (
       <Modal
-        isOpen={this.state.isOpen}
+        isOpen={true}
         // onRequestClose={this.state.onClose()}
         className={{
           base: 'LabelModal',
@@ -59,7 +59,7 @@ class LabelModal extends Component {
       />
       <div className='control-bar'>
         <button onClick={() => this.submit()}>Submit</button>
-        <button onClick={() => this.state.onClose()}>Close</button> 
+        <button onClick={() => this.state.onClose()}>Close</button>
       </div>
     </Modal>
     )

@@ -86,7 +86,7 @@ class Plot extends React.Component {
             <ContextOverlay show={this.state.overlay} onRef={ref => (this.contextOverlay = ref)} />
           </div>
         </div>
-        <LabelModal isOpen={this.state.labeling} onClose={() => this.closeModal()}/>
+        {this.state.labeling? <LabelModal isOpen={true} onClose={() => this.closeModal()}/> : null}
       </div>
     );
   }
