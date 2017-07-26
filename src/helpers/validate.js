@@ -17,7 +17,7 @@ export function validateVegaLite(spec, logger) {
   const valid = vegaLiteValidator(spec);
   if (!valid) {
     for (const error of vegaLiteValidator.errors) {
-      logger.warn(`Validation: ${error.dataPath} ${error.message}`);
+      logger.warn(`ValidationVegaLite: ${error.dataPath} ${error.message}`);
     }
   }
 }
@@ -26,7 +26,7 @@ export function validateVega(spec, logger) {
   const valid = vegaValidator(spec);
   if (!valid) {
     for (const error of vegaValidator.errors) {
-      logger.warn(`Validation: ${error.dataPath} ${error.message}`);
+      logger.warn(`ValidationVega: ${error.dataPath} ${error.message}`);
     }
   }
 }

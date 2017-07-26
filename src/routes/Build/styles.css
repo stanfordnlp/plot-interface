@@ -12,6 +12,10 @@
   width: 100%;
 }
 
+.current-plot {
+  border: 5px solid rgb(0, 160, 176);
+  margin: 0px;
+}
 
 div.Candidates {
   top: 0px;

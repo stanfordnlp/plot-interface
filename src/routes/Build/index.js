@@ -41,24 +41,30 @@ class Build extends Component {
         <Plot spec={r.value} formula={r.formula} key={ind}/>
       )
     );
-    const splitPane = true;
+    let plotsPlus = [];
+    plotsPlus.push(
+      <div className='current-plot'>
+        <Plot  spec={this.props.context} formula={''} showTools={false}/>
+      </div>
+    );
+    plotsPlus = plotsPlus.concat(plots);
     return (
-      splitPane?
+
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor/>
           <div className="Candidates">
-            {plots}
+            {plotsPlus}
           </div>
         </SplitPane>
       </div>
-      :
-      <div className="Build">
-        <div className="Build-world">
-          {plots}
-        </div>
-        <Editor/>
-      </div>
+
+      // <div className="Build">
+      //   <div className="Build-world">
+      //     {plotsPlus}
+      //   </div>
+      //   <Editor/>
+      // </div>
     );
   }
 }

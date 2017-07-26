@@ -3,7 +3,6 @@ import { connect } from "react-redux"
 import classnames from "classnames"
 import Actions from "actions/world"
 import Modal from "react-modal"
-
 import "./styles.css"
 
 
@@ -12,32 +11,43 @@ class LabelModal extends Component {
     /* Callback function when the CommandBar button clicks clicked */
     isOpen: PropTypes.bool,
     query: PropTypes.string,
+    spec: PropTypes.object,
     onClose: PropTypes.func,
     dispatch: PropTypes.func
   }
 
   constructor(props) {
     super(props)
-    this.state = {isOpen: props.isOpen, onClose: props.onClose, x: 400, y: 300, ...props}
+    this.state = {
+      isOpen: props.isOpen,
+      onClose: props.onClose,
+      x: 400, y: 300,
+      inputValue: '',
+    ...props}
   }
 
   submit() {
-    console.log('submit ' + this.props.query);
+    this.props.dispatch(Actions.label(this.state.inputValue, this.props.spec));
   }
 
   handleKeyDown(e) {
     if (e.keyCode === 13) {
       this.submit()
-    } else if (e.keyCode === 40) {
-      this.closeModal()
+    } else if (e.keyCode === 27) {
+      this.state.onClose()
     }
+  }
+
+  updateInputValue(evt) {
+    this.setState({inputValue: evt.target.value})
+    this.state.onClose()
   }
 
   render() {
     return (
       <Modal
         isOpen={true}
-        // onRequestClose={this.state.onClose()}
+        onRequestClose={() => this.state.onClose()}
         className={{
           base: 'LabelModal',
           afterOpen: 'LabelModal_after-open',
@@ -55,11 +65,13 @@ class LabelModal extends Component {
       <span className="header">What happened in this chart?</span>
       <input className="label-box"
         type="text"
-        placeholder={'previously: ' + this.props.query}
+        value={this.state.inputvalue}
+        onChange={e => this.updateInputValue(e)}
+        placeholder={'previous command: ' + this.props.query}
       />
       <div className='control-bar'>
-        <button onClick={() => this.submit()}>Submit</button>
-        <button onClick={() => this.state.onClose()}>Close</button>
+        <button className={classnames({active: true})} onClick={() => this.submit()}>Submit</button>
+        <button className={classnames({active: true})} onClick={() => this.state.onClose()}>Close</button>
       </div>
     </Modal>
     )

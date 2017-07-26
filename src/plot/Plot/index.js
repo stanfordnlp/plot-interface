@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Actions from "actions/world"
@@ -6,11 +7,6 @@ import VegaLite from "../VegaLite"
 import ContextOverlay from "./context-overlay"
 import {MdClose, MdCheck, MdCompare, MdEdit} from 'react-icons/lib/md'
 import "./styles.css"
-
-import * as vega from 'vega';
-import * as VegaConsts from '../../constants/vega'
-import {parseWithErrors} from 'helpers/validate'
-import {Scenegraph} from 'vega-scenegraph'
 import LabelModal from 'components/LabelModal'
 
 class Plot extends React.Component {
@@ -27,20 +23,7 @@ class Plot extends React.Component {
     super(props)
     this.config = { showTools: true, iconSize: 20, ...props }
     this.state = { overlay: false, show: true, labeling: false, ...props}
-    //
-    if (this.state.spec) {
-      try {
-        const {vegaSpec, logger} = parseWithErrors(this.state.context)
-        let view = new vega.View(vega.parse(vegaSpec))
-        .logLevel(vega.Warn)
-        .initialize()
-        .renderer("SVG");
-        view.run()
 
-      } catch (err) {
-        console.log(err);
-      }
-    }
   }
 
   compare(showContext) {
@@ -86,9 +69,23 @@ class Plot extends React.Component {
             <ContextOverlay show={this.state.overlay} onRef={ref => (this.contextOverlay = ref)} />
           </div>
         </div>
-        {this.state.labeling? <LabelModal isOpen={true} onClose={() => this.closeModal()}/> : null}
+        {this.getLabelModal()}
       </div>
     );
+  }
+
+  getLabelModal() {
+    if (!this.state.showTools) return null;
+
+    if (this.state.labeling) {
+      const rect = ReactDOM.findDOMNode(this)
+      .getBoundingClientRect()
+      console.log(rect)
+      let yoffset = -150; // height of the modal
+      if (rect.top < 150)
+        yoffset = 150;
+      return <LabelModal isOpen={true} spec={this.state.spec} x={rect.left} y={rect.top+yoffset} onClose={() => this.closeModal()}/>
+    } else return null;
   }
 
   openModal() {

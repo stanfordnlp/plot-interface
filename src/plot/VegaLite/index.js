@@ -6,6 +6,7 @@ import * as VegaConsts from '../../constants/vega'
 import {parseWithErrors} from 'helpers/validate'
 import "./styles.css"
 
+// renders vegalite plot and display errors
 export default class VegaLite extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
@@ -16,7 +17,7 @@ export default class VegaLite extends React.Component {
   constructor(props) {
     super(props)
     const defaultProps = {
-      renderer: VegaConsts.RENDERERS.SVG, //VegaConsts.RENDERERS.SVG | Canvas
+      renderer: VegaConsts.RENDERERS.Canvas, //VegaConsts.RENDERERS.SVG | Canvas
       iconSize: 20
     }
 
@@ -49,7 +50,6 @@ export default class VegaLite extends React.Component {
       .renderer(this.config.renderer);
       view.runAfter((v) => console.log('scenegraph2', this.refs.chart.innerHTML))
 
-
       // const prevView = view.scenegraph().root;
       // console.log('scenegraph2', prevView)
       // console.log('scenegraph2svg', prevView._svg.outerHTML  )
@@ -69,30 +69,24 @@ export default class VegaLite extends React.Component {
 
   componentDidMount() {
     this.renderVega(this.state);
-    // try {
-    //   this.state.view.toSVG()
-    //   .then(svg => {this.setState({svg: svg}); console.log('resolving promise')})
-    //   .catch(err => {console.log(err.toString())})
-    // } catch (err) {
-    //   console.log(err.toString());
-    //   // throw err;
-    // }
+
   }
 
   componentDidUpdate() {
     this.renderVega(this.state);
   }
 
+  test(e) {
+    console.log(this.refs.chart.children[0].toDataURL())
+  }
+
   render() {
-    // if (this.state.hasError) return (
-    //   <div ref='chart'>{[...this.state.logger.errors, ...this.state.logger.warns]}</div>
-    // )
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={i}>{v}</li>)
     return (
       <div>
         <div className='chart'>
-          <div ref='chart'>
+          <div ref='chart' onClick={e => {this.test(e)}}>
           </div>
         </div>
         <div >

@@ -61,13 +61,24 @@ const Actions = {
       const { sessionId } = getState().user
       const { query, context } = getState().world
 
-      const q = ['accept', {utterance: query, context:context, targetValue:spec }]
+      const q = ['accept', {utterance: query, context:context, targetValue:spec}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
         type: Constants.ACCEPT,
         target: spec
       })
+      return true
+    }
+  },
+
+  label: (utterance, spec) => {
+    return (dispatch, getState) => {
+      const { sessionId } = getState().user
+      const { query, context } = getState().world
+
+      const q = ['accept', {utterance: utterance, context:context, targetValue:spec, note:'label', original:query }]
+      SEMPREquery({ q: q, sessionId: sessionId }, () => { })
       return true
     }
   },

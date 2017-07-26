@@ -1,6 +1,6 @@
 {
   "name": "plot-interface",
-  "description": "web interface for the plotting project",
+  "description": "web interface for plotting with semantic parsing",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stanfordnlp/plot-interface.git"
