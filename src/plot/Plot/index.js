@@ -7,11 +7,17 @@ import ContextOverlay from "./context-overlay"
 import {MdClose, MdCheck, MdCompare, MdEdit} from 'react-icons/lib/md'
 import "./styles.css"
 
+import * as vega from 'vega';
+import * as VegaConsts from '../../constants/vega'
+import {parseWithErrors} from 'helpers/validate'
+import {Scenegraph} from 'vega-scenegraph'
+import LabelModal from 'components/LabelModal'
+
 class Plot extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
     formula: PropTypes.string,
-
+    context: PropTypes.object,
     renderer: PropTypes.string,
     mode: PropTypes.string,
     showTools: PropTypes.bool
@@ -20,18 +26,21 @@ class Plot extends React.Component {
   constructor(props) {
     super(props)
     this.config = { showTools: true, iconSize: 20, ...props }
-    this.state = { overlay: false, show: true, ...props}
+    this.state = { overlay: false, show: true, labeling: false, ...props}
     //
-    // if (this.state.spec) {
-    //   try {
-    //     console.log('current spec', JSON.stringify(this.state.spec));
-    //     promiseWithErrors(this.state.spec)
-    //     .then(v => {console.log("promise returned")})
-    //     .catch(v => {console.log("promise errored")});
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
+    if (this.state.spec) {
+      try {
+        const {vegaSpec, logger} = parseWithErrors(this.state.context)
+        let view = new vega.View(vega.parse(vegaSpec))
+        .logLevel(vega.Warn)
+        .initialize()
+        .renderer("SVG");
+        view.run()
+
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   compare(showContext) {
@@ -60,11 +69,11 @@ class Plot extends React.Component {
       <div className='chart-container'>
         {showTools===true?
           <div className='chart-header'>
-             <MdClose className='md-button' size={iconSize} onClick={() => this.remove()}/>
-             <MdCheck className='md-button' size={iconSize} onClick={() => this.accept()}/>
-             <MdEdit className='md-button' size={iconSize}/>
+             <MdClose className='md-button' size={iconSize} onClick={(e) => {this.remove()}}/>
+             <MdCheck className='md-button' size={iconSize} onClick={(e) => {this.accept()}}/>
+             <MdEdit className='md-button' size={iconSize} onClick={(e) => {this.openModal()}}/>
              <MdCompare className='md-button' size={iconSize}
-              onClick={this.toggle}
+              onClick={ (e) => {this.toggle()} }
              />
           </div>
         : null}
@@ -77,8 +86,16 @@ class Plot extends React.Component {
             <ContextOverlay show={this.state.overlay} onRef={ref => (this.contextOverlay = ref)} />
           </div>
         </div>
+        <LabelModal isOpen={this.state.labeling} onClose={() => this.closeModal()}/>
       </div>
     );
+  }
+
+  openModal() {
+    this.setState({labeling: true})
+  }
+  closeModal() {
+    this.setState({labeling: false})
   }
 
   render() {

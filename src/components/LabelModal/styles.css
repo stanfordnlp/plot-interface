@@ -1,0 +1,44 @@
+.Overlay  {
+  position          : fixed;
+  top               : 0;
+  left              : 0;
+  right             : 0;
+  bottom            : 0;
+  background-color   : rgba(75, 75, 75, 0.8);
+  z-index: 100;
+}
+
+/*.Overlay_after-open  {
+  position          : fixed;
+  top               : 0;
+  left              : 0;
+  right             : 0;
+  bottom            : 0;
+  background   : rgba(75, 75, 75, 0.6);
+}*/
+
+.LabelModal_after-open  {
+  position                   : absolute;
+  top                        : 400px;
+  left                       : 400px;
+  border                     : 1px solid #ccc;
+  overflow                   : auto;
+  WebkitOverflowScrolling    : touch;
+  borderRadius               : 4px;
+  outline                    : none;
+  padding                    : 20px;
+  background-color   : rgba(244, 244, 244, 1);
+  z-index                 : 3;
+}
+
+.control-bar {
+  align-items: right;
+}
+
+.header {
+  font-size: 1.5em
+}
+
+.label-box {
+  font-size: 1.5em
+}

@@ -45,7 +45,7 @@ class Build extends Component {
     return (
       splitPane?
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <SplitPane split="vertical" minSize={300} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
+        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor/>
           <div className="Candidates">
             {plots}

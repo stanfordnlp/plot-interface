@@ -11,14 +11,14 @@
 
 .overlay-container1 {
   position: relative;
-  z-index: 1;
+  /*z-index: 0;*/
   left: 0;
   top: 0;
 }
 
 .overlay-container2 {
   position: absolute;
-  z-index: 2;
+  /*z-index: 1;*/
   left: 0;
   top: 0;
 }
@@ -29,4 +29,10 @@
   width: inherit;
   font-size: 10px;
   color: green;
+}
+
+.chart-header {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
 }

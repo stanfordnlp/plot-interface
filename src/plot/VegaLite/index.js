@@ -16,7 +16,7 @@ export default class VegaLite extends React.Component {
   constructor(props) {
     super(props)
     const defaultProps = {
-      renderer: VegaConsts.RENDERERS.Canvas, //VegaConsts.RENDERERS.SVG | Canvas
+      renderer: VegaConsts.RENDERERS.SVG, //VegaConsts.RENDERERS.SVG | Canvas
       iconSize: 20
     }
 
@@ -47,8 +47,12 @@ export default class VegaLite extends React.Component {
       //.initialize()
       .initialize(this.refs.chart)
       .renderer(this.config.renderer);
-      view.run()
+      view.runAfter((v) => console.log('scenegraph2', this.refs.chart.innerHTML))
 
+
+      // const prevView = view.scenegraph().root;
+      // console.log('scenegraph2', prevView)
+      // console.log('scenegraph2svg', prevView._svg.outerHTML  )
       // view.toSVG().then(svg => {console.log('renderVega.toSVG %s', svg)})
       // this.setState({view: view});
       // console.log(view.scenegraph())
@@ -83,15 +87,16 @@ export default class VegaLite extends React.Component {
     // if (this.state.hasError) return (
     //   <div ref='chart'>{[...this.state.logger.errors, ...this.state.logger.warns]}</div>
     // )
-    const errorwarnings = this.state.logger.errors.concat(this.state.logger.warns);
+    const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={i}>{v}</li>)
+    const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={i}>{v}</li>)
     return (
       <div>
         <div className='chart'>
           <div ref='chart'>
           </div>
         </div>
-        <div className='display-errors'>
-        {this.state.hasError?  errorwarnings : "clean" }
+        <div >
+        {this.state.hasError?  <ul> {errors.concat(warns)} </ul> : "clean" }
         </div>
       </div>
     )
