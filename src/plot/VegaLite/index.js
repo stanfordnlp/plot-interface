@@ -96,7 +96,7 @@ export default class VegaLite extends React.Component {
           </div>
         </div>
         <div >
-        {this.state.hasError?  <ul> {errors.concat(warns)} </ul> : "clean" }
+        {this.state.hasError?  <ul> {errors.concat(warns)} </ul> : null }
         </div>
       </div>
     )

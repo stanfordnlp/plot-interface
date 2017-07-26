@@ -18,7 +18,7 @@ class LabelModal extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {isOpen: props.isOpen, onClose: props.onClose}
+    this.state = {isOpen: props.isOpen, onClose: props.onClose, x: 400, y: 300, ...props}
   }
 
   submit() {
@@ -49,8 +49,8 @@ class LabelModal extends Component {
           beforeClose: 'Overlay_before-close'
         }}
 
-        contentLabel="Example Modal"
-        style={{content : {left:'800px'}}}
+        contentLabel="label-modal"
+        style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
       <span className="header">What happened in this chart?</span>
       <input className="label-box"
