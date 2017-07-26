@@ -5,6 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/stanfordnlp/plot-interface.git"
   },
+  "homepage": "http://plot.sidaw.xyz",
   "bugs": {
     "url": "https://github.com/stanfordnlp/plot-interface/issues"
   },

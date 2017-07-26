@@ -28,6 +28,7 @@ class LabelModal extends Component {
 
   submit() {
     this.props.dispatch(Actions.label(this.state.inputValue, this.props.spec));
+    this.state.onClose()
   }
 
   handleKeyDown(e) {
@@ -40,7 +41,6 @@ class LabelModal extends Component {
 
   updateInputValue(evt) {
     this.setState({inputValue: evt.target.value})
-    this.state.onClose()
   }
 
   render() {
@@ -66,6 +66,7 @@ class LabelModal extends Component {
       <input className="label-box"
         type="text"
         value={this.state.inputvalue}
+        onKeyDown={e => this.handleKeyDown(e)}
         onChange={e => this.updateInputValue(e)}
         placeholder={'previous command: ' + this.props.query}
       />

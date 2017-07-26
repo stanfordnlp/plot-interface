@@ -40,15 +40,15 @@ export default class VegaLite extends React.Component {
     // if (this.state.hasError) return;
     this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
     let runtime;
-    let view;
     try {
       runtime = vega.parse(this.state.vegaSpec);
-      view = new vega.View(runtime)
+      let view = new vega.View(runtime)
       .logLevel(vega.Warn)
       //.initialize()
       .initialize(this.refs.chart)
       .renderer(this.config.renderer);
-      view.runAfter((v) => console.log('scenegraph2', this.refs.chart.innerHTML))
+      view.run();
+      // view.runAfter((v) => console.log('scenegraph2', this.refs.chart.innerHTML))
 
       // const prevView = view.scenegraph().root;
       // console.log('scenegraph2', prevView)

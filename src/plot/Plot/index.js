@@ -75,12 +75,8 @@ class Plot extends React.Component {
   }
 
   getLabelModal() {
-    if (!this.state.showTools) return null;
-
     if (this.state.labeling) {
-      const rect = ReactDOM.findDOMNode(this)
-      .getBoundingClientRect()
-      console.log(rect)
+      const rect = ReactDOM.findDOMNode(this).getBoundingClientRect()
       let yoffset = -150; // height of the modal
       if (rect.top < 150)
         yoffset = 150;

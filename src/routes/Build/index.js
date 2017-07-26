@@ -43,8 +43,8 @@ class Build extends Component {
     );
     let plotsPlus = [];
     plotsPlus.push(
-      <div className='current-plot'>
-        <Plot  spec={this.props.context} formula={''} showTools={false}/>
+      <div className='current-plot' key='current'>
+        <Plot spec={this.props.context} formula={''} showTools={false} />
       </div>
     );
     plotsPlus = plotsPlus.concat(plots);
