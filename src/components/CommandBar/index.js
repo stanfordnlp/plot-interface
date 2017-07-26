@@ -54,7 +54,7 @@ class CommandBar extends Component {
           onChange={(e) => this.handleChange(e)}
           onKeyDown={(e) => this.handleKeyDown(e)}
         />
-        <button className={classnames({ "active": ((status === STATUS.TRY || status === STATUS.ACCEPT) && query.length > 0) })} onClick={() => this.handleClick()}>
+        <button className={classnames({ "active": ((status === STATUS.TRY) && query.length > 0) })} onClick={() => this.handleClick()}>
           {status}
         </button>
       </div>

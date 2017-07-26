@@ -51,12 +51,31 @@ class Plot extends React.Component {
       <div className='chart-container'>
         {showTools===true?
           <div className='chart-header'>
-             <MdClose className='md-button' size={iconSize} onClick={(e) => {this.remove()}}/>
-             <MdCheck className='md-button' size={iconSize} onClick={(e) => {this.accept()}}/>
-             <MdEdit className='md-button' size={iconSize} onClick={(e) => {this.openModal()}}/>
-             <MdCompare className='md-button' size={iconSize}
-              onClick={ (e) => {this.toggle()} }
-             />
+             <span className='header-button'>
+                <MdClose className='md-button' size={iconSize} onClick={(e) => {this.remove()}}/>
+                <div className="header-button-tooltip">
+                    {'remove this'}
+                </div>
+             </span>
+             <span className='header-button'>
+               <MdCheck className='md-button' size={iconSize} onClick={(e) => {this.accept()}}/>
+                <div className="header-button-tooltip">
+                    {'use this'}
+                </div>
+             </span>
+             <span className='header-button'>
+               <MdEdit className='md-button' size={iconSize} onClick={(e) => {this.openModal()}}/>
+                <div className="header-button-tooltip">
+                    {'label this'}
+                </div>
+             </span>
+
+             <span className='header-button'>
+               <MdCompare className='md-button' size={iconSize} onClick={ (e) => {this.toggle()} } />
+                <div className="header-button-tooltip">
+                    {'compare with'}
+                </div>
+             </span>
           </div>
         : <div className='chart-header'>{this.props.header}</div> }
         <div className='canonical'>{this.props.formula}</div>

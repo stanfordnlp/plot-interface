@@ -16,6 +16,10 @@ class Build extends Component {
     dispatch: PropTypes.func,
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    this.props.dispatch(Actions.setStatus(STATUS.TRY))
+  }
+
   render() {
     const {responses } = this.props
     let plots = responses.map((r, ind) =>
@@ -31,7 +35,6 @@ class Build extends Component {
     );
     plotsPlus = plotsPlus.concat(plots);
     return (
-
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor/>

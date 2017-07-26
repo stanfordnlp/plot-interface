@@ -13,7 +13,7 @@ class LabelModal extends Component {
     query: PropTypes.string,
     spec: PropTypes.object,
     onClose: PropTypes.func,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
   }
 
   constructor(props) {
@@ -23,13 +23,19 @@ class LabelModal extends Component {
       onClose: props.onClose,
       x: 400, y: 300,
       inputValue: '',
+      headerText: 'what would you say to make this plot',
     ...props}
   }
+  // 
+  // componentDidMount(){
+  //   this.textInput.focus();
+  // }
 
   submit() {
-    if (this.state.inputvalue.length === 0) return
+    if (this.state.inputValue.length === 0) return
     this.props.dispatch(Actions.label(this.state.inputValue, this.props.spec));
-    this.state.onClose()
+    this.setState({headerText: `labeled this plot as ${this.state.inputValue}...` })
+    setTimeout(() => this.state.onClose(), 800);
   }
 
   handleKeyDown(e) {
@@ -63,13 +69,13 @@ class LabelModal extends Component {
         contentLabel="label-modal"
         style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
-      <span className="header">What happened in this chart?</span>
-      <input className="label-box"
+      <span className="header">{this.state.headerText}</span>
+      <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
         type="text"
         value={this.state.inputValue}
         onKeyDown={e => this.handleKeyDown(e)}
         onChange={e => this.updateInputValue(e)}
-        placeholder={'previous command: ' + this.props.query}
+        placeholder={'current command: ' + this.props.query}
       />
       <div className='control-bar'>
         <button className={classnames({active: true})} onClick={() => this.state.onClose()}>Close</button>
