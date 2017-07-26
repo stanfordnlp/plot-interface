@@ -20,7 +20,7 @@
 .LabelModal_after-open  {
   position                   : absolute;
   border                     : 1px solid #ccc;
-  overflow                   : auto;
+  overflow                   : hidden;
   WebkitOverflowScrolling    : touch;
   borderRadius               : 4px;
   outline                    : none;
@@ -31,8 +31,7 @@
 }
 
 .control-bar {
-  align-items: right;
-
+  float:right;
 }
 
 .header {
@@ -49,6 +48,7 @@ button {
   line-height: 1.6;
   height: 30px;
   width: auto;
+  margin-left: 5px;
   padding: 2px 6px;
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   font-weight: 900;

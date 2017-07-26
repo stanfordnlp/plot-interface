@@ -23,7 +23,6 @@ class Plot extends React.Component {
     super(props)
     this.config = { showTools: true, iconSize: 20, ...props }
     this.state = { overlay: false, show: true, labeling: false, ...props}
-
   }
 
   compare(showContext) {
@@ -59,8 +58,8 @@ class Plot extends React.Component {
               onClick={ (e) => {this.toggle()} }
              />
           </div>
-        : null}
-        <div className='canonical'>{this.state.formula}</div>
+        : <div className='chart-header'>{this.props.header}</div> }
+        <div className='canonical'>{this.props.formula}</div>
         <div className='all-overlays'>
           <div className='overlay-container1'>
             <VegaLite spec={this.props.spec} />

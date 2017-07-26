@@ -27,6 +27,7 @@ class LabelModal extends Component {
   }
 
   submit() {
+    if (this.state.inputvalue.length === 0) return
     this.props.dispatch(Actions.label(this.state.inputValue, this.props.spec));
     this.state.onClose()
   }
@@ -65,14 +66,14 @@ class LabelModal extends Component {
       <span className="header">What happened in this chart?</span>
       <input className="label-box"
         type="text"
-        value={this.state.inputvalue}
+        value={this.state.inputValue}
         onKeyDown={e => this.handleKeyDown(e)}
         onChange={e => this.updateInputValue(e)}
         placeholder={'previous command: ' + this.props.query}
       />
       <div className='control-bar'>
-        <button className={classnames({active: true})} onClick={() => this.submit()}>Submit</button>
         <button className={classnames({active: true})} onClick={() => this.state.onClose()}>Close</button>
+        <button className={classnames({active: this.state.inputValue.length>0})} onClick={() => this.submit()}>Submit</button>
       </div>
     </Modal>
     )

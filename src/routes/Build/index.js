@@ -16,24 +16,6 @@ class Build extends Component {
     dispatch: PropTypes.func,
   }
 
-  handleQuery(query) {
-    switch (this.props.status) {
-      case STATUS.TRY:
-        /* Try the query */
-        this.props.dispatch(Actions.tryQuery(query))
-        break
-      case STATUS.ACCEPT:
-        /* Otherwise, just accept normally */
-        break
-      case STATUS.LOADING:
-        this.props.dispatch(Actions.setStatus(STATUS.TRY))
-        break
-      default:
-        console.log("uh oh... unknown status!", this.props.status)
-        break
-    }
-  }
-
   render() {
     const {responses } = this.props
     let plots = responses.map((r, ind) =>
@@ -44,7 +26,7 @@ class Build extends Component {
     let plotsPlus = [];
     plotsPlus.push(
       <div className='current-plot' key='current'>
-        <Plot spec={this.props.context} formula={''} showTools={false} />
+        <Plot spec={this.props.context} formula={''} showTools={false} header='Current plot' />
       </div>
     );
     plotsPlus = plotsPlus.concat(plots);
