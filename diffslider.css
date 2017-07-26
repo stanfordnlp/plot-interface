@@ -1,0 +1,17 @@
+.diff-slider-wrap {
+  margin: .3em 0;
+  font-size: 80%;
+  color: #222;
+}
+.diff-slider-wrap input {
+  vertical-align: middle;
+  width: 50px;
+}
+.diff-slider-quickdiff {
+  margin-left: 8px;
+}
+.diff-slider-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
