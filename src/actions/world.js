@@ -120,7 +120,6 @@ const Actions = {
     }
   },
 
-
   clear: () => {
     return (dispatch, getState) => {
       dispatch({

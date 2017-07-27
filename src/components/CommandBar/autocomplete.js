@@ -24,11 +24,11 @@ const getSuggestionValue = suggestion => suggestion;
 const renderSuggestion = suggestion => suggestion;
 
 export default class Autocomplete extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      value: '',
-      suggestions: []
+      suggestions: [],
+      value: props.inputProps.value
     };
   }
 
@@ -51,11 +51,11 @@ export default class Autocomplete extends React.Component {
   };
 
   render() {
-    const { value, suggestions } = this.state;
+    const { suggestions } = this.state;
     const inputProps = {
      autoFocus: true,
+     value: this.props.inputProps.value,
      placeholder: "type here",
-     value: value,
      onChange: (event, { newValue, method }) => {this.onChange(event, { newValue, method }); this.props.inputProps.onChange(event)},
      onKeyDown: e => this.props.inputProps.onKeyDown(e)
    };

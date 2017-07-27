@@ -27,9 +27,11 @@ class Build extends Component {
     );
 
     let plotsPlus = [];
-    plotsPlus.push(
-      <FormulasList formulas={responses.map(r => r.formula)}/>
-    );
+
+    // plotsPlus.push(
+    //   <FormulasList formulas={responses.map(r => r.formula)}/>
+    // );
+
     plotsPlus.push(
       <div className='current-plot' key='current'>
         <Plot spec={this.props.context} formula={''} showTools={false} header='Current plot' />

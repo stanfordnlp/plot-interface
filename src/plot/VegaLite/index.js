@@ -48,7 +48,7 @@ export default class VegaLite extends React.Component {
       .initialize(this.refs.chart)
       .renderer(this.config.renderer);
       view.run();
-      // view.runAfter((v) => console.log('scenegraph2', this.refs.chart.innerHTML))
+      // console.log('innerHTML', this.refs.chart.children[0].toDataURL())
 
       // const prevView = view.scenegraph().root;
       // console.log('scenegraph2', prevView)

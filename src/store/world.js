@@ -7,6 +7,8 @@ const initialState = {
   responses: [],
   status: STATUS.TRY,
   query: "",
+
+  contextHash: '',
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -21,6 +23,8 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, status: action.status }
     case Constants.RESET_RESPONSES:
       return { ...state, status: STATUS.TRY, query: "", responses: [] }
+    case Constants.SET_CONTEXT_HASH:
+      return { ...state, contextHash: action.contextHash }
     case Constants.CLEAR:
       return initialState
     default:

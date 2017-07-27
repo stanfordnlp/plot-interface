@@ -52,7 +52,7 @@ class CommandBar extends Component {
     return (
       <div className="CommandBar">
         <Autocomplete
-        inputProps={{value: this.props.query, onChange:(e) => this.handleChange(e), onKeyDown: (e) => this.handleKeyDown(e)}}/>
+        inputProps={{value: query, onChange:(e) => this.handleChange(e), onKeyDown: (e) => this.handleKeyDown(e)}}/>
         <button className={classnames({ "active": ((status === STATUS.TRY) && query.length > 0) })} onClick={() => this.handleClick()}>
           {status}
         </button>

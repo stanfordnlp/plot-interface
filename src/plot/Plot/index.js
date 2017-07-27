@@ -81,11 +81,11 @@ class Plot extends React.Component {
         <div className='canonical'>{this.props.formula}</div>
         <div className='all-overlays'>
           <div className='overlay-container1'>
-            <VegaLite spec={this.props.spec} />
+            <VegaLite spec={this.props.spec}/>
           </div>
-          <div className='overlay-container2'>
+          {/* <div className='overlay-container2'>
             <ContextOverlay show={this.state.overlay} onRef={ref => (this.contextOverlay = ref)} />
-          </div>
+          </div> */}
         </div>
         {this.getLabelModal()}
       </div>
@@ -119,5 +119,6 @@ class Plot extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  contextHash: state.world.contextHash
 })
 export default connect(mapStateToProps)(Plot);

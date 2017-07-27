@@ -44,6 +44,7 @@ class InputPanel extends React.Component {
         <div>
           <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse</button>
           <button className={classnames({active: true})} onClick={() => this.clearAll()}>Reset</button>
+          <button className={classnames({active: true})} onClick={() => {}}>Remove errors</button>
         </div>
         <AceEditor
           mode="json"
