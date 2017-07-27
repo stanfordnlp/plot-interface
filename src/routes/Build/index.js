@@ -4,6 +4,8 @@ import { connect } from "react-redux"
 import Plot from "plot/Plot"
 import { STATUS } from "constants/strings"
 import Editor from "components/Editor"
+import FormulasList from "components/FormulasList"
+
 import "./styles.css"
 import SplitPane from 'react-split-pane';
 
@@ -23,12 +25,17 @@ class Build extends Component {
         <Plot spec={r.value} formula={r.formula} key={ind}/>
       )
     );
+
     let plotsPlus = [];
+    plotsPlus.push(
+      <FormulasList formulas={responses.map(r => r.formula)}/>
+    );
     plotsPlus.push(
       <div className='current-plot' key='current'>
         <Plot spec={this.props.context} formula={''} showTools={false} header='Current plot' />
       </div>
     );
+
     plotsPlus = plotsPlus.concat(plots);
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
