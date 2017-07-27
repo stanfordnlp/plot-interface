@@ -14,7 +14,7 @@ export default function reducer(state = initialState, action = {}) {
     case Constants.SET_QUERY:
       return { ...state, query: action.query }
     case Constants.TRY_QUERY:
-      return { ...state, responses: action.responses, status: STATUS.RENDERING }
+      return { ...state, responses: action.responses, status: STATUS.TRY }
     case Constants.ACCEPT:
       return { ...state, context: action.target, responses: [], status: STATUS.TRY, query: "" }
     case Constants.SET_STATUS:

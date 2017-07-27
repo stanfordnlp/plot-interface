@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import classnames from "classnames"
 import Actions from "actions/world"
 import { STATUS } from "constants/strings"
-
+import Autocomplete from './autocomplete.js'
 import "./styles.css"
 
 class CommandBar extends Component {
@@ -40,20 +40,19 @@ class CommandBar extends Component {
 
   handleChange(e) {
     const newValue = e.target.value
-    if (newValue !== this.props.query)
+    if (newValue !== this.props.query) {
       this.props.dispatch(Actions.setQuery(newValue))
+      this.props.dispatch(Actions.setStatus(STATUS.TRY))
+    }
   }
 
   render() {
     const { query, status } = this.props
+
     return (
       <div className="CommandBar">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => this.handleChange(e)}
-          onKeyDown={(e) => this.handleKeyDown(e)}
-        />
+        <Autocomplete
+        inputProps={{value: this.props.query, onChange:(e) => this.handleChange(e), onKeyDown: (e) => this.handleKeyDown(e)}}/>
         <button className={classnames({ "active": ((status === STATUS.TRY) && query.length > 0) })} onClick={() => this.handleClick()}>
           {status}
         </button>

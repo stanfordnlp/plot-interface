@@ -2,10 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
 import AceEditor from 'react-ace';
+import classnames from 'classnames'
 import 'brace/mode/json';
 import 'brace/theme/github';
-import {MdAutorenew} from 'react-icons/lib/md'
-
 import './index.css'
 
 function pretty(json) {
@@ -27,8 +26,11 @@ class InputPanel extends React.Component {
   }
 
   updateSpec() {
-    console.log(this.state.value);
     this.props.dispatch(Actions.updateSpec(this.state.value));
+  }
+
+  clearAll() {
+    this.props.dispatch(Actions.clear());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,7 +42,8 @@ class InputPanel extends React.Component {
     return (
       <div>
         <div>
-          <MdAutorenew className='md-button' size={30} onClick={() => this.updateSpec()}/>
+          <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse</button>
+          <button className={classnames({active: true})} onClick={() => this.clearAll()}>Clear</button>
         </div>
         <AceEditor
           mode="json"

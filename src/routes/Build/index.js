@@ -16,10 +16,6 @@ class Build extends Component {
     dispatch: PropTypes.func,
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    this.props.dispatch(Actions.setStatus(STATUS.TRY))
-  }
-
   render() {
     const {responses } = this.props
     let plots = responses.map((r, ind) =>

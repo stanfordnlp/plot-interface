@@ -26,7 +26,7 @@ class LabelModal extends Component {
       headerText: 'what would you say to make this plot',
     ...props}
   }
-  // 
+  //
   // componentDidMount(){
   //   this.textInput.focus();
   // }
@@ -65,7 +65,6 @@ class LabelModal extends Component {
           afterOpen: 'Overlay_after-open',
           beforeClose: 'Overlay_before-close'
         }}
-
         contentLabel="label-modal"
         style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
