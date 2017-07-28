@@ -31,6 +31,7 @@ class Toolbar extends React.Component {
       }
       this.props.onLabel(spec, '(no formula, you are labeling json..)')
     } catch (e) {
+      window.alert('error in spec (see console)')
       console.error('spec error', e);
     }
   }

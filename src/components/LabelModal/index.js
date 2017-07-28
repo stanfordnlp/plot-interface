@@ -91,7 +91,7 @@ class LabelModal extends Component {
            &nbsp;&nbsp;
           <button className={classnames({active: this.props.issuedQuery.trim().length>0})} onClick={() => this.submit(this.props.issuedQuery)}>(label as correct)</button>
       </div>
-      <div className="info">if "{this.props.issuedQuery}" is incorrect, type the correct command:</div>
+      <div className="info">if "{this.props.issuedQuery}" is wrong, or can be said better, or rephrased, type below and submit</div>
       <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
         type="text"
         value={this.state.inputValue}
@@ -101,7 +101,7 @@ class LabelModal extends Component {
       />
       <div className='control-bar'>
         <button className={classnames({active: this.state.inputValue.trim().length>0})} onClick={() => this.submit(this.state.inputValue)}>Submit (enter)</button>
-        <button className={classnames({active: true})} onClick={() => this.onClose()}>Close</button>
+        <button className={classnames({active: true})} onClick={() => this.onClose()}>Close (ESC)</button>
       </div>
     </Modal>
     )
