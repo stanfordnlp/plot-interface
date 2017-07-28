@@ -1,5 +1,10 @@
-import Constants from "constants/actions"
 import { getStore, setStore, genUid } from "helpers/util"
+
+export const Constants = {
+  SET_SESSION_ID: "SET_SESSION_ID",
+  CLEAR: "CLEAR",
+  SIGN_IN: "SIGN_IN",
+}
 
 const Actions = {
   setSessionId: () => {

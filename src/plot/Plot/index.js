@@ -2,27 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import Actions from "actions/world"
-import VegaLite from "../VegaLite"
-import ContextOverlay from "./context-overlay"
+import Actions from 'actions/world'
+import VegaLite from '../VegaLite'
+// import ContextOverlay from './context-overlay'
 import {MdClose, MdCheck, MdCompare, MdEdit} from 'react-icons/lib/md'
-import "./styles.css"
+import './styles.css'
 import LabelModal from 'components/LabelModal'
+import {vegaHash} from 'helpers/validate'
 
 class Plot extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
     formula: PropTypes.string,
-    context: PropTypes.object,
-    renderer: PropTypes.string,
     mode: PropTypes.string,
-    showTools: PropTypes.bool
+    showTools: PropTypes.bool,
+    showErrors: PropTypes.bool,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {showErrors} = nextProps
+    if (showErrors!==this.state.showErrors)
+      this.setState({showErrors: showErrors})
   }
 
   constructor(props) {
     super(props)
     this.config = { showTools: true, iconSize: 20, ...props }
-    this.state = { overlay: false, show: true, labeling: false, ...props}
+    this.state = { isClosed: false, hasError: false, labeling: false, ...props}
   }
 
   compare(showContext) {
@@ -36,7 +42,7 @@ class Plot extends React.Component {
 
   remove() {
     this.props.dispatch(Actions.reject(this.props.spec));
-    this.setState({show: false})
+    this.setState({isClosed: true})
   }
 
   // this is a horrible workaround to stop re-rendering of the whole component
@@ -77,19 +83,32 @@ class Plot extends React.Component {
                 </div>
              </span>
           </div>
-        : <div className='chart-header'>{this.props.header}</div> }
+        : <div className='chart-header'>{this.state.header}</div> }
         <div className='canonical'>{this.props.formula}</div>
-        <div className='all-overlays'>
-          <div className='overlay-container1'>
-            <VegaLite spec={this.props.spec}/>
-          </div>
-          {/* <div className='overlay-container2'>
-            <ContextOverlay show={this.state.overlay} onRef={ref => (this.contextOverlay = ref)} />
-          </div> */}
-        </div>
+        <VegaLite
+          spec={this.props.spec}
+          onError={() => {this.onError()}}
+          onDoneRendering={dataURL => this.onDoneRendering(dataURL)}
+        />
         {this.getLabelModal()}
       </div>
     );
+  }
+
+  onDoneRendering(chart) {
+    if (this.props.contextHash === vegaHash(chart)) {
+      this.setState({hasError: true, isEqual: true})
+    } else {
+      this.setState({isEqual: false})
+    }
+    // else {
+    //   this.setState({isEqual: 'not equal'})
+    //   console.log('not equal', this.props.contextHash, vegaHash(chart))
+    // }
+  }
+
+  onError() {
+    this.setState({hasError: true})
   }
 
   getLabelModal() {
@@ -110,7 +129,9 @@ class Plot extends React.Component {
   }
 
   render() {
-    if (!this.state.show)
+    if (!this.props.showErrors && this.state.hasError)
+      return null;
+    if (this.state.isClosed)
       return null;
     return (
       this.renderChart()
@@ -119,6 +140,7 @@ class Plot extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  contextHash: state.world.contextHash
+  contextHash: state.world.contextHash,
+  showErrors: state.world.showErrors,
 })
 export default connect(mapStateToProps)(Plot);

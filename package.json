@@ -26,6 +26,7 @@
     "react-ace-editor": "0.0.2",
     "react-autosuggest": "^9.3.1",
     "react-dom": "^15.3.2",
+    "react-faux-dom": "^4.0.3",
     "react-icons": "^2.2.5",
     "react-inlinesvg": "^0.5.4",
     "react-modal": "^2.2.2",

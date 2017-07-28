@@ -3,6 +3,7 @@ import {LocalLogger} from '../helpers/logger'
 import * as vl from 'vega-lite';
 import * as vega from 'vega';
 
+
 const ajv = new Ajv({
   jsonPointers: true,
   allErrors: false
@@ -49,14 +50,33 @@ export function parseWithErrors(spec) {
   return {vegaSpec: vegaSpec, logger: currLogger}
 }
 
-export function promiseWithErrors(spec) {
-  let retval = parseWithErrors(spec);
-  let view = new vega.View(retval.vegaSpec)
-  .logLevel(vega.Warn)
-  .initialize();
-  view.run();
+export function vegaLiteToHash(vegaLiteSpec) {
+  return vegaHash(vegaToDataURL(parseWithErrors(vegaLiteSpec).vegaSpec));
+}
 
-  return view.toSVG()
-    //.then(function(svg) { console.log('got svg'); return {'svg': svg, ...retval} })
-    //.catch(function(err) { console.error(err); return {'svg': null, ...retval}});
+export function vegaHash(chart) {
+  return chart
+}
+
+export function vegaToDataURL(vegaSpec) {
+  //let chart = document.createElement('div')
+  let chart = document.getElementById('fake-chart')
+
+  chart.style.width = '100px' // chart.getBoundingClientRect().width + 'px';
+  let runtime;
+  try {
+    runtime = vega.parse(vegaSpec);
+    let view = new vega.View(runtime)
+    .logLevel(vega.Warn)
+    //.initialize()
+    .initialize(chart)
+    .renderer('Canvas');
+    view.run();
+    chart.style.width = 'auto';
+    const dataurl = chart.children[0].toDataURL()
+    return dataurl
+  } catch (err) {
+    console.log('VegaLite.error %s', err.toString());
+  }
+  return null
 }

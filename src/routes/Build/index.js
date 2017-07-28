@@ -5,9 +5,10 @@ import Plot from "plot/Plot"
 import { STATUS } from "constants/strings"
 import Editor from "components/Editor"
 import FormulasList from "components/FormulasList"
+import VegaLite from "plot/VegaLite"
+import SplitPane from 'react-split-pane';
 
 import "./styles.css"
-import SplitPane from 'react-split-pane';
 
 class Build extends Component {
   static propTypes = {
@@ -20,21 +21,27 @@ class Build extends Component {
 
   render() {
     const {responses } = this.props
+    const seed = Math.random();
+    console.log('seed', seed)
     let plots = responses.map((r, ind) =>
       (
-        <Plot spec={r.value} formula={r.formula} key={ind}/>
+        <Plot spec={r.value} formula={r.formula} key={ind + '_' + seed}/>
       )
     );
 
     let plotsPlus = [];
-
-    // plotsPlus.push(
-    //   <FormulasList formulas={responses.map(r => r.formula)}/>
-    // );
+    if (this.props.showFormulas) {
+      plotsPlus.push(
+         <FormulasList formulas={responses.map(r => r.formula)}/>
+      );
+    }
 
     plotsPlus.push(
       <div className='current-plot' key='current'>
-        <Plot spec={this.props.context} formula={''} showTools={false} header='Current plot' />
+        <VegaLite
+          spec={this.props.context}
+          onError={() => {}}
+        />
       </div>
     );
 
@@ -48,7 +55,6 @@ class Build extends Component {
           </div>
         </SplitPane>
       </div>
-
       // <div className="Build">
       //   <div className="Build-world">
       //     {plotsPlus}
@@ -62,7 +68,8 @@ class Build extends Component {
 const mapStateToProps = (state) => ({
   status: state.world.status,
   responses: state.world.responses,
-  context: state.world.context
+  context: state.world.context,
+  showFormulas: state.world.showFormulas,
 })
 
 export default connect(mapStateToProps)(Build)

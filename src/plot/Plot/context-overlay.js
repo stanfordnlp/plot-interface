@@ -23,7 +23,6 @@ class ContextOverlay extends React.Component {
   }
 
   toggle() {
-    console.log("update toggle");
     this.setState({show: !this.state.show})
   }
 

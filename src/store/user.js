@@ -1,4 +1,4 @@
-import Constants from "constants/actions"
+import Constants from 'actions/constants'
 
 const initialState = {
   sessionId: "deadbeef",

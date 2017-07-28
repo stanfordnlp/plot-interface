@@ -1,11 +1,11 @@
-import Constants from "constants/actions"
 import { SEMPREquery } from "helpers/sempre"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
 import * as vl from 'vega-lite';
-import {validateVegaLite} from '../helpers/validate';
+import {validateVegaLite, vegaLiteToHash} from '../helpers/validate';
 import {LocalLogger} from '../helpers/logger'
+import Constants from 'actions/constants'
 
 const Actions = {
   setQuery: (query) => {
@@ -22,6 +22,42 @@ const Actions = {
       dispatch({
         type: Constants.SET_STATUS,
         status
+      })
+    }
+  },
+
+  setContextHash: (contextHash) => {
+    return (dispatch) => {
+      dispatch({
+        type: Constants.SET_CONTEXT_HASH,
+        contextHash: contextHash
+      })
+    }
+  },
+
+  setShowErrors: (showErrors) => {
+    return (dispatch) => {
+      dispatch({
+        type: Constants.SET_SHOW_ERRORS,
+        showErrors: showErrors
+      })
+    }
+  },
+
+  setEditorString: (editorString) => {
+    return (dispatch) => {
+      dispatch({
+        type: Constants.SET_EDITOR_STRING,
+        editorString: editorString
+      })
+    }
+  },
+
+  setShowFormulas: (showFormulas) => {
+    return (dispatch) => {
+      dispatch({
+        type: Constants.SET_SHOW_FORMULAS,
+        showFormulas: showFormulas
       })
     }
   },
@@ -63,6 +99,11 @@ const Actions = {
 
       const q = ['accept', {utterance: query, context:context, targetValue:spec}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
+
+      dispatch({
+        type: Constants.SET_CONTEXT_HASH,
+        contextHash: vegaLiteToHash(spec)
+      })
 
       dispatch({
         type: Constants.ACCEPT,
