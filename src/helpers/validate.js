@@ -80,3 +80,7 @@ export function vegaToDataURL(vegaSpec) {
   }
   return null
 }
+
+export function prettyStringify(obj) {
+ return JSON.stringify(obj, null, 4)
+}

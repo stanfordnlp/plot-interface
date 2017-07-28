@@ -1,14 +1,15 @@
 import Constants from 'actions/constants'
 import { STATUS } from "constants/strings"
 import specs from "constants/specs"
-import {vegaLiteToHash} from "helpers/validate"
+import {vegaLiteToHash, prettyStringify} from "helpers/validate"
 
 const initialState = {
   context: specs,
-  editorString: JSON.stringify(specs, null, 4),
+  editorString: prettyStringify(specs),
   responses: [],
   status: STATUS.TRY,
   query: "",
+  issuedQuery: "",
   contextHash: vegaLiteToHash(specs),
   showErrors: false,
   showFormulas: false
@@ -21,7 +22,7 @@ export default function reducer(state = initialState, action = {}) {
     case Constants.TRY_QUERY:
       return { ...state, responses: action.responses, status: STATUS.TRY }
     case Constants.ACCEPT:
-      return { ...state, context: action.target, responses: [], status: STATUS.TRY, query: "" }
+      return { ...state, context: action.target, responses: [], status: STATUS.TRY }
     case Constants.SET_STATUS:
       return { ...state, status: action.status }
     case Constants.RESET_RESPONSES:
@@ -34,6 +35,8 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, showFormulas: action.showFormulas }
     case Constants.SET_EDITOR_STRING:
       return { ...state, editorString: action.editorString }
+    case Constants.SET_ISSUED_QUERY:
+      return { ...state, issuedQuery: action.issuedQuery }
     case Constants.CLEAR:
       return initialState
     default:

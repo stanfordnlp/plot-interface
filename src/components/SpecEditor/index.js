@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
 import AceEditor from 'react-ace';
-import Toolbar from 'components/Toolbar'
 import 'brace/mode/json';
 import 'brace/theme/github';
 import './index.css'
@@ -14,18 +13,18 @@ class InputPanel extends React.Component {
 
   render() {
     return (
-      <div>
-        <Toolbar />
+      //<div className='full-height-wrapper'>
         <AceEditor
           mode="json"
           theme="github"
+          height='100%'
+          width='100%'
           value={this.props.editorString}
           name="spec-editor"
           onChange={v => this.onChange(v)}
-          style={{ width: '100%' }}
           editorProps={{$blockScrolling: true}}
         />
-      </div>
+      //</div>
     )
   }
 }

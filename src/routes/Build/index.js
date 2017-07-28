@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import Actions from "actions/world"
 import { connect } from "react-redux"
 import Plot from "plot/Plot"
-import { STATUS } from "constants/strings"
 import Editor from "components/Editor"
 import FormulasList from "components/FormulasList"
 import VegaLite from "plot/VegaLite"
 import SplitPane from 'react-split-pane';
+import Toolbar from 'components/Toolbar'
+import LabelModal from 'components/LabelModal'
 
 import "./styles.css"
 
@@ -19,13 +19,18 @@ class Build extends Component {
     dispatch: PropTypes.func,
   }
 
+
+  onLabel = (spec, formula) => {
+    this.labelModal.onLabel(spec, formula)
+  };
+
   render() {
     const {responses } = this.props
     const seed = Math.random();
     console.log('seed', seed)
     let plots = responses.map((r, ind) =>
       (
-        <Plot spec={r.value} formula={r.formula} key={ind + '_' + seed}/>
+        <Plot spec={r.value} formula={r.formula} key={ind + '_' + seed} onLabel={this.onLabel}/>
       )
     );
 
@@ -37,7 +42,8 @@ class Build extends Component {
     }
 
     plotsPlus.push(
-      <div className='current-plot' key='current'>
+      <div className='chart-container' key='current'>
+        <div className='chart-header'><b>Original chart</b></div>
         <VegaLite
           spec={this.props.context}
           onError={() => {}}
@@ -48,12 +54,15 @@ class Build extends Component {
     plotsPlus = plotsPlus.concat(plots);
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
+        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor/>
           <div className="Candidates">
             {plotsPlus}
+
           </div>
         </SplitPane>
+        <LabelModal onRef={ref => (this.labelModal = ref)}/>
+        <Toolbar />
       </div>
       // <div className="Build">
       //   <div className="Build-world">
@@ -64,6 +73,8 @@ class Build extends Component {
     );
   }
 }
+
+
 
 const mapStateToProps = (state) => ({
   status: state.world.status,

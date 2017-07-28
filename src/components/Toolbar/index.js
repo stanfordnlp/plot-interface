@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
 import classnames from 'classnames'
-
+import './index.css'
 class Toolbar extends React.Component {
   clearAll() {
     this.props.dispatch(Actions.clear());
@@ -22,7 +22,7 @@ class Toolbar extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='Toolbar'>
         <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse</button>
         <button className={classnames({active: true})} onClick={() => this.clearAll()}>Reset</button>
         <button className={classnames({active: true})} onClick={() => this.toggleShowErrors()}>

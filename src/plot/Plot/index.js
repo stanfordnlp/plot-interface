@@ -7,7 +7,6 @@ import VegaLite from '../VegaLite'
 // import ContextOverlay from './context-overlay'
 import {MdClose, MdCheck, MdCompare, MdEdit} from 'react-icons/lib/md'
 import './styles.css'
-import LabelModal from 'components/LabelModal'
 import {vegaHash} from 'helpers/validate'
 
 class Plot extends React.Component {
@@ -17,6 +16,7 @@ class Plot extends React.Component {
     mode: PropTypes.string,
     showTools: PropTypes.bool,
     showErrors: PropTypes.bool,
+    onLabel: PropTypes.func,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -28,16 +28,11 @@ class Plot extends React.Component {
   constructor(props) {
     super(props)
     this.config = { showTools: true, iconSize: 20, ...props }
-    this.state = { isClosed: false, hasError: false, labeling: false, ...props}
+    this.state = { isClosed: false, hasError: false, isEqual: false, labeling: false, ...props}
   }
-
-  compare(showContext) {
-    this.setState({overlay: showContext})
-  }
-  //
 
   accept() {
-    this.props.dispatch(Actions.accept(this.props.spec));
+    this.props.dispatch(Actions.accept(this.props.spec, this.props.formula));
   }
 
   remove() {
@@ -49,6 +44,26 @@ class Plot extends React.Component {
   toggle = () => {
     this.contextOverlay.toggle() // do stuff
   };
+
+  openModal() {
+    this.setState({labeling: true})
+  }
+  closeModal() {
+    this.setState({labeling: false})
+  }
+
+  onDoneRendering(chart) {
+    if (this.props.contextHash === vegaHash(chart)) {
+      this.setState({hasError: true, isEqual: true})
+    } else {
+      this.setState({isEqual: false})
+      //console.log('not equal', this.props.contextHash, vegaHash(chart))
+    }
+  }
+
+  onError() {
+    this.setState({hasError: true})
+  }
 
   renderChart() {
     const {iconSize, showTools} = this.config;
@@ -69,17 +84,11 @@ class Plot extends React.Component {
                     {'use this'}
                 </div>
              </span>
-             <span className='header-button'>
-               <MdEdit className='md-button' size={iconSize} onClick={(e) => {this.openModal()}}/>
-                <div className="header-button-tooltip">
-                    {'label this'}
-                </div>
-             </span>
 
              <span className='header-button'>
-               <MdCompare className='md-button' size={iconSize} onClick={ (e) => {this.toggle()} } />
+               <MdCompare className='md-button' size={iconSize} onClick={(e) => {this.props.onLabel(this.state.spec, this.state.formula)}} />
                 <div className="header-button-tooltip">
-                    {'compare with'}
+                    {'compare and label'}
                 </div>
              </span>
           </div>
@@ -90,42 +99,10 @@ class Plot extends React.Component {
           onError={() => {this.onError()}}
           onDoneRendering={dataURL => this.onDoneRendering(dataURL)}
         />
-        {this.getLabelModal()}
+        {this.state.isEqual? <span>equal to original</span> : null}
+        {/* <LabelModal isOpen={this.state.labeling} spec={this.state.spec} onClose={() => this.closeModal()}/> */}
       </div>
     );
-  }
-
-  onDoneRendering(chart) {
-    if (this.props.contextHash === vegaHash(chart)) {
-      this.setState({hasError: true, isEqual: true})
-    } else {
-      this.setState({isEqual: false})
-    }
-    // else {
-    //   this.setState({isEqual: 'not equal'})
-    //   console.log('not equal', this.props.contextHash, vegaHash(chart))
-    // }
-  }
-
-  onError() {
-    this.setState({hasError: true})
-  }
-
-  getLabelModal() {
-    if (this.state.labeling) {
-      const rect = ReactDOM.findDOMNode(this).getBoundingClientRect()
-      let yoffset = -150; // height of the modal
-      if (rect.top < 150)
-        yoffset = 150;
-      return <LabelModal isOpen={true} spec={this.state.spec} x={rect.left} y={rect.top+yoffset} onClose={() => this.closeModal()}/>
-    } else return null;
-  }
-
-  openModal() {
-    this.setState({labeling: true})
-  }
-  closeModal() {
-    this.setState({labeling: false})
   }
 
   render() {
