@@ -61,13 +61,13 @@ export function vegaHash(chart) {
 export function vegaToDataURL(vegaSpec) {
   //let chart = document.createElement('div')
   let chart = document.getElementById('fake-chart')
-
+  console.log('called vegaToDataURL')
   chart.style.width = '100px' // chart.getBoundingClientRect().width + 'px';
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
     let view = new vega.View(runtime)
-    .logLevel(vega.Warn)
+    .logLevel(vega.Error)
     //.initialize()
     .initialize(chart)
     .renderer('Canvas');

@@ -1,7 +1,7 @@
 import Constants from 'actions/constants'
 import { STATUS } from "constants/strings"
 import specs from "constants/specs"
-import {vegaLiteToHash, prettyStringify} from "helpers/validate"
+import {vegaLiteToHash, prettyStringify} from "helpers/vega-utils"
 
 const initialState = {
   context: specs,
@@ -20,13 +20,11 @@ export default function reducer(state = initialState, action = {}) {
     case Constants.SET_QUERY:
       return { ...state, query: action.query }
     case Constants.TRY_QUERY:
-      return { ...state, responses: action.responses, status: STATUS.TRY }
+      return { ...state, responses: action.responses}
     case Constants.ACCEPT:
       return { ...state, context: action.target, responses: [], status: STATUS.TRY }
     case Constants.SET_STATUS:
       return { ...state, status: action.status }
-    case Constants.RESET_RESPONSES:
-      return { ...state, status: STATUS.TRY, query: "", responses: [] }
     case Constants.SET_CONTEXT_HASH:
       return { ...state, contextHash: action.contextHash }
     case Constants.SET_SHOW_ERRORS:

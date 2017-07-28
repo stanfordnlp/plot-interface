@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
 import classnames from 'classnames'
+import {parseWithErrors} from 'helpers/vega-utils'
 import './index.css'
 class Toolbar extends React.Component {
   clearAll() {
@@ -20,10 +21,26 @@ class Toolbar extends React.Component {
     this.props.dispatch(Actions.updateSpec());
   }
 
+  labelJSON() {
+    try {
+      const spec = JSON.parse(this.props.editorString)
+      const {logger} = parseWithErrors(spec)
+      if (logger.warns.length > 0 || logger.errors.length > 0) {
+        window.alert('current spec has errors, cannot be labeled')
+        console.log('validation errors', logger)
+      }
+      this.props.onLabel(spec, '(no formula, you are labeling json..)')
+    } catch (e) {
+      console.error('spec error', e);
+    }
+  }
+
   render() {
     return (
       <div className='Toolbar'>
-        <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse</button>
+        <button># candidates: {this.props.numCandidates}</button>
+        <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse JSON Spec</button>
+        <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button>
         <button className={classnames({active: true})} onClick={() => this.clearAll()}>Reset</button>
         <button className={classnames({active: true})} onClick={() => this.toggleShowErrors()}>
           {this.props.showErrors? 'hide errors' : 'show errors'}
@@ -39,7 +56,9 @@ class Toolbar extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     showErrors: state.world.showErrors,
-    showFormulas: state.world.showFormulas
+    showFormulas: state.world.showFormulas,
+    numCandidates: state.world.responses.length,
+    editorString: state.world.editorString,
   };
 }
 export default connect(mapStateToProps)(Toolbar);

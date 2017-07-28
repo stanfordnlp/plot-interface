@@ -7,18 +7,22 @@ import VegaLite from "plot/VegaLite"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
+import Actions from 'actions/world'
 
 import "./styles.css"
 
 class Build extends Component {
   static propTypes = {
     /* Injected by Redux */
-    status: PropTypes.string,
     context: PropTypes.object,
     responses: PropTypes.array,
     dispatch: PropTypes.func,
   }
 
+  // shouldComponentUpdate() {
+  //   this.props.dispatch(Actions.setStatus('rendering'))
+  //   return true
+  // }
 
   onLabel = (spec, formula) => {
     this.labelModal.onLabel(spec, formula)
@@ -27,7 +31,7 @@ class Build extends Component {
   render() {
     const {responses } = this.props
     const seed = Math.random();
-    console.log('seed', seed)
+    console.log('seed', seed);
     let plots = responses.map((r, ind) =>
       (
         <Plot spec={r.value} formula={r.formula} key={ind + '_' + seed} onLabel={this.onLabel}/>
@@ -62,7 +66,7 @@ class Build extends Component {
           </div>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
-        <Toolbar />
+        <Toolbar onLabel={this.onLabel}/>
       </div>
       // <div className="Build">
       //   <div className="Build-world">
@@ -75,9 +79,7 @@ class Build extends Component {
 }
 
 
-
 const mapStateToProps = (state) => ({
-  status: state.world.status,
   responses: state.world.responses,
   context: state.world.context,
   showFormulas: state.world.showFormulas,

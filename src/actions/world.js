@@ -2,9 +2,7 @@ import { SEMPREquery } from "helpers/sempre"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import * as vl from 'vega-lite';
-import {validateVegaLite, vegaLiteToHash, prettyStringify} from '../helpers/validate';
-import {LocalLogger} from '../helpers/logger'
+import {vegaLiteToHash, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 
 const Actions = {
@@ -76,17 +74,28 @@ const Actions = {
       .then((response) => {
         const candidates = response.candidates
         /* Remove no-ops */
-        const responses = candidates.filter((a) => {
-          return a.value!==context
-        })
-        dispatch({
-          type: Constants.TRY_QUERY,
-          responses: responses
-        })
-
+        // const responses = candidates.filter((a) => {
+        //   return a.value!==context
+        // })
+        console.log('server returned results')
         dispatch({
           type: Constants.SET_ISSUED_QUERY,
           issuedQuery: query
+        })
+
+        // dispatch({
+        //   type: Constants.SET_STATUS,
+        //   status: 'Rendering'
+        // })
+
+        dispatch({
+          type: Constants.TRY_QUERY,
+          responses: candidates
+        })
+
+        dispatch({
+          type: Constants.SET_STATUS,
+          status: STATUS.TRY
         })
 
         return true
@@ -104,7 +113,7 @@ const Actions = {
       const { sessionId } = getState().user
       const { issuedQuery, context } = getState().world
 
-      const q = ['accept', {utterance: issuedQuery, formula:formula, type: "accept", context:context, targetValue:spec}]
+      const q = ['accept', {utterance: issuedQuery, tagetFormula:formula, type: "accept", context:context, targetValue:spec}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
@@ -130,7 +139,6 @@ const Actions = {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { issuedQuery, context } = getState().world
-
       const q = ['accept', {utterance: utterance, targetFormula: formula, type: "label", issuedQuery: issuedQuery, context: context, targetValue: spec }]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
       return true
@@ -152,14 +160,16 @@ const Actions = {
   updateSpec: () => {
     return (dispatch, getState) => {
       const { editorString } = getState().world
-      const currLogger = new LocalLogger();
       let spec = {};
       try {
-        spec = JSON.parse(editorString);
-        validateVegaLite(spec, currLogger);
-        vl.compile(spec, currLogger);
+        spec = JSON.parse(editorString)
+        const {logger} = parseWithErrors(spec)
+        if (logger.warns.length > 0 || logger.errors.length > 0) {
+          window.alert('current spec has errors and cannot be used')
+          console.log('validation errors', logger)
+        }
       } catch (e) {
-        console.warn('json error? ', e);
+        console.error('spec error', e);
       }
       dispatch({
         type: Constants.ACCEPT,

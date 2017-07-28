@@ -1,13 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import VegaLite from '../VegaLite'
 // import ContextOverlay from './context-overlay'
-import {MdClose, MdCheck, MdCompare, MdEdit} from 'react-icons/lib/md'
+import {MdClose, MdCheck, MdCompare} from 'react-icons/lib/md'
 import './styles.css'
-import {vegaHash} from 'helpers/validate'
+import {vegaHash} from 'helpers/vega-utils'
 
 class Plot extends React.Component {
   static propTypes = {

@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import * as vega from 'vega';
 import * as VegaConsts from '../../constants/vega'
-import {parseWithErrors, vegaToDataURL} from 'helpers/validate'
+import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
 import "./styles.css"
 
 // renders vegalite plot and display errors
@@ -82,7 +80,8 @@ class VegaLite extends React.Component {
   // }
 
   test(e) {
-    console.log(this.refs.chart)
+    console.log('state', this.state)
+    console.log('chart', this.refs.chart)
   }
 
   render() {

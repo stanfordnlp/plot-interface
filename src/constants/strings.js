@@ -10,5 +10,5 @@ export const DEFAULT_SESSIONID = "deadbeef"
 export const STATUS = {
   TRY: "TRY",
   RENDERING: "RENDERING",
-  LOADING: "LOADING"
+  LOADING: "LOADING",
 }
