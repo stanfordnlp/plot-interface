@@ -5,6 +5,8 @@
 }
 .chart-img {
   padding: 0px;
+  max-width: 400px;
+  max-height: 400px;
   display: inline-block;
 }
 .chart .vega-bindings {

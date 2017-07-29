@@ -6,7 +6,6 @@ import VegaLite from '../VegaLite'
 // import ContextOverlay from './context-overlay'
 import {MdClose, MdCheck, MdCompare} from 'react-icons/lib/md'
 import './styles.css'
-import {vegaHash} from 'helpers/vega-utils'
 
 class Plot extends React.Component {
   static propTypes = {
@@ -51,12 +50,12 @@ class Plot extends React.Component {
     this.setState({labeling: false})
   }
 
-  onDoneRendering(chart) {
-    if (this.props.contextHash === vegaHash(chart)) {
+  onDoneRendering(dataURL) {
+    if (this.props.contextHash === dataURL) {
       this.setState({hasError: true, isEqual: true})
     } else {
       this.setState({isEqual: false})
-      //console.log('not equal', this.props.contextHash, vegaHash(chart))
+      // console.log('not equal', this.props.contextHash, dataURL)
     }
   }
 

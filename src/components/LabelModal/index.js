@@ -77,11 +77,11 @@ class LabelModal extends Component {
       <div className="header">{this.state.headerText}</div>
       <div className="before-after">
         <div className="before">
-          <div className="label">before:</div>
+          <div className="label">"before"</div>
           <VegaLite spec={this.props.context}/>
         </div>
         <div className="before">
-          <div className="label">after:</div>
+          <div className="label">"after"</div>
           <VegaLite spec={this.state.spec}/>
         </div>
       </div>
@@ -91,7 +91,7 @@ class LabelModal extends Component {
            &nbsp;&nbsp;
           <button className={classnames({active: this.props.issuedQuery.trim().length>0})} onClick={() => this.submit(this.props.issuedQuery)}>(label as correct)</button>
       </div>
-      <div className="info">if "{this.props.issuedQuery}" is wrong, or can be said better, or rephrased, type below and submit</div>
+      <div className="info">if "{this.props.issuedQuery}" is wrong, can be said better, or rephrased, please type below and submit</div>
       <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
         type="text"
         value={this.state.inputValue}

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux"
-import Actions from "actions/user"
+import UserActions from "actions/user"
+import Actions from "actions/world"
+
 import Header from "components/Header"
 
 import "normalize.css"
@@ -14,7 +16,8 @@ import "./styles.css"
 class Layout extends Component {
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
-    this.props.dispatch(Actions.setSessionId())
+    this.props.dispatch(Actions.updateContextHash())
+    this.props.dispatch(UserActions.setSessionId())
   }
 
   render() {

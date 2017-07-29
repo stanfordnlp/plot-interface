@@ -2,7 +2,7 @@ import { SEMPREquery } from "helpers/sempre"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {vegaLiteToHash, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
+import {vegaLiteToPromise, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 
 const Actions = {
@@ -20,15 +20,6 @@ const Actions = {
       dispatch({
         type: Constants.SET_STATUS,
         status
-      })
-    }
-  },
-
-  setContextHash: (contextHash) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.SET_CONTEXT_HASH,
-        contextHash: contextHash
       })
     }
   },
@@ -116,10 +107,12 @@ const Actions = {
       const q = ['accept', {utterance: issuedQuery, tagetFormula:formula, type: "accept", context:context, targetValue:spec}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
+
+      vegaLiteToPromise(spec).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
-        contextHash: vegaLiteToHash(spec)
-      })
+        contextHash: dataURL
+      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
 
       dispatch({
         type: Constants.SET_EDITOR_STRING,
@@ -175,10 +168,23 @@ const Actions = {
         type: Constants.ACCEPT,
         target: spec
       })
+
+      vegaLiteToPromise(spec).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
-        contextHash: vegaLiteToHash(spec)
-      })
+        contextHash: dataURL
+      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
+    }
+  },
+
+  updateContextHash: () => {
+    return (dispatch, getState) => {
+      const { context } = getState().world
+      vegaLiteToPromise(context).then(dataURL =>
+      dispatch({
+        type: Constants.SET_CONTEXT_HASH,
+        contextHash: dataURL
+      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
     }
   },
 
@@ -187,6 +193,12 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
+      const { context } = getState().world
+      vegaLiteToPromise(context).then(dataURL =>
+      dispatch({
+        type: Constants.SET_CONTEXT_HASH,
+        contextHash: dataURL
+      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
       persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
     }
   }

@@ -5,7 +5,7 @@
   right             : 0;
   bottom            : 0;
   background-color   : rgba(75, 75, 75, 0.4);
-  z-index: 100;
+  z-index: 1001;
 }
 
 .LabelModal {
@@ -18,7 +18,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -300px;
+  margin-top: -400px;
   margin-left: -400px;
   width: 800px;
   height: 700px;

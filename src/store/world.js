@@ -1,7 +1,7 @@
 import Constants from 'actions/constants'
 import { STATUS } from "constants/strings"
 import specs from "constants/specs"
-import {vegaLiteToHash, prettyStringify} from "helpers/vega-utils"
+import {prettyStringify} from "helpers/vega-utils"
 
 const initialState = {
   context: specs,
@@ -10,7 +10,7 @@ const initialState = {
   status: STATUS.TRY,
   query: "",
   issuedQuery: "",
-  contextHash: vegaLiteToHash(specs),
+  contextHash: "value gets overriden on Layout init",
   showErrors: false,
   showFormulas: false
 }

@@ -7,7 +7,6 @@ import VegaLite from "plot/VegaLite"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
-import Actions from 'actions/world'
 
 import "./styles.css"
 
@@ -62,7 +61,6 @@ class Build extends Component {
           <Editor/>
           <div className="Candidates">
             {plotsPlus}
-
           </div>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>

@@ -50,7 +50,7 @@ export function parseWithErrors(spec) {
   return {vegaSpec: vegaSpec, logger: currLogger}
 }
 
-export function vegaLiteToHash(vegaLiteSpec) {
+export function vegaLiteToPromise(vegaLiteSpec) {
   return vegaHash(vegaToDataURL(parseWithErrors(vegaLiteSpec).vegaSpec));
 }
 
@@ -58,23 +58,48 @@ export function vegaHash(chart) {
   return chart
 }
 
-export function vegaToDataURL(vegaSpec) {
-  //let chart = document.createElement('div')
-  let chart = document.getElementById('fake-chart')
+export function vegaToDataURL(vegaSpec, element) {
   console.log('called vegaToDataURL')
-  chart.style.width = '100px' // chart.getBoundingClientRect().width + 'px';
+  let runtime;
+  try {
+    runtime = vega.parse(vegaSpec);
+    let dataURL = new vega.View(runtime)
+    .logLevel(vega.Error)
+    .initialize()
+    .toImageURL('png'); // should be one of svg, png etc. for svg, need to deference blobs...
+    return dataURL
+  } catch (err) {
+    console.log('VegaLite.error %s', err.toString());
+  }
+  return null
+}
+
+export function vegaToDataURLSync(vegaSpec, element) {
+  const Modes = {Svg: 'SVG', Canvas: 'Canvas'};
+  const mode = Modes.Svg;
+  //let chart = document.createElement('div')
+
+  let chart = element !== undefined? element : document.getElementById('fake-chart');
+  console.log('called vegaToDataURL')
+  chart.style.width = '200px' // chart.getBoundingClientRect().width + 'px';
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
     let view = new vega.View(runtime)
     .logLevel(vega.Error)
-    //.initialize()
     .initialize(chart)
-    .renderer('Canvas');
+    .renderer(mode);
     view.run();
+
     chart.style.width = 'auto';
-    const dataurl = chart.children[0].toDataURL()
-    return dataurl
+
+    let dataURL
+    if (mode === Modes.Svg)
+      dataURL = 'data:image/svg+xml;utf8,' + (new XMLSerializer().serializeToString(chart.children[0]))
+    else if (mode === Modes.Canvas)
+      dataURL = chart.children[0].toDataURL()
+
+    return dataURL
   } catch (err) {
     console.log('VegaLite.error %s', err.toString());
   }

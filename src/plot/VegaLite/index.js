@@ -1,42 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as VegaConsts from '../../constants/vega'
+import hash from 'string-hash'
 import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
 import "./styles.css"
+
 
 // renders vegalite plot and display errors
 class VegaLite extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
-    renderer: PropTypes.string,
     onDoneRendering: PropTypes.func,
     onError:  PropTypes.func,
   }
 
   constructor(props) {
     super(props)
-    const defaultProps = {
-      renderer: VegaConsts.RENDERERS.Canvas, //VegaConsts.RENDERERS.SVG | Canvas
-    }
-
-    this.config = {...defaultProps, ...this.props }
-    if (props.spec === undefined) {
-      console.log('VegaLite undefined sepc');
-    }
     const {vegaSpec, logger} = parseWithErrors(props.spec)
     const hasError = logger.warns.length > 0 || logger.errors.length > 0
-    this.state = {vegaSpec: vegaSpec, dataURL: vegaToDataURL(vegaSpec), logger: logger, hasError: hasError}
+    this.state = {vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null}
   }
 
   componentWillReceiveProps(nextProps) {
-    const {vegaSpec, logger} = parseWithErrors(nextProps.spec)
-    const hasError = logger.warns.length > 0 || logger.errors.length > 0
-    this.setState({vegaSpec: vegaSpec, dataURL: vegaToDataURL(vegaSpec), logger: logger, hasError: hasError})
+    if (this.props.spec !== nextProps.spec) {
+      const {vegaSpec, logger} = parseWithErrors(nextProps.spec)
+      const hasError = logger.warns.length > 0 || logger.errors.length > 0
+      this.setState({vegaSpec: vegaSpec, logger: logger, hasError: hasError})
+    }
   }
 
   componentDidMount() {
-    if (this.state.hasError && this.props.onError!==undefined) this.props.onError()
-    if (this.props.onDoneRendering !== undefined) this.props.onDoneRendering(this.state.dataURL)
+    this.updateVega(this.props.spec)
+  }
+
+  componentDidUpdate(prevProps, prevStates) {
+    if (this.props.spec !== prevProps.spec)
+      this.updateVega(this.props.spec)
+  }
+
+  updateVega(vlSpec) {
+    vegaToDataURL(this.state.vegaSpec).then(dataURL => {
+      this.setState({dataURL: dataURL})
+      if (this.state.hasError && this.props.onError!==undefined)
+        this.props.onError()
+      if (this.props.onDoneRendering !== undefined)
+        this.props.onDoneRendering(dataURL)
+    }).catch(err => {console.log('updateVega error', err);  this.setState({dataURL: undefined}) });
   }
 
   // renderVega(state) {
@@ -70,28 +78,29 @@ class VegaLite extends React.Component {
   //   // window.VEGA_DEBUG.view = view;
   // }
   //
-  // componentDidMount() {
-  //   this.renderVega(this.state);
-  //
-  // }
-  //
-  // componentDidUpdate() {
-  //   this.renderVega(this.state);
-  // }
 
   test(e) {
-    console.log('state', this.state)
-    console.log('chart', this.refs.chart)
+    console.log('hash', hash(this.state.dataURL))
+    console.log('info', {dataurl: this.state.dataURL})
   }
 
   render() {
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
+
+    let inner
+    if (this.state.dataURL === undefined)
+      inner = 'error rendering...'
+    else if (this.state.dataURL === null)
+      inner = 'rendering...'
+    else
+      inner = <img className='chart-img' alt='error' src={this.state.dataURL}/>
+
     return (
       <div>
         <div className='chart'>
           <div ref='chart' onClick={e => {this.test(e)}}>
-            <img className='chart-img' alt='error?' src={this.state.dataURL}/>
+             {inner}
           </div>
         </div>
         <div >

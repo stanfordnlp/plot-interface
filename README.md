@@ -34,6 +34,6 @@ AJAX usually does not work with the `file://` protocol, so you need to start a s
 
 * start dev server `yarn run start:local` to use a local server and `yarn run start` to use the public server
 
-* build `yarn run build` then `yarn run deplay` to push this to github pages
+* build `yarn run build` then `yarn run deploy` to push this to github pages
 
 * since our server do not accept https requests, this does not work on github.io
