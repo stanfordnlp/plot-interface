@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import hash from 'string-hash'
-import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
+import {parseWithErrors, vegaToDataURL, vegaLiteToDataURL} from 'helpers/vega-utils'
 import "./styles.css"
 
 
@@ -24,7 +24,7 @@ class VegaLite extends React.Component {
     if (this.props.spec !== nextProps.spec) {
       const {vegaSpec, logger} = parseWithErrors(nextProps.spec)
       const hasError = logger.warns.length > 0 || logger.errors.length > 0
-      this.setState({vegaSpec: vegaSpec, logger: logger, hasError: hasError})
+      this.setState({vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null})
     }
   }
 
@@ -37,14 +37,20 @@ class VegaLite extends React.Component {
       this.updateVega(this.props.spec)
   }
 
+  // not too sure why this isnt async
   updateVega(vlSpec) {
-    vegaToDataURL(this.state.vegaSpec).then(dataURL => {
+    setTimeout(() => vegaToDataURL(this.state.vegaSpec).then(dataURL => {
       this.setState({dataURL: dataURL})
-      if (this.state.hasError && this.props.onError!==undefined)
+      // this.refs.chartImg.src = dataURL;
+      if (this.props.onError!==undefined && this.state.hasError)
         this.props.onError()
       if (this.props.onDoneRendering !== undefined)
         this.props.onDoneRendering(dataURL)
-    }).catch(err => {console.log('updateVega error', err);  this.setState({dataURL: undefined}) });
+      console.log('')
+    }).catch(err => {
+        this.setState({dataURL: 'data:text/plain,error'})
+        //this.refs.chartImg.src='data:text/plain,error';
+    }), 0);
   }
 
   // renderVega(state) {
@@ -88,19 +94,11 @@ class VegaLite extends React.Component {
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
 
-    let inner
-    if (this.state.dataURL === undefined)
-      inner = 'error rendering...'
-    else if (this.state.dataURL === null)
-      inner = 'rendering...'
-    else
-      inner = <img className='chart-img' alt='error' src={this.state.dataURL}/>
-
     return (
       <div>
         <div className='chart'>
           <div ref='chart' onClick={e => {this.test(e)}}>
-             {inner}
+             <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>
           </div>
         </div>
         <div >

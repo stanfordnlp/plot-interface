@@ -50,12 +50,8 @@ export function parseWithErrors(spec) {
   return {vegaSpec: vegaSpec, logger: currLogger}
 }
 
-export function vegaLiteToPromise(vegaLiteSpec) {
-  return vegaHash(vegaToDataURL(parseWithErrors(vegaLiteSpec).vegaSpec));
-}
-
-export function vegaHash(chart) {
-  return chart
+export function vegaLiteToDataURL(vegaLiteSpec) {
+  return vegaToDataURL(parseWithErrors(vegaLiteSpec).vegaSpec);
 }
 
 export function vegaToDataURL(vegaSpec, element) {
