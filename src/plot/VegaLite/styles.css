@@ -1,0 +1,43 @@
+.chart {
+  padding: 0px;
+  width: auto;
+  display: inline-block;
+}
+.chart-img {
+  padding: 0px;
+  max-width: 400px;
+  max-height: 400px;
+  display: inline-block;
+}
+.chart .vega-bindings {
+  line-height: 20px;
+}
+.chart .vega-bind-name {
+  display: inline-block;
+  width: 105px;
+}
+.chart .vega-bind input[type="range"] {
+  padding: 0;
+  width: 100px;
+}
+.chart .vega-bind select {
+  max-width: 200px;
+}
+.chart .vega-bind label {
+  margin-left: 4px;
+}
+.chart .vega-bind-radio label {
+  margin-left: 0;
+  margin-right: 4px;
+}
+
+.display-errors {
+  font-size: 0.5em;
+  margin: 0;
+  color: red;
+}
+.display-warns {
+  font-size: 0.5em;
+  margin: 0;
+  color: orange;
+}
