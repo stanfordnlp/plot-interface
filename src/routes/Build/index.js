@@ -7,6 +7,7 @@ import VegaLite from "plot/VegaLite"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
+import {MdCheck} from 'react-icons/lib/md'
 
 import "./styles.css"
 
@@ -46,10 +47,10 @@ class Build extends Component {
 
     plotsPlus.push(
       <div className='chart-container' key='current'>
-        <div className='chart-header'><b>Original chart</b></div>
+        <div className='chart-header'><b>Current plot</b></div>
         {
           'initialContext' in this.props.context?
-          <div>{this.props.context.initialContext}</div>
+          <div>click <MdCheck className='md-button' size={20}/> to select a plot</div>
           :
           <VegaLite
             spec={this.props.context}

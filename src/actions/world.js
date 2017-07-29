@@ -55,7 +55,10 @@ const Actions = {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { context, query } = getState().world
-
+      if ('initialContext' in context) {
+        window.alert('you need a starting plot before issuing a command');
+        return
+      }
       dispatch({
         type: Constants.SET_STATUS,
         status: STATUS.LOADING
@@ -160,9 +163,11 @@ const Actions = {
         if (logger.warns.length > 0 || logger.errors.length > 0) {
           window.alert('current spec has errors and cannot be used')
           console.log('validation errors', logger)
+          return
         }
       } catch (e) {
         console.error('spec error', e);
+        return
       }
       dispatch({
         type: Constants.ACCEPT,
@@ -170,17 +175,6 @@ const Actions = {
       })
 
       vegaLiteToDataURL(spec).then(dataURL =>
-      dispatch({
-        type: Constants.SET_CONTEXT_HASH,
-        contextHash: dataURL
-      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
-    }
-  },
-
-  updateContextHash: () => {
-    return (dispatch, getState) => {
-      const { context } = getState().world
-      vegaLiteToDataURL(context).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
         contextHash: dataURL

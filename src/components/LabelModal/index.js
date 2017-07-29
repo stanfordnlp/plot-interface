@@ -40,8 +40,7 @@ class LabelModal extends Component {
     }
     this.props.dispatch(Actions.label(value, this.state.spec));
     this.setState({headerText: `labeled this plot as "${value}"...` })
-    setTimeout(() => {this.setState({headerText: headerText}); this.onClose()}, 800);
-
+    setTimeout(() => {this.setState({headerText: headerText, inputValue: ''}); this.onClose()}, 800);
   }
 
   handleKeyDown(e) {

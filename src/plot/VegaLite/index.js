@@ -38,7 +38,9 @@ class VegaLite extends React.Component {
   }
 
   updateVegaWrap() {
-    setTimeout(() => this.updateVega(), 0)
+    //if (this.props.onDoneRendering !== undefined)
+    //setTimeout(() => this.updateVega(), 1000)
+    this.updateVega()
   }
   // without the timeout, promise is sync...
   updateVega() {
@@ -102,7 +104,7 @@ class VegaLite extends React.Component {
       <div>
         <div className='chart'>
           <div ref='chart' onClick={e => {this.test(e)}}>
-             <img ref='chartImg' className='chart-img' alt='no chart available' src={this.state.dataURL}/>
+             <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>
           </div>
         </div>
         <div >

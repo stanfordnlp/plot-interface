@@ -43,20 +43,21 @@ class Plot extends React.Component {
     this.contextOverlay.toggle() // do stuff
   };
 
-  openModal() {
-    this.setState({labeling: true})
-  }
-  closeModal() {
-    this.setState({labeling: false})
-  }
-
   onDoneRendering(dataURL) {
     if (this.props.contextHash === dataURL) {
       this.setState({hasError: true, isEqual: true})
     } else {
       this.setState({isEqual: false})
-      // console.log('not equal', this.props.contextHash, dataURL)
+      //console.log('not equal', this.props.contextHash)
     }
+  }
+
+  onLabel() {
+    if ("initialContext" in this.props.context) {
+      window.alert("No current plot, you need to pick one before you can label")
+      return
+    }
+    this.props.onLabel(this.state.spec, this.state.formula)
   }
 
   onError() {
@@ -84,7 +85,9 @@ class Plot extends React.Component {
              </span>
 
              <span className='header-button'>
-               <MdCompare className='md-button' size={iconSize} onClick={(e) => {this.props.onLabel(this.state.spec, this.state.formula)}} />
+               <MdCompare className='md-button' size={iconSize} onClick={(e) => {
+                  this.onLabel()}
+                } />
                 <div className="header-button-tooltip">
                     {'compare and label'}
                 </div>
@@ -116,6 +119,7 @@ class Plot extends React.Component {
 
 const mapStateToProps = (state) => ({
   contextHash: state.world.contextHash,
+  context: state.world.context,
   showErrors: state.world.showErrors,
 })
 export default connect(mapStateToProps)(Plot);
