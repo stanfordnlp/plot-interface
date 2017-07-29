@@ -47,10 +47,15 @@ class Build extends Component {
     plotsPlus.push(
       <div className='chart-container' key='current'>
         <div className='chart-header'><b>Original chart</b></div>
-        <VegaLite
-          spec={this.props.context}
-          onError={() => {}}
-        />
+        {
+          'initialContext' in this.props.context?
+          <div>{this.props.context.initialContext}</div>
+          :
+          <VegaLite
+            spec={this.props.context}
+            onError={() => {}}
+          />
+        }
       </div>
     );
 

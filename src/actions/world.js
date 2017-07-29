@@ -2,7 +2,7 @@ import { SEMPREquery } from "helpers/sempre"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {vegaLiteToDataURL, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
+import {vegaLiteToDataURL, prettyStringify, parseWithErrors, responsesFromExamples} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 
 const Actions = {
@@ -193,12 +193,19 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
+      responsesFromExamples().then(responses =>
+        dispatch({
+          type: Constants.SET_RESPONSES,
+          responses: responses
+      })).catch()
+
       const { context } = getState().world
       vegaLiteToDataURL(context).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
         contextHash: dataURL
-      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
+      }))
+      .catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
       persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
     }
   }

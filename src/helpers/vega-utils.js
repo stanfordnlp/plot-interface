@@ -2,8 +2,6 @@ import Ajv from 'ajv';
 import {LocalLogger} from '../helpers/logger'
 import * as vl from 'vega-lite';
 import * as vega from 'vega';
-const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');
-
 
 const ajv = new Ajv({
   jsonPointers: true,
@@ -107,8 +105,20 @@ export function prettyStringify(obj) {
  return JSON.stringify(obj, null, 4)
 }
 
-
+const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');
 export function responsesFromExamples() {
-  const urls = VegaLiteSpecs;
-  console.log(urls)
+  const filenames = [...VegaLiteSpecs.Basic, ...VegaLiteSpecs.Stack, ...VegaLiteSpecs.Statistical] // has name and title
+  const urls = filenames.map(s => `spec/vega-lite/${s.name}.vl.json`)
+
+  console.log('initial example urls', urls)
+  return Promise.all(urls.map(url => {
+    return fetch(url).then(res => {
+      return res.json().then(json => [url, json])
+    })
+  }))
+  .then(specs =>
+     specs.map((s) => {
+       return {value: s[1], formula: s[0]}
+     })
+  )
 }

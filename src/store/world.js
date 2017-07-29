@@ -1,11 +1,12 @@
 import Constants from 'actions/constants'
 import { STATUS } from "constants/strings"
-import specs from "constants/specs"
+// import specs from "constants/specs"
 import {prettyStringify} from "helpers/vega-utils"
-
+// must have key initialContext
+const emptyContext = {'initialContext': 'no current plot, pick an example'};
 const initialState = {
-  context: {'type':'initial'},
-  editorString: prettyStringify(specs),
+  context: emptyContext,
+  editorString: prettyStringify(emptyContext),
   responses: [],
   status: STATUS.TRY,
   query: "",
@@ -33,6 +34,8 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, showFormulas: action.showFormulas }
     case Constants.SET_EDITOR_STRING:
       return { ...state, editorString: action.editorString }
+    case Constants.SET_RESPONSES:
+      return { ...state, responses: action.responses }
     case Constants.SET_ISSUED_QUERY:
       return { ...state, issuedQuery: action.issuedQuery }
     case Constants.CLEAR:
