@@ -2,6 +2,7 @@ import Ajv from 'ajv';
 import {LocalLogger} from '../helpers/logger'
 import * as vl from 'vega-lite';
 import * as vega from 'vega';
+const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');
 
 
 const ajv = new Ajv({
@@ -55,7 +56,7 @@ export function vegaLiteToDataURL(vegaLiteSpec) {
 }
 
 export function vegaToDataURL(vegaSpec, element) {
-  console.log('called vegaToDataURL')
+  // console.log('called vegaToDataURL')
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
@@ -104,4 +105,10 @@ export function vegaToDataURLSync(vegaSpec, element) {
 
 export function prettyStringify(obj) {
  return JSON.stringify(obj, null, 4)
+}
+
+
+export function responsesFromExamples() {
+  const urls = VegaLiteSpecs;
+  console.log(urls)
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import hash from 'string-hash'
-import {parseWithErrors, vegaToDataURL, vegaLiteToDataURL} from 'helpers/vega-utils'
+import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
 import "./styles.css"
 
 
@@ -29,28 +29,32 @@ class VegaLite extends React.Component {
   }
 
   componentDidMount() {
-    this.updateVega(this.props.spec)
+    this.updateVegaWrap(this.props.spec)
   }
 
   componentDidUpdate(prevProps, prevStates) {
     if (this.props.spec !== prevProps.spec)
-      this.updateVega(this.props.spec)
+      this.updateVegaWrap(this.props.spec)
   }
 
-  // not too sure why this isnt async
-  updateVega(vlSpec) {
-    setTimeout(() => vegaToDataURL(this.state.vegaSpec).then(dataURL => {
+  updateVegaWrap() {
+    setTimeout(() => this.updateVega(), 0)
+  }
+  // without the timeout, promise is sync...
+  updateVega() {
+    vegaToDataURL(this.state.vegaSpec).then(dataURL => {
       this.setState({dataURL: dataURL})
       // this.refs.chartImg.src = dataURL;
       if (this.props.onError!==undefined && this.state.hasError)
         this.props.onError()
       if (this.props.onDoneRendering !== undefined)
         this.props.onDoneRendering(dataURL)
-      console.log('')
+      console.log('done rendering')
     }).catch(err => {
-        this.setState({dataURL: 'data:text/plain,error'})
+        console.log('updateVega error', err)
+        // this.setState({dataURL: 'data:text/plain,error'})
         //this.refs.chartImg.src='data:text/plain,error';
-    }), 0);
+    })
   }
 
   // renderVega(state) {
@@ -98,7 +102,7 @@ class VegaLite extends React.Component {
       <div>
         <div className='chart'>
           <div ref='chart' onClick={e => {this.test(e)}}>
-             <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>
+             <img ref='chartImg' className='chart-img' alt='no chart available' src={this.state.dataURL}/>
           </div>
         </div>
         <div >

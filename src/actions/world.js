@@ -2,7 +2,7 @@ import { SEMPREquery } from "helpers/sempre"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {vegaLiteToPromise, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
+import {vegaLiteToDataURL, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 
 const Actions = {
@@ -108,7 +108,7 @@ const Actions = {
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
 
-      vegaLiteToPromise(spec).then(dataURL =>
+      vegaLiteToDataURL(spec).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
         contextHash: dataURL
@@ -169,7 +169,7 @@ const Actions = {
         target: spec
       })
 
-      vegaLiteToPromise(spec).then(dataURL =>
+      vegaLiteToDataURL(spec).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
         contextHash: dataURL
@@ -180,7 +180,7 @@ const Actions = {
   updateContextHash: () => {
     return (dispatch, getState) => {
       const { context } = getState().world
-      vegaLiteToPromise(context).then(dataURL =>
+      vegaLiteToDataURL(context).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
         contextHash: dataURL
@@ -194,7 +194,7 @@ const Actions = {
         type: Constants.CLEAR
       })
       const { context } = getState().world
-      vegaLiteToPromise(context).then(dataURL =>
+      vegaLiteToDataURL(context).then(dataURL =>
       dispatch({
         type: Constants.SET_CONTEXT_HASH,
         contextHash: dataURL

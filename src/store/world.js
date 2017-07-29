@@ -4,13 +4,13 @@ import specs from "constants/specs"
 import {prettyStringify} from "helpers/vega-utils"
 
 const initialState = {
-  context: specs,
+  context: {'type':'initial'},
   editorString: prettyStringify(specs),
   responses: [],
   status: STATUS.TRY,
   query: "",
   issuedQuery: "",
-  contextHash: "value gets overriden on Layout init",
+  contextHash: "this value should not show up, and should be overriden on init",
   showErrors: false,
   showFormulas: false
 }
