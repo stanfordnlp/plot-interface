@@ -1,6 +1,7 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import { persistStore, autoRehydrate } from 'redux-persist'
+import { autoRehydrate } from 'redux-persist'
+// import {persistStore} from 'redux-persist'
 import makeRootReducer from '.'
 
 export default (initialState = {}) => {

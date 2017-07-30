@@ -36,6 +36,7 @@ export default class Autocomplete extends React.Component {
     this.setState({
       value: newValue
     });
+    this.props.inputProps.onChange(this.state.value);
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -53,10 +54,10 @@ export default class Autocomplete extends React.Component {
   render() {
     const { suggestions } = this.state;
     const inputProps = {
-     autoFocus: true,
-     value: this.props.inputProps.value,
+     //  autoFocus: true,
+     value: this.state.value,
      placeholder: "type here",
-     onChange: (event, { newValue, method }) => {this.onChange(event, { newValue, method }); this.props.inputProps.onChange(event)},
+     onChange: this.onChange,
      onKeyDown: e => this.props.inputProps.onKeyDown(e)
    };
     return (

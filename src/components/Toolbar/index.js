@@ -41,12 +41,13 @@ class Toolbar extends React.Component {
     return (
       <div className='Toolbar'>
         <button># candidates: {this.props.numCandidates}</button>
-        <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse JSON Spec</button>
-        <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button>
         <button className={classnames({active: true})} onClick={() => this.clearAll()}>Reset</button>
+        <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse JSON Spec</button>
         <button className={classnames({active: true})} onClick={() => this.toggleShowErrors()}>
           {this.props.showErrors? 'hide errors' : 'show errors'}
         </button>
+
+        <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button>
         <button className={classnames({active: true})} onClick={() => this.toggleShowFormulas()}>
           {this.props.showFormulas? 'hide formulas' : 'show formulas'}
         </button>

@@ -1,39 +1,28 @@
 # plot-interface
 
-Web interface for the plotting project
+user interface for plotting with semantic parsing
 
 ## Running locally
 
-AJAX usually does not work with the `file://` protocol, so you need to start a simple HTTP server.
-
 * Clone the repository
-* Get example datasets
-    ```
-    svn checkout https://github.com/vega/vega-editor/trunk/data
-    ```
-* Inside the root directory, run
 
-    ```
-    python -m SimpleHTTPServer 8000
-    ```
+* install yarn and run `yarn install`
 
-    Change `8000` to some other port number as needed
-* Navigate to [`http://localhost:8000`](http://localhost:8000) (Note `http`, not `https`)
-* To query a local server instead of our default server, use [`http://localhost:8000/?host=localhost`](http://localhost:8000/?host=localhost)
-* Try utterances such as _"new car"_ and _"background red"_
+* start client that queries the local server: `yarn start:local`
 
-## Turking guide
+* start client that queries the public server `yarn start`
 
-* require ?uid=workerId&sid=assignmentId
+* push a version to the public url: `yarn run build && yarn run deploy`
 
-* sid is used to retrieve session storage, and expected to be unique.
+## Turking
 
-## React version
+* send turking parameters through url parameters: `BASE_URL/?uid=workerId&sid=assignmentId`
 
-* yarn install
+* this should be logged in the server at `SEMPRE_ROOT/plot-out/query.jsonl` by default
+check that the parameters are loaded correctly!
 
-* start dev server `yarn run start:local` to use a local server and `yarn run start` to use the public server
+## Picking examples
 
-* build `yarn run build` then `yarn run deploy` to push this to github pages
+* data for vegalite and example specifications are in `public`
 
-* since our server do not accept https requests, this does not work on github.io
+* `public/spec/vega-lite/index.json` together with `src/helper/vega-utils.responsesFromExamples` determines which examples get displayed in the beginning.

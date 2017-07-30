@@ -4,7 +4,9 @@ export function SEMPREquery(cmds, callback) {
   const cmdstr = []
   for (const k in cmds) {
     if ({}.hasOwnProperty.call(cmds, k)) {
-      cmdstr.push(`${k}=${encodeURIComponent(JSON.stringify(cmds[k]))}`)
+      if (k==='q')
+        cmdstr.push(`${k}=${encodeURIComponent(JSON.stringify(cmds[k]))}`)
+      else cmdstr.push(`${k}=${encodeURIComponent(cmds[k])}`)
     }
   }
 
