@@ -36,7 +36,7 @@ export default class Autocomplete extends React.Component {
     this.setState({
       value: newValue
     });
-    this.props.inputProps.onChange(this.state.value);
+    this.props.inputProps.onChange(newValue);
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
