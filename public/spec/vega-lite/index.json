@@ -208,5 +208,87 @@
       "name": "interactive_splom",
       "title": "Scatterplot Matrix"
     }
+  ],
+  "TwentyDiverse": [ 
+   	{
+	    "name": "bar",
+	    "title": "Simple Bar Chart"
+	 }, 
+	 {
+      	"name": "area",
+      	"title": "Area Chart"
+     },
+	 {
+      	"name": "bar_1d_rangestep_config",
+      	"title": "Bar Rangestep Chart"
+     },  
+	 {
+      	"name": "bar_aggregate_size",
+      	"title": "Bar Aggregate Chart"
+     },
+	 {
+      	"name": "bar_distinct",
+      	"title": "Bar Distinct Chart"
+     }, 
+	 {
+      	"name": "bar_size_explicit",
+      	"title": "Bar Size Explicit Chart"
+     },
+	 {
+      	"name": "bar_size_rangestep_small",
+      	"title": "Bar Small Rangestep Chart"
+     }, 
+	 {
+      	"name": "bubble_health_income",
+      	"title": "Bubble Health Income"
+     },
+	 {
+      	"name": "diverging_color_points",
+      	"title": "Diverging Color Points"
+     },
+	 {
+      	"name": "histogram_no_spacing",
+      	"title": "Histogram No Spacing"
+     },
+	 {
+      	"name": "layer_bar_dual_axis",
+      	"title": "Layered Bar With Dual Axis"
+     },
+	 {
+      	"name": "layered_color_legend_left",
+      	"title": "Layered Chart With Legend"
+     }, 
+	 {
+      	"name": "layered_falkensee",
+      	"title": "Layered Chart"
+     },
+	 {
+      	"name": "line_quarter_legend",
+      	"title": "Line With Legend"
+     },
+	 {
+      	"name": "point_2d_array_named",
+      	"title": "2D Point Array"
+     },
+	 {
+      	"name": "point_ordinal_color",
+      	"title": "Point Ordinal Chart"
+     },
+	 {
+      	"name": "scatter_color_custom",
+      	"title": "Scatter Color Chart"
+     },
+	 {
+      	"name": "stacked_bar_sum_opacity",
+      	"title": "Scatter Bar Opacity Chart"
+     },
+	 {
+      	"name": "tick_dot_thickness",
+      	"title": "Tick Dot Thickness"
+     }, 
+	 {
+      	"name": "square",
+      	"title": "Square Chart"
+     }
   ]
 }
