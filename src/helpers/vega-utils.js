@@ -107,7 +107,7 @@ export function prettyStringify(obj) {
 
 const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');
 export function responsesFromExamples() {
-  const filenames = [...VegaLiteSpecs.Basic, ...VegaLiteSpecs.Stack, ...VegaLiteSpecs.Statistical] // has name and title
+  const filenames = [...VegaLiteSpecs.TwentyDiverse] // has name and title
   const urls = filenames.map(s => `spec/vega-lite/${s.name}.vl.json`)
 
   console.log('initial example urls', urls)
