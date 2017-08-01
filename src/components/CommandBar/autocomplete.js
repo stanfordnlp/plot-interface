@@ -56,7 +56,7 @@ export default class Autocomplete extends React.Component {
     const inputProps = {
      //  autoFocus: true,
      value: this.state.value,
-     placeholder: "type here",
+     placeholder: "type command to modify plot",
      onChange: this.onChange,
      onKeyDown: e => this.props.inputProps.onKeyDown(e)
    };
