@@ -90,7 +90,7 @@ class LabelModal extends Component {
            &nbsp;&nbsp;
           <button className={classnames({active: this.props.issuedQuery.trim().length>0})} onClick={() => this.submit(this.props.issuedQuery)}>(label as correct)</button>
       </div>
-      <div className="info">if "{this.props.issuedQuery}" is wrong, can be said better, or rephrased, please type below and submit</div>
+      <div className="info">Please rephrase  "{this.props.issuedQuery}" in natural language if you think it can be said better or is incorrect, and press submit. Otherwise, label the original command as correct. </div>
       <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
         type="text"
         value={this.state.inputValue}
