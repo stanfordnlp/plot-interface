@@ -107,7 +107,7 @@ const Actions = {
       const { sessionId } = getState().user
       const { issuedQuery, context } = getState().world
 
-      const q = ['accept', {utterance: issuedQuery, tagetFormula:formula, type: "accept", context:context, targetValue:spec}]
+      const q = ['accept', {utterance: issuedQuery, targetFormula:formula, type: "accept", context:context, targetValue:spec}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
 
