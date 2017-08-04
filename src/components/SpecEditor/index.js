@@ -17,8 +17,8 @@ class InputPanel extends React.Component {
         <AceEditor
           mode="json"
           theme="github"
-          height='100%'
-          width='100%'
+          height='1000px'
+          width='435px'
           value={this.props.editorString}
           name="spec-editor"
           onChange={v => this.onChange(v)}
@@ -35,3 +35,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 export default connect(mapStateToProps)(InputPanel);
+
