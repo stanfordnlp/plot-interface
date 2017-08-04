@@ -60,19 +60,21 @@ export function vegaLiteToDataURLWithErrors(vegaLiteSpec) {
 }
 
 export function vegaToDataURL(vegaSpec, element) {
-  console.log('vegaToDataURL...')
+  console.log('called vegaToDataURL')
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
     let dataURL = new vega.View(runtime)
     .logLevel(vega.Error)
     .initialize()
-    .toImageURL('png'); // should be one of svg, png etc. for svg, need to deference blobs...
+    // .toImageURL('canvas')
+    .toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr ); // should be one of svg, png etc. for svg, need to deference blobs...
+    // this thing returns a promise
     return dataURL
   } catch (err) {
-    console.log('VegaLite.error %s', err.toString());
+    console.log('vegaToDataURL error', err)
+    return Promise.resolve('data:,'+encodeURIComponent(err))
   }
-  return null
 }
 
 export function prettyStringify(obj) {
