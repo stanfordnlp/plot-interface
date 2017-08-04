@@ -2,7 +2,7 @@ import { SEMPREquery } from "helpers/sempre"
 import { persistStore } from "redux-persist"
 import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {vegaLiteToDataURL, prettyStringify, parseWithErrors, responsesFromExamples} from '../helpers/vega-utils';
+import {prettyStringify, parseWithErrors, responsesFromExamples} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 
 const Actions = {
@@ -87,11 +87,6 @@ const Actions = {
           responses: candidates
         })
 
-        dispatch({
-          type: Constants.SET_STATUS,
-          status: STATUS.TRY
-        })
-
         return true
       })
       .catch((e) => {
@@ -109,13 +104,6 @@ const Actions = {
 
       const q = ['accept', {utterance: issuedQuery, targetFormula:formula, type: "accept", context:context, targetValue:spec}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
-
-
-      vegaLiteToDataURL(spec).then(dataURL =>
-      dispatch({
-        type: Constants.SET_CONTEXT_HASH,
-        contextHash: dataURL
-      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
 
       dispatch({
         type: Constants.SET_EDITOR_STRING,
@@ -173,12 +161,6 @@ const Actions = {
         type: Constants.ACCEPT,
         target: spec
       })
-
-      vegaLiteToDataURL(spec).then(dataURL =>
-      dispatch({
-        type: Constants.SET_CONTEXT_HASH,
-        contextHash: dataURL
-      })).catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
     }
   },
 
@@ -193,13 +175,6 @@ const Actions = {
           responses: responses
       })).catch()
 
-      const { context } = getState().world
-      vegaLiteToDataURL(context).then(dataURL =>
-      dispatch({
-        type: Constants.SET_CONTEXT_HASH,
-        contextHash: dataURL
-      }))
-      .catch((err) => {console.log('SET_CONTEXT_HASH error', err)})
       persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
     }
   }

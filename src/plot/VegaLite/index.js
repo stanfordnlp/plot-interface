@@ -54,7 +54,7 @@ class VegaLite extends React.Component {
       console.log('done rendering')
     }).catch(err => {
         console.log('updateVega error', err)
-        // this.setState({dataURL: 'data:text/plain,error'})
+        this.setState({dataURL: 'data:text/plain,error'})
         //this.refs.chartImg.src='data:text/plain,error';
     })
   }

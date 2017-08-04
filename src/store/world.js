@@ -11,7 +11,6 @@ const initialState = {
   status: STATUS.TRY,
   query: "",
   issuedQuery: "",
-  contextHash: "this value should not show up, and should be overriden on init",
   showErrors: false,
   showFormulas: false
 }
@@ -26,8 +25,6 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, context: action.target, responses: [], status: STATUS.TRY }
     case Constants.SET_STATUS:
       return { ...state, status: action.status }
-    case Constants.SET_CONTEXT_HASH:
-      return { ...state, contextHash: action.contextHash }
     case Constants.SET_SHOW_ERRORS:
       return { ...state, showErrors: action.showErrors }
     case Constants.SET_SHOW_FORMULAS:
@@ -41,6 +38,7 @@ export default function reducer(state = initialState, action = {}) {
     case Constants.CLEAR:
       return initialState
     default:
+      console.log('action not recognized', action.type)
       return state
   }
 }

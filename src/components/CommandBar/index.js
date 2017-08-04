@@ -39,7 +39,7 @@ class CommandBar extends Component {
   }
 
   handleChange(newValue) {
-    console.log(newValue)
+    // console.log(newValue)
     // const newValue = e.target.value
     if (newValue !== this.props.query) {
       this.props.dispatch(Actions.setQuery(newValue))

@@ -53,8 +53,14 @@ export function vegaLiteToDataURL(vegaLiteSpec) {
   return vegaToDataURL(parseWithErrors(vegaLiteSpec).vegaSpec);
 }
 
+export function vegaLiteToDataURLWithErrors(vegaLiteSpec) {
+  const vegaWithErrors = parseWithErrors(vegaLiteSpec);
+  return vegaToDataURL(vegaWithErrors.vegaSpec)
+    .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}})
+}
+
 export function vegaToDataURL(vegaSpec, element) {
-  // console.log('called vegaToDataURL')
+  console.log('vegaToDataURL...')
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
@@ -62,38 +68,6 @@ export function vegaToDataURL(vegaSpec, element) {
     .logLevel(vega.Error)
     .initialize()
     .toImageURL('png'); // should be one of svg, png etc. for svg, need to deference blobs...
-    return dataURL
-  } catch (err) {
-    console.log('VegaLite.error %s', err.toString());
-  }
-  return null
-}
-
-export function vegaToDataURLSync(vegaSpec, element) {
-  const Modes = {Svg: 'SVG', Canvas: 'Canvas'};
-  const mode = Modes.Svg;
-  //let chart = document.createElement('div')
-
-  let chart = element !== undefined? element : document.getElementById('fake-chart');
-  console.log('called vegaToDataURL')
-  chart.style.width = '200px' // chart.getBoundingClientRect().width + 'px';
-  let runtime;
-  try {
-    runtime = vega.parse(vegaSpec);
-    let view = new vega.View(runtime)
-    .logLevel(vega.Error)
-    .initialize(chart)
-    .renderer(mode);
-    view.run();
-
-    chart.style.width = 'auto';
-
-    let dataURL
-    if (mode === Modes.Svg)
-      dataURL = 'data:image/svg+xml;utf8,' + (new XMLSerializer().serializeToString(chart.children[0]))
-    else if (mode === Modes.Canvas)
-      dataURL = chart.children[0].toDataURL()
-
     return dataURL
   } catch (err) {
     console.log('VegaLite.error %s', err.toString());
