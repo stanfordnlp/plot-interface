@@ -19,6 +19,8 @@ class InputPanel extends React.Component {
           theme="github"
           height='1000px'
           width='435px'
+          maxLines="38"
+          autoScrollEditorIntoView="true"
           value={this.props.editorString}
           name="spec-editor"
           onChange={v => this.onChange(v)}
@@ -35,4 +37,3 @@ function mapStateToProps(state, ownProps) {
   };
 }
 export default connect(mapStateToProps)(InputPanel);
-
