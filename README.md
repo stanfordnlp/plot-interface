@@ -16,7 +16,7 @@ user interface for plotting with semantic parsing
 
 ## Turking
 
-* send turking parameters through url parameters: `BASE_URL/?uid=workerId&sid=assignmentId`
+* send turking parameters through url parameters: `BASE_URL/?uid=workerId&sid=assignmentId` Make sure the parameters are AFTER the # in the url so it appears in the very end. like http://localhost:3000/#/build?uid=blah
 
 * this should be logged in the server at `SEMPRE_ROOT/plot-out/query.jsonl` by default
 check that the parameters are loaded correctly!
