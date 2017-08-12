@@ -7,8 +7,8 @@ export function getTurkId() {
   return DEFAULT_SESSIONID;
 }
 
-export function getTurkCode(targetIdx, nSteps, nBlocks) {
+export function getTurkCode(state) {
   const uid = getTurkId();
-  const encodedData = window.btoa(unescape(encodeURIComponent(`${uid}:win:${targetIdx}:${nSteps}:${nBlocks}:Yummy`)));
+  const encodedData = window.btoa(unescape(encodeURIComponent(`${uid}:${state.utterances}:Yummy`)));
   return encodedData;
 }

@@ -173,7 +173,7 @@ const Actions = {
         dispatch({
           type: Constants.SET_RESPONSES,
           responses: responses
-      })).catch()
+      })).catch(e => console.log('responseFromExamples', e))
 
       persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
     }

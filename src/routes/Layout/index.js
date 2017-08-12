@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from "react-redux"
 import UserActions from "actions/user"
 import Actions from "actions/world"
-
 import Header from "components/Header"
 
 import "normalize.css"
