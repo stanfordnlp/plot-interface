@@ -26,7 +26,7 @@ class Label extends Component {
     const location = props.routing.location || props.routing.locationBeforeTransitions
     const sessionId = location.query.uid
 
-    this.config = {maxProcess: 10, maxShow: 3, hint: '10', plotInd: null, ...location.query}
+    this.config = {numCandidates: 75, maxShow: 5, hint: '10', plotInd: null, ...location.query}
 
     this.state = {submitted: false, context: null, responses: [], sessionId}
   }
@@ -37,12 +37,12 @@ class Label extends Component {
       const context = initial[plotInd].value;
       console.log(context)
       // send the actual sempre command
-      SEMPREquery({ q: ['q', this.config.hint, context], sessionId: this.state.sessionId})
+      SEMPREquery({ q: ['random', this.config.numCandidates, context], sessionId: this.state.sessionId})
       .then((response) => {
         console.log('sempre returned', response)
         let candidates = response.candidates;
-        if (candidates.length > this.config.maxProcess)
-          candidates = candidates.slice(0, this.config.maxProcess)
+        if (candidates.length > this.config.numCandidates)
+          candidates = candidates.slice(0, this.config.numCandidates)
         this.processPlotData(context, candidates)
       });
     }).catch(e => console.log('responseFromExamples', e))
@@ -65,6 +65,7 @@ class Label extends Component {
       Promise.all(renderedSpecs).then( plotData => {
         // console.log('plotData', plotData);
         plotData = plotData.filter(p => p !== undefined)
+        plotData = plotData.filter(p => p.logger.errors.length===0 && p.logger.warns.length===0 )
         plotData = plotData.filter(p => p.dataHash !== contextHash)
         let hashes = new Set();
         let uniques = [];
