@@ -26,7 +26,7 @@ class Label extends Component {
     const location = props.routing.location || props.routing.locationBeforeTransitions
     const sessionId = location.query.uid
 
-    this.config = {numCandidates: 75, maxShow: 5, hint: '10', plotInd: null, ...location.query}
+    this.config = {numCandidates: 75, maxShow: 5, countPerExample: 5, hint: '10', plotInd: null, ...location.query}
 
     this.state = {submitted: false, context: null, responses: [], sessionId}
   }
@@ -59,7 +59,7 @@ class Label extends Component {
       let renderedSpecs = responses.map(r => {
         return vegaLiteToDataURLWithErrors(r.value)
           .then(vega => {return {dataURL:vega.dataURL, logger: vega.logger,
-            dataHash:hash(vega.dataURL), formula:r.formula, spec:r.value, count:0}})
+            dataHash:hash(vega.dataURL), formula:r.formula, canonical:r.canonical, spec:r.value, count:0}})
           .catch(e => console.log('processing vega error', e));
       });
       Promise.all(renderedSpecs).then( plotData => {
@@ -80,16 +80,17 @@ class Label extends Component {
         if (uniques.length > this.config.maxShow)
           uniques = uniques.slice(0, this.config.maxShow)
 
-        const utterances = uniques.map(() => '');
+        const utterances = uniques.map(() => Array.from(''.repeat(this.config.countPerExample)));
         this.setState({plotData: uniques, context:context, contextDataURL:contextVega.dataURL, utterances})
       }).catch(e => console.log('plotData error', e))
     })
   }
 
-  onChange(e, idx) {
+  onChange(e, idx, uIdx) {
     const utterances = this.state.utterances.map((utt, sidx) => {
       if (idx !== sidx) return utt;
-      return e.target.value;
+      utt[uIdx] = e.target.value
+      return utt;
     });
     this.setState({ utterances: utterances });
   }
@@ -97,17 +98,30 @@ class Label extends Component {
   submit() {
     console.log(this.state.utterances)
     for (const [ind, utt] of this.state.utterances.entries()) {
-      if (utt.trim().length === 0) {
-        window.alert(`you cannot label plot ${ind} as empty`)
+      console.log(utt.length)
+      if(utt.length == 0)
+      {
+        window.alert(`you cannot label plot ${ind} with empty utterances`)
         return
       }
+      for (var i=0; i < utt.length; i++)
+      {  
+        if (utt.length < this.config.countPerExample || utt[i].trim().length === 0) {
+          window.alert(`you cannot label plot ${ind} with empty utterances`)
+          return
+        } 
+      }
+                                                                       
     }
     // TODO: checkmore stuff here, like no paren, token limit, etc.
 
     for (const [ind, utt] of this.state.utterances.entries()) {
-      const r = this.state.plotData[ind]
-      const q = ['accept', {utterance: utt, targetFormula: r.formula, type: "overnight", context: this.state.context, targetValue: r.spec }]
-      SEMPREquery({ q: q, sessionId: this.state.sessionId }, () => { })
+      const r = this.state.plotData[ind] 
+      for (var j=0; j < this.config.countPerExample; j++)
+      {
+        const q = ['accept', {utterance: utt[j], targetFormula: r.formula, type: "overnight", context: this.state.context, targetValue: r.spec }]
+        SEMPREquery({ q: q, sessionId: this.state.sessionId }, () => { })
+      }
     }
     this.setState({submitted: true})
   }
@@ -136,13 +150,16 @@ class Label extends Component {
             </div>
           </div>
         </div>
-        <div className="Label-info"><b>formula:</b> {r.formula}</div>
+        <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>
+        
+        {[...Array(5).keys()].map((uIdx)=>  
+            <input className="Label-input"
+                      type="text"
+                      onChange={e => this.onChange(e, ind, uIdx)}
+                      placeholder={uIdx+'. Provide a full English command that transforms the plot from "before" to "after" here'}
+            />   
+        )}
 
-        <input ref={(input) => { this.textInput = input; }} className="Label-input"
-          type="text"
-          onChange={e => this.onChange(e, ind)}
-          placeholder={'type command that takes "before" to "after"'}
-        />
       </div>
     )
 
@@ -150,7 +167,7 @@ class Label extends Component {
       return (
           <div className='Label'>
             <div>
-              For each pair ... TODO: write more instructions here. When you are done,
+              For each pair of plots, provide 5 commands, using full English sentences, that transform the BEFORE plot to the AFTER plot. A formula expression that describes the change is provided - your 5 commands should rephrase this expression to more naturally describe the change between the two plots. When you are done, please press the submit button.
               <button className={classnames({active: true})}
                 onClick={() => this.submit()}>click here to submit</button>
             </div>
