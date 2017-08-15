@@ -98,14 +98,20 @@ class Label extends Component {
   submit() {
     console.log(this.state.utterances)
     for (const [ind, utt] of this.state.utterances.entries()) {
-	  for (var i=0; i < utt.length; i++)
-	  {  
-		console.log(utt.length) 
-       	if (utt.length < this.config.countPerExample || utt[i].trim().length === 0) {
-        	window.alert(`you cannot label plot ${ind} with empty utterances`)
-        	return
-      	} 
-	  }                                                                       
+      console.log(utt.length)
+      if(utt.length == 0)
+      {
+        window.alert(`you cannot label plot ${ind} with empty utterances`)
+        return
+      }
+      for (var i=0; i < utt.length; i++)
+      {  
+        if (utt.length < this.config.countPerExample || utt[i].trim().length === 0) {
+          window.alert(`you cannot label plot ${ind} with empty utterances`)
+          return
+        } 
+      }
+                                                                       
     }
     // TODO: checkmore stuff here, like no paren, token limit, etc.
 
@@ -113,9 +119,9 @@ class Label extends Component {
       const r = this.state.plotData[ind] 
       for (var j=0; j < this.config.countPerExample; j++)
       {
-      	const q = ['accept', {utterance: utt[j], targetFormula: r.formula, type: "overnight", context: this.state.context, targetValue: r.spec }]
-      	SEMPREquery({ q: q, sessionId: this.state.sessionId }, () => { })
-	  }
+        const q = ['accept', {utterance: utt[j], targetFormula: r.formula, type: "overnight", context: this.state.context, targetValue: r.spec }]
+        SEMPREquery({ q: q, sessionId: this.state.sessionId }, () => { })
+      }
     }
     this.setState({submitted: true})
   }
@@ -145,36 +151,14 @@ class Label extends Component {
           </div>
         </div>
         <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>
-
-        <input ref={(input) => { this.textInput = input; }} className="Label-input"
-          type="text"
-          onChange={e => this.onChange(e, ind, 0)}
-          placeholder={'1. Provide a natural language command that transforms the plot from "before" to "after" here'}
-        />
-
-		<input ref={(input) => { this.textInput2 = input; }} className="Label-input"
-          type="text"
-          onChange={e => this.onChange(e, ind, 1)}
-          placeholder={'2. Provide a natural language command that transforms the plot from "before" to "after" here'}
-        />
-
-		<input ref={(input) => { this.textInput3 = input; }} className="Label-input"
-          type="text"
-          onChange={e => this.onChange(e, ind, 2)}
-          placeholder={'3. Provide a natural language command that transforms the plot from "before" to "after" here'}
-        />
-
-		<input ref={(input) => { this.textInput4 = input; }} className="Label-input"
-          type="text"
-          onChange={e => this.onChange(e, ind, 3)}
-          placeholder={'4. Provide a natural language command that transforms the plot from "before" to "after" here'}
-        /> 
-
-		<input ref={(input) => { this.textInput5 = input; }} className="Label-input"
-          type="text"
-          onChange={e => this.onChange(e, ind, 4)}
-          placeholder={'5. Provide a natural language command that transforms the plot from "before" to "after" here'}
-        />
+        
+        {[...Array(5).keys()].map((uIdx)=>  
+            <input className="Label-input"
+                      type="text"
+                      onChange={e => this.onChange(e, ind, uIdx)}
+                      placeholder={uIdx+'. Provide a full English command that transforms the plot from "before" to "after" here'}
+            />   
+        )}
 
       </div>
     )

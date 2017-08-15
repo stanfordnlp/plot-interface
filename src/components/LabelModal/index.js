@@ -6,7 +6,7 @@ import Modal from "react-modal"
 import VegaLite from "plot/VegaLite"
 import "./styles.css"
 
-const headerText = 'What is a natural language command that transforms the plot from "before" to "after"?';
+const headerText = 'What is a full English command that transforms the plot from "before" to "after"?';
 class LabelModal extends Component {
 
   constructor(props) {
