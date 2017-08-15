@@ -6,7 +6,7 @@ import Modal from "react-modal"
 import VegaLite from "plot/VegaLite"
 import "./styles.css"
 
-const headerText = 'What is the correct command getting from "before" to "after"?';
+const headerText = 'What is a natural language command that transforms the plot from "before" to "after"?';
 class LabelModal extends Component {
 
   constructor(props) {
@@ -20,7 +20,7 @@ class LabelModal extends Component {
   componentDidMount() {
     this.props.onRef(this)
 
-  }
+  }                                                            
   componentWillUnmount() {
     this.props.onRef(null)
   }
@@ -96,7 +96,7 @@ class LabelModal extends Component {
         value={this.state.inputValue}
         onKeyDown={e => this.handleKeyDown(e)}
         onChange={e => this.updateInputValue(e)}
-        placeholder={'type command that takes before to after here'}
+        placeholder={'Provide a natural language command that transforms the plot from "before" to "after" here'}
       />
       <div className='control-bar'>
         <button className={classnames({active: this.state.inputValue.trim().length>0})} onClick={() => this.submit(this.state.inputValue)}>Submit (enter)</button>

@@ -59,7 +59,7 @@ class Label extends Component {
       let renderedSpecs = responses.map(r => {
         return vegaLiteToDataURLWithErrors(r.value)
           .then(vega => {return {dataURL:vega.dataURL, logger: vega.logger,
-            dataHash:hash(vega.dataURL), formula:r.formula, spec:r.value, count:0}})
+            dataHash:hash(vega.dataURL), formula:r.formula, canonical:r.canonical, spec:r.value, count:0}})
           .catch(e => console.log('processing vega error', e));
       });
       Promise.all(renderedSpecs).then( plotData => {
@@ -136,13 +136,38 @@ class Label extends Component {
             </div>
           </div>
         </div>
-        <div className="Label-info"><b>formula:</b> {r.formula}</div>
+        <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>
 
         <input ref={(input) => { this.textInput = input; }} className="Label-input"
           type="text"
           onChange={e => this.onChange(e, ind)}
-          placeholder={'type command that takes "before" to "after"'}
+          placeholder={'1. Provide a natural language command that transforms the plot from "before" to "after" here'}
         />
+
+		<input ref={(input) => { this.textInput = input; }} className="Label-input"
+          type="text"
+          onChange={e => this.onChange(e, ind)}
+          placeholder={'2. Provide a natural language command that transforms the plot from "before" to "after" here'}
+        />
+
+		<input ref={(input) => { this.textInput = input; }} className="Label-input"
+          type="text"
+          onChange={e => this.onChange(e, ind)}
+          placeholder={'3. Provide a natural language command that transforms the plot from "before" to "after" here'}
+        />
+
+		<input ref={(input) => { this.textInput = input; }} className="Label-input"
+          type="text"
+          onChange={e => this.onChange(e, ind)}
+          placeholder={'4. Provide a natural language command that transforms the plot from "before" to "after" here'}
+        /> 
+
+		<input ref={(input) => { this.textInput = input; }} className="Label-input"
+          type="text"
+          onChange={e => this.onChange(e, ind)}
+          placeholder={'5. Provide a natural language command that transforms the plot from "before" to "after" here'}
+        />
+
       </div>
     )
 
@@ -150,7 +175,7 @@ class Label extends Component {
       return (
           <div className='Label'>
             <div>
-              For each pair ... TODO: write more instructions here. When you are done,
+              For each pair of plots, provide 5 commands, using full English sentences, that transform the BEFORE plot to the AFTER plot. A formula expression that describes the change is provided - your 5 commands should rephrase this expression to more naturally describe the change between the two plots. When you are done, please press the submit button.
               <button className={classnames({active: true})}
                 onClick={() => this.submit()}>click here to submit</button>
             </div>
