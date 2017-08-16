@@ -56,18 +56,14 @@ class Build extends Component {
       let renderedSpecs = responses.map(r => {
         return vegaLiteToDataURLWithErrors(r.value)
           .then(vega => {return {dataURL:vega.dataURL, logger: vega.logger,
-            dataHash:hash(vega.dataURL), formula:r.formula, spec:r.value, count:0}})
+            dataHash:hash(vega.dataURL), formula:r.canonical, spec:r.value, count:0}})
           .catch(e => console.log('processing vega error', e));
       });
       console.log('contexhash', contextHash)
       Promise.all(renderedSpecs).then( plotData => {
         // console.log('plotData', plotData);
-        console.log('total', plotData.length)
         plotData = plotData.filter(p => p !== undefined)
-        console.log('valid', plotData.length)
         plotData = plotData.filter(p => p.dataHash !== contextHash)
-        console.log('notequal', plotData.length)
-        console.log('errors', plotData.filter(p => p.logger.errors.length > 0 || p.logger.warns.length > 0).length)
         let hashes = new Set();
         let uniques = [];
         for (let p of plotData) {
@@ -76,8 +72,6 @@ class Build extends Component {
             uniques.push(p)
           }
         }
-
-        console.log('uniques', uniques.length)
         this.setState({plotData: uniques})
         this.props.dispatch(Actions.setStatus(STATUS.TRY))
       }).catch(e => console.log('plotData error', e))
@@ -144,7 +138,6 @@ class Build extends Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => ({
   responses: state.world.responses,

@@ -134,7 +134,11 @@ const Actions = {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { issuedQuery, context, schema } = getState().world
-      const q = ['accept', {utterance: utterance, targetFormula: formula, type: "label", issuedQuery: issuedQuery, context, schema, targetValue: spec }]
+      const sempreExample = {
+        utterance, targetFormula: formula,
+        context, schema, targetValue: spec, issuedQuery: issuedQuery, type: "label"};
+      console.log(JSON.stringify(sempreExample))
+      const q = ['accept', sempreExample]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
       return true
     }

@@ -6,7 +6,7 @@ import Modal from "react-modal"
 import VegaLite from "plot/VegaLite"
 import "./styles.css"
 
-const headerText = 'What is a full English command that transforms the plot from "before" to "after"?';
+const headerText = 'Comparisons';
 class LabelModal extends Component {
 
   constructor(props) {
@@ -20,7 +20,7 @@ class LabelModal extends Component {
   componentDidMount() {
     this.props.onRef(this)
 
-  }                                                            
+  }
   componentWillUnmount() {
     this.props.onRef(null)
   }
@@ -31,7 +31,7 @@ class LabelModal extends Component {
     this.setState({isOpen: true, spec: spec, formula: formula})
   }
 
-  onClose() {this.setState({isOpen: false})}
+  close() {this.setState({headerText: headerText, inputValue: '', isOpen: false})}
 
   submit(value) {
     if (value.trim().length === 0) {
@@ -40,14 +40,20 @@ class LabelModal extends Component {
     }
     this.props.dispatch(Actions.label(value, this.state.spec));
     this.setState({headerText: `labeled this plot as "${value}"...` })
-    setTimeout(() => {this.setState({headerText: headerText, inputValue: ''}); this.onClose()}, 800);
+    setTimeout(() => {this.close()}, 800);
+  }
+
+  update(value) {
+    this.props.dispatch(Actions.updateSpec());
+    this.setState({headerText: `updating the current plot...` })
+    setTimeout(() => {this.close()}, 200);
   }
 
   handleKeyDown(e) {
     if (e.keyCode === 13) {
       this.submit(this.state.inputValue)
     } else if (e.keyCode === 27) {
-      this.onClose()
+      this.close()
     }
   }
 
@@ -59,7 +65,7 @@ class LabelModal extends Component {
     return (
       <Modal
         isOpen={this.state.isOpen}
-        onRequestClose={() => this.onClose()}
+        onRequestClose={() => this.close()}
         className={{
           base: 'LabelModal',
           afterOpen: 'LabelModal_after-open',
@@ -85,22 +91,18 @@ class LabelModal extends Component {
         </div>
       </div>
       <div className="info"><b>formula:</b> {this.state.formula}</div>
-      <div className="info">
-          <b>original command:</b> {this.props.issuedQuery}
-           &nbsp;&nbsp;
-          <button className={classnames({active: this.props.issuedQuery.trim().length>0})} onClick={() => this.submit(this.props.issuedQuery)}>(label as correct)</button>
-      </div>
-      <div className="info">Either rephrase "{this.props.issuedQuery}" or write the new command that correctly changes the before plot to the after plot. </div>
+      <div className="info">Provide a command (in English) that changes "before" to "after":</div>
       <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
         type="text"
         value={this.state.inputValue}
         onKeyDown={e => this.handleKeyDown(e)}
         onChange={e => this.updateInputValue(e)}
-        placeholder={'Provide a natural language command that transforms the plot from "before" to "after" here'}
+        placeholder={'Provide a command (in English) that should change "before" to "after":'}
       />
       <div className='control-bar'>
+        <button className={classnames({active: true})} onClick={() => this.update()}>Update</button>
         <button className={classnames({active: this.state.inputValue.trim().length>0})} onClick={() => this.submit(this.state.inputValue)}>Submit (enter)</button>
-        <button className={classnames({active: true})} onClick={() => this.onClose()}>Close (ESC)</button>
+        <button className={classnames({active: true})} onClick={() => this.close()}>Close (ESC)</button>
       </div>
     </Modal>
     )

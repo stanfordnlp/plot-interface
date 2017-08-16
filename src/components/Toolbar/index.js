@@ -18,7 +18,20 @@ class Toolbar extends React.Component {
   }
 
   updateSpec() {
-    this.props.dispatch(Actions.updateSpec());
+    try {
+      const spec = JSON.parse(this.props.editorString)
+      const {logger} = parseWithErrors(spec)
+      if (logger.warns.length > 0 || logger.errors.length > 0) {
+        window.alert('current spec has errors, cannot be parsed')
+        console.log('validation errors', logger)
+        return
+      }
+      this.props.onLabel(spec, '(none)')
+      // this.props.dispatch(Actions.updateSpec());
+    } catch (e) {
+      window.alert('error in spec (see console)')
+      console.error('spec error', e);
+    }
   }
 
   labelJSON() {
@@ -47,7 +60,7 @@ class Toolbar extends React.Component {
           {this.props.showErrors? 'hide errors' : 'show errors'}
         </button>
 
-        <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button>
+        {/* <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button> */}
         <button className={classnames({active: true})} onClick={() => this.toggleShowFormulas()}>
           {this.props.showFormulas? 'hide formulas' : 'show formulas'}
         </button>
