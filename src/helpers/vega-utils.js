@@ -68,7 +68,7 @@ export function vegaToDataURL(vegaSpec, element) {
     .logLevel(vega.Error)
     .initialize()
     // .toImageURL('canvas')
-    .toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr ); // should be one of svg, png etc. for svg, need to deference blobs...
+    .toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') ); // should be one of svg, png etc. for svg, need to deference blobs...
     // this thing returns a promise
     return dataURL
   } catch (err) {
