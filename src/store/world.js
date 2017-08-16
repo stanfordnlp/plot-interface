@@ -10,6 +10,7 @@ const initialState = {
   responses: [],
   status: STATUS.TRY,
   query: "",
+  schema: {},
   issuedQuery: "",
   showErrors: false,
   showFormulas: false
@@ -35,6 +36,8 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, responses: action.responses }
     case Constants.SET_ISSUED_QUERY:
       return { ...state, issuedQuery: action.issuedQuery }
+    case Constants.SET_STATE:
+       return { ...state, ...action.state }
     case Constants.CLEAR:
       return initialState
     default:

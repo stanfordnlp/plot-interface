@@ -15,6 +15,25 @@ class DataTable extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.spec || !nextProps.spec.data) {
+      this.setState({data: null})
+      return
+    }
+
+    if (nextProps.spec.data===this.props.spec.data)
+      return
+
+    const data = nextProps.spec.data
+    const dataset  = this.parseRaw(data.values || dl.load(data))
+    const schema = this.schema(dataset.values)
+
+    this.props.dispatch(Actions.setState({schema: schema}))
+
+    console.log(schema)
+    this.setState({schema, output: dataset.values, data: data})
+  }
+
   prevPage() {
     this.setState({page: --this.state.page})
   }
@@ -80,19 +99,12 @@ class DataTable extends Component {
   }
 
   render() {
-    if (!this.props.spec || !this.props.spec.data)
-      return <div>data not specified</div>
-
-    const data = this.props.spec.data
-    const raw = data.values || dl.load(data)
-    const dataset  = this.parseRaw(raw)
-    const schema = this.schema(dataset.values)
-    const {page, limit}  = this.state
+    const {page, limit, schema, output, data}  = this.state
+    if (!data) return <div className="dataTable">no data available</div>
 
     const start = page * limit
     const stop  = start + limit
 
-    const output = dataset.values
     const values = output.slice(start, stop)
     const keys = dl.keys(schema)
     const max = output.length
@@ -108,7 +120,7 @@ class DataTable extends Component {
 
     return (
       <div>
-        <div id="dataTable" className="dataTable">
+        <div className="dataTable">
           <table>
             <tbody>
               {keys.map(function(k) {

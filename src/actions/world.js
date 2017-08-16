@@ -6,6 +6,15 @@ import {prettyStringify, parseWithErrors, responsesFromExamples} from '../helper
 import Constants from 'actions/constants'
 
 const Actions = {
+  setState: (state) => {
+    return (dispatch) => {
+      dispatch({
+        type: Constants.SET_STATE,
+        state: state
+      })
+    }
+  },
+
   setQuery: (query) => {
     return (dispatch) => {
       dispatch({
@@ -23,6 +32,8 @@ const Actions = {
       })
     }
   },
+
+
 
   setShowErrors: (showErrors) => {
     return (dispatch) => {
@@ -54,7 +65,7 @@ const Actions = {
   tryQuery: (q) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { context, query } = getState().world
+      const { context, query, schema } = getState().world
       if ('initialContext' in context) {
         window.alert('you need a starting plot before issuing a command');
         return
@@ -64,7 +75,7 @@ const Actions = {
         status: STATUS.LOADING
       })
 
-      return SEMPREquery({ q: ['q', q, context], sessionId: sessionId })
+      return SEMPREquery({ q: ['q', {utterance: q, context, schema, fields:Object.keys(schema)}], sessionId: sessionId })
       .then((response) => {
         const candidates = response.candidates
         /* Remove no-ops */
@@ -100,9 +111,9 @@ const Actions = {
   accept: (spec, formula) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { issuedQuery, context } = getState().world
+      const { issuedQuery, context, schema } = getState().world
 
-      const q = ['accept', {utterance: issuedQuery, targetFormula:formula, type: "accept", context:context, targetValue:spec}]
+      const q = ['accept', {utterance: issuedQuery, targetFormula:formula, type: "accept", context, schema, targetValue:spec}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
@@ -122,8 +133,8 @@ const Actions = {
   label: (utterance, spec, formula) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { issuedQuery, context } = getState().world
-      const q = ['accept', {utterance: utterance, targetFormula: formula, type: "label", issuedQuery: issuedQuery, context: context, targetValue: spec }]
+      const { issuedQuery, context, schema } = getState().world
+      const q = ['accept', {utterance: utterance, targetFormula: formula, type: "label", issuedQuery: issuedQuery, context, schema, targetValue: spec }]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
       return true
     }
@@ -132,9 +143,9 @@ const Actions = {
   reject: (spec) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { query, context } = getState().world
+      const { query, context, schema} = getState().world
 
-      const q = ['reject', {utterance: query, context:context, targetValue:spec }]
+      const q = ['reject', {utterance: query, context, schema, targetValue:spec }]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       return true
