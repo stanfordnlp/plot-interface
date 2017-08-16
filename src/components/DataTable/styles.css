@@ -1,19 +1,8 @@
-.DataTable {
-  width:100%;
-  min-height: 100px;
-  position: relative;
-}
-
 .dataTable {
   margin: 10px;
   margin-left: 95px;
   font-size: 11px;
   overflow: auto;
-
-  overflow-y: auto;
-  width:100%;
-  min-height: 100px;
-  position: relative;
 }
 .dataTable td {
   max-width: 75px;
@@ -33,6 +22,7 @@
   border-style: solid;
   background: #bed9ab;
   border-color: rgba(140, 161, 124, 0.5);
+  cursor: pointer;
 }
 .dataTable td:not(.schema).even {
   background: #eee;
@@ -45,27 +35,6 @@
 .paging {
   font-size: 11px;
 }
-.paging .md-button {
+.pager {
   float: right;
-}
-.paging .buttons a {
-  display: inline-block;
-  width: 14px;
-  height: 19px;
-  background-size: 14px !important;
-  opacity: 0.4;
-  text-indent: -999em;
-  visibility: hidden;
-  cursor: pointer;
-}
-.paging .buttons a:hover {
-  opacity: 1;
-}
-.paging .buttons a.enabled {
-  visibility: visible;
-}
-.paging .buttons a.prev {
-  padding-right: 10px;
-}
-.paging .buttons a.next {
 }

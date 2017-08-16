@@ -132,7 +132,7 @@ class Build extends Component {
     plotsPlus = plotsPlus.concat(plots);
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
+        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor/>
           <div className="Candidates" ref={c => this.candidates = c}>
             {plotsPlus}

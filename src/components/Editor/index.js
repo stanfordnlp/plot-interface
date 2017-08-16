@@ -22,7 +22,11 @@ class Editor extends React.Component {
     return (
       <div className='editor-container'>
         <DataTable/>
-        <SpecEditor key='spec-editor' spec={this.props.editorString}/>
+        <div className='relative-container'>
+          <div className='absoluate-container'>
+            <SpecEditor key='spec-editor' spec={this.props.editorString}/>
+          </div>
+        </div>
       </div>
     )
   }

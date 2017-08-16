@@ -2,14 +2,12 @@ import React, { PropTypes } from "react"
 import { Link } from "react-router"
 import { connect } from "react-redux"
 import CommandBar from "../CommandBar"
-import Actions from "actions/world"
 
 import "./styles.css"
 
 const Header = ({ query, signedIn, sessionId, email, dispatch }) => (
   <div className="Header">
-     <CommandBar
-        onClick={(query) => dispatch(Actions.tryQuery(query))} />
+     <CommandBar/>
     {/* <div className="Header-logo">
       <span>Plotting</span>
       <span className="Header-sublogo">catch phrase</span>

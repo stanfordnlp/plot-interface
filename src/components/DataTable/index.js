@@ -76,7 +76,7 @@ class DataTable extends Component {
   }
 
   clickHeader(e, header) {
-    this.props.dispatch(Actions.setQuery(this.props.query + ' ' + header))
+    this.props.dispatch(Actions.setQuery((this.props.query + ' ' + header).trim()))
   }
 
   render() {
@@ -139,7 +139,8 @@ class DataTable extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    spec : state.world.context
+    spec : state.world.context,
+    query: state.world.query,
   };
 }
 
