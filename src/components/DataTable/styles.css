@@ -1,8 +1,19 @@
+.DataTable {
+  width:100%;
+  min-height: 100px;
+  position: relative;
+}
+
 .dataTable {
   margin: 10px;
   margin-left: 95px;
   font-size: 11px;
   overflow: auto;
+
+  overflow-y: auto;
+  width:100%;
+  min-height: 100px;
+  position: relative;
 }
 .dataTable td {
   max-width: 75px;
