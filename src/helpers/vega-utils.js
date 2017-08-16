@@ -60,7 +60,7 @@ export function vegaLiteToDataURLWithErrors(vegaLiteSpec) {
 }
 
 export function vegaToDataURL(vegaSpec, element) {
-  console.log('called vegaToDataURL')
+  // console.log('called vegaToDataURL')
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
@@ -86,7 +86,6 @@ export function responsesFromExamples() {
   const filenames = [...VegaLiteSpecs.TwentyDiverse] // has name and title
   const urls = filenames.map(s => `spec/vega-lite/${s.name}.vl.json`)
 
-  console.log('initial example urls', urls)
   return Promise.all(urls.map(url => {
     return fetch(url).then(res => {
       return res.json().then(json => [url, json])

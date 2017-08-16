@@ -35,11 +35,11 @@ class Label extends Component {
     responsesFromExamples().then(initial => {
       const plotInd = this.config.plotInd || Math.floor(Math.random() * initial.length);
       const context = initial[plotInd].value;
-      console.log(context)
+      // console.log(context)
       // send the actual sempre command
       SEMPREquery({ q: ['random', this.config.numCandidates, context], sessionId: this.state.sessionId})
       .then((response) => {
-        console.log('sempre returned', response)
+        // console.log('sempre returned', response)
         let candidates = response.candidates;
         if (candidates.length > this.config.numCandidates)
           candidates = candidates.slice(0, this.config.numCandidates)
@@ -51,7 +51,7 @@ class Label extends Component {
   // set state plotData
   processPlotData(context, responses) {
     const contextPromise = vegaLiteToDataURLWithErrors(context)
-    console.log('processing %d responses', responses.length);
+    // console.log('processing %d responses', responses.length);
     this.props.dispatch(Actions.setStatus(STATUS.RENDERING))
     // if (responses.length === 0) return
     contextPromise.then(contextVega => {

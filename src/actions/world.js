@@ -82,7 +82,6 @@ const Actions = {
         // const responses = candidates.filter((a) => {
         //   return a.value!==context
         // })
-        console.log('server returned results')
         dispatch({
           type: Constants.SET_ISSUED_QUERY,
           issuedQuery: query

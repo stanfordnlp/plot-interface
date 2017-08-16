@@ -48,7 +48,7 @@ class Build extends Component {
     const {responses, context } = this.props
     const contextPromise = vegaLiteToDataURLWithErrors(context)
 
-    console.log('processing %d responses', responses.length);
+    // console.log('processing %d responses', responses.length);
     this.props.dispatch(Actions.setStatus(STATUS.RENDERING))
     // if (responses.length === 0) return
     contextPromise.then(contextVega => {
@@ -59,7 +59,7 @@ class Build extends Component {
             dataHash:hash(vega.dataURL), formula:r.canonical, spec:r.value, count:0}})
           .catch(e => console.log('processing vega error', e));
       });
-      console.log('contexhash', contextHash)
+      // console.log('contexhash', contextHash)
       Promise.all(renderedSpecs).then( plotData => {
         // console.log('plotData', plotData);
         plotData = plotData.filter(p => p !== undefined)

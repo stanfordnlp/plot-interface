@@ -30,7 +30,7 @@ class DataTable extends Component {
 
     this.props.dispatch(Actions.setState({schema: schema}))
 
-    console.log(schema)
+    // console.log(schema)
     this.setState({schema, output: dataset.values, data: data})
   }
 

@@ -41,7 +41,7 @@ export default function reducer(state = initialState, action = {}) {
     case Constants.CLEAR:
       return initialState
     default:
-      console.log('action not recognized', action.type)
+      // console.log('action not recognized', action)
       return state
   }
 }
