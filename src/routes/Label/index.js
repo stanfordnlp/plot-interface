@@ -99,24 +99,22 @@ class Label extends Component {
     console.log(this.state.utterances)
     for (const [ind, utt] of this.state.utterances.entries()) {
       console.log(utt.length)
-      if(utt.length == 0)
-      {
+      if(utt.length === 0) {
         window.alert(`you cannot label plot ${ind} with empty utterances`)
         return
       }
-      for (var i=0; i < utt.length; i++)
-      {  
+      for (var i=0; i < utt.length; i++) {
         if (utt.length < this.config.countPerExample || utt[i].trim().length === 0) {
           window.alert(`you cannot label plot ${ind} with empty utterances`)
           return
-        } 
+        }
       }
-                                                                       
+
     }
     // TODO: checkmore stuff here, like no paren, token limit, etc.
 
     for (const [ind, utt] of this.state.utterances.entries()) {
-      const r = this.state.plotData[ind] 
+      const r = this.state.plotData[ind]
       for (var j=0; j < this.config.countPerExample; j++)
       {
         const q = ['accept', {utterance: utt[j], targetFormula: r.formula, type: "overnight", context: this.state.context, targetValue: r.spec }]
@@ -151,13 +149,13 @@ class Label extends Component {
           </div>
         </div>
         <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>
-        
-        {[...Array(5).keys()].map((uIdx)=>  
+
+        {[...Array(5).keys()].map((uIdx)=>
             <input className="Label-input"
                       type="text"
                       onChange={e => this.onChange(e, ind, uIdx)}
                       placeholder={uIdx+'. Provide a full English command that transforms the plot from "before" to "after" here'}
-            />   
+            />
         )}
 
       </div>

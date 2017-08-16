@@ -13,20 +13,21 @@ class InputPanel extends React.Component {
 
   render() {
     return (
-      <div className='full-height-wrapper'>
+        <div className='relative-wrapper'>
+        <div className='absolute-wrapper'>
         <AceEditor
           mode="json"
           theme="github"
-          height='$(#full-height-wrapper).height()'
-          width='$(#full-height-wrapper).width()'
-          maxLines="38"
-          autoScrollEditorIntoView="true"
+          height="100%"
+          width="100%"
+          //autoScrollEditorIntoView="true"
           value={this.props.editorString}
           name="spec-editor"
           onChange={v => this.onChange(v)}
-          editorProps={{$blockScrolling: true}}
+          //editorProps={{$blockScrolling: true}}
         />
-      </div>
+        </div>
+        </div>
     )
   }
 }

@@ -4,6 +4,7 @@ import SpecEditor from "components/SpecEditor"
 //import VegaLite from "plot/VegaLite"
 import Plot from "plot/Plot"
 import SplitPane from 'react-split-pane';
+import DataTable from 'components/DataTable'
 
 import "./styles.css"
 
@@ -20,7 +21,10 @@ class Editor extends React.Component {
   render() {
     return (
       <div className='editor-container'>
-        <SpecEditor key='spec-editor' spec={this.props.editorString}/>
+        <DataTable/>
+        <div className='relative-container'>
+          <SpecEditor key='spec-editor' spec={this.props.editorString}/>
+        </div>
       </div>
     )
   }

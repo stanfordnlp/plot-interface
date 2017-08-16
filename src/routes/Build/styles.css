@@ -10,11 +10,7 @@
 .Build > div {
   position: fixed;
   width: 100%;
-}
-
-.current-plot {
-  /*border: 5px solid rgb(0, 160, 176);*/
-  margin: 0px;
+  height: 100%;
 }
 
 div.Candidates {

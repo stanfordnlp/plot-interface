@@ -1,4 +1,17 @@
 .editor-container {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column;
+  flex-flow: column;
+}
+
+.relative-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column;
+  flex-flow: column;
+  width:100%; height: 100%;
+  -webkit-flex: 1 1 auto; flex: 1 1 auto; -ms-flex: 1 1 auto;
 }
