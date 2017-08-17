@@ -20,7 +20,7 @@ class InputPanel extends React.Component {
           theme="github"
           height="100%"
           width="100%"
-          maxLines = "Infinity"
+          maxLines="Infinity"
           autoScrollEditorIntoView="true"
           value={this.props.editorString}
           onChange={v => this.onChange(v)}
