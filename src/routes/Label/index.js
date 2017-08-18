@@ -150,7 +150,7 @@ class Label extends Component {
             </div>
           </div>
         </div>
-        <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>
+        //<div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>
 
         {[...Array(5).keys()].map((uIdx)=>
             <input className="Label-input"
@@ -167,7 +167,7 @@ class Label extends Component {
       return (
           <div className='Label'>
             <div>
-              For each pair of plots, provide 5 commands, using full English sentences, that transform the BEFORE plot to the AFTER plot. A formula expression that describes the change is provided - your 5 commands should rephrase this expression to more naturally describe the change between the two plots. When you are done, please press the submit button.
+              For each pair of plots, provide 5 commands, using natural English, that transform the BEFORE plot to the AFTER plot. When you are done, please press the submit button.
               <button className={classnames({active: true})}
                 onClick={() => this.submit()}>click here to submit</button>
             </div>
