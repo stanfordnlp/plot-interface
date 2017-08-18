@@ -117,7 +117,9 @@ class Label extends Component {
       const r = this.state.plotData[ind]
       for (var j=0; j < this.config.countPerExample; j++)
       {
-        const q = ['accept', {utterance: utt[j], targetFormula: r.formula, type: "overnight", context: this.state.context, targetValue: r.spec }]
+        const q = ['accept', {utterance: utt[j], targetFormula: r.formula,
+          type: "overnight", context: this.state.context, targetValue: r.spec }]
+
         SEMPREquery({ q: q, sessionId: this.state.sessionId }, () => { })
       }
     }

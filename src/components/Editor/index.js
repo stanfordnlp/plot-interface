@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import SpecEditor from "components/SpecEditor"
 //import VegaLite from "plot/VegaLite"
 import DataTable from 'components/DataTable'
-
+import DataSource from 'components/DataSource'
 import "./styles.css"
 
 class Editor extends React.Component {
@@ -19,7 +19,8 @@ class Editor extends React.Component {
   render() {
     return (
       <div className='editor-container'>
-        <DataTable/>
+        {/* <DataTable/> */}
+        <DataSource/>
         <div className='relative-container'>
           <div className='absoluate-container'>
             <SpecEditor key='spec-editor' spec={this.props.editorString}/>

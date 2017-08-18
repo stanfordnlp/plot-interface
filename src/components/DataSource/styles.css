@@ -1,0 +1,101 @@
+.ReactModal__Overlay{
+  top: '50%';
+  left: '50%';
+  right: 'auto';
+  bottom: 'auto';
+  transform: 'translate(-50%, -50%)';
+  z-index: 9999;
+}
+ .ReactModal__Overlay  .ReactModal__Content {
+    position: relative !important;
+  }
+ .ReactModal__Overlay .closeModal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+ .ReactModal__Overlay .wrapper {
+    padding: 20px;
+  }
+
+/* from scss lyra*/
+.pipelineModal {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; }
+  .pipelineModal .closeModal {
+    top: 5px;
+    right: 5px; }
+  .pipelineModal .examples, .pipelineModal .load {
+    flex: 1;
+    padding: 0 10px;
+    height: 300px;
+    overflow: auto; }
+  .pipelineModal .load h2 {
+    font-size: 20px;
+    margin: 10px 0; }
+  .pipelineModal .examples h2 {
+    font-size: 20px;
+    margin: 10px 0;
+    margin-bottom: 10px; }
+  .pipelineModal .examples li {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 80%;
+    vertical-align: baseline;
+    background: transparent;
+    border-radius: 5px; }
+    .pipelineModal .examples li:hover {
+      background: #CBD2DA; }
+    .pipelineModal .examples li.selected {
+      background: #efe8af; }
+  .pipelineModal .example-name {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    color: #7B8B9D;
+    margin-bottom: 5px; }
+  .pipelineModal abbr {
+    font-variant: small-caps;
+    font-size: 1.3em; }
+  .pipelineModal form {
+    margin: 10px 0; }
+    .pipelineModal form input[type=text] {
+      margin-right: 5px;
+      width: 195px; }
+  .pipelineModal textarea {
+    font-family: monospace; }
+  .pipelineModal .textarea-dnd,
+  .pipelineModal input[type="text"] {
+    border: 1px solid;
+    border-radius: 3px;
+    font-size: 100%;
+    padding: .5em 1em;
+    border-color: #989CA5; }
+  .pipelineModal .textarea-dnd.active {
+    background-color: #CBD2DA;
+    border-color: #92A3B2; }
+  .pipelineModal input[type="text"] {
+    line-height: normal;
+    margin-top: 5px; }
+  .pipelineModal .error-message, .pipelineModal .success-message {
+    width: 100%;
+    margin: 20px;
+    margin-top: 0;
+    margin-bottom: 10px; }
+  .pipelineModal .preview {
+    position: relative;
+    vertical-align: bottom;
+    width: 100%;
+    margin: 0 20px; }
+    .pipelineModal .preview h2 {
+      align-items: flex-start;
+      justify-content: flex-start;
+      margin-bottom: 10px; }
+    .pipelineModal .preview .datatable td.field, .pipelineModal .preview .datatable .full.field {
+      left: 0; }
+    .pipelineModal .preview button {
+      margin: 10px 0; }
+
+/*# sourceMappingURL=pipelines.css.map */

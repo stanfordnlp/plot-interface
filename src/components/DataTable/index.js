@@ -12,26 +12,16 @@ class DataTable extends Component {
     this.state = {
       limit: 20,
       page: 0,
+      output: props.values,
+      schema: props.schema,
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.spec || !nextProps.spec.data) {
-      this.setState({data: null})
-      return
-    }
-
-    if (nextProps.spec.data===this.props.spec.data)
-      return
-
-    const data = nextProps.spec.data
-    const dataset  = this.parseRaw(data.values || dl.load(data))
-    const schema = this.schema(dataset.values)
-
-    this.props.dispatch(Actions.setState({schema: schema}))
-
-    // console.log(schema)
-    this.setState({schema, output: dataset.values, data: data})
+    // if (!nextProps.schema || !nextProps.spec.schema) {
+    //   return
+    // }
+    this.setState({schema: nextProps.schema, output: nextProps.values})
   }
 
   prevPage() {
@@ -42,65 +32,15 @@ class DataTable extends Component {
     this.setState({page: ++this.state.page})
   }
 
-  parseRaw(raw) {
-    const format = {parse: 'auto'}
-    let parsed;
-    try {
-      format.type = 'json';
-      return {format: format, values: dl.read(raw, format)};
-    } catch (error) {
-      format.type = 'csv';
-      parsed = dl.read(raw, format);
-
-      // Test successful parsing of CSV/TSV data by checking # of fields found.
-      // If file is TSV but was parsed as CSV, the entire header row will be
-      // parsed as a single field.
-      if (dl.keys(parsed[0]).length > 1) {
-        return {format: format, values: parsed};
-      }
-
-      format.type = 'tsv';
-      parsed = dl.read(raw, format);
-      if (dl.keys(parsed[0]).length > 1) {
-        return {format: format, values: parsed};
-      }
-
-      throw Error('Raw data is in an unsupported format. ' +
-        'Only JSON, CSV, or TSV may be imported.');
-    }
-  }
-
-  /**
-   * Returns the schema of the dataset associated with the given id
-   * or processes the schema based on the dataset's actual values
-   *
-   * @param  {number|Array} arg - An array of raw values to calculate a schema for.
-   * @returns {Object} The dataset's schema.
-   */
-   schema(arg) {
-    if (dl.isNumber(arg)) {
-      throw Error('Dataset schemas are now available in the store.');
-    } else if (dl.isArray(arg)) {
-      var types = dl.type.inferAll(arg);
-      return dl.keys(types).reduce(function(s, k) {
-        s[k] = {
-          name: k,
-          type: types[k],
-          source: true
-        };
-        return s;
-      }, {});
-    }
-    throw Error('Expected an array of raw values.');
-  }
-
   clickHeader(e, header) {
     this.props.dispatch(Actions.setQuery((this.props.query + ' ' + header).trim()))
   }
 
+
+
   render() {
-    const {page, limit, schema, output, data}  = this.state
-    if (!data) return <div className="dataTable">no data available</div>
+    const {page, limit, schema, output}  = this.state
+    // if (!data) return <div className="dataTable">no data available <button>pick data source</button> </div>
 
     const start = page * limit
     const stop  = start + limit
@@ -151,7 +91,6 @@ class DataTable extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    spec : state.world.context,
     query: state.world.query,
   };
 }
