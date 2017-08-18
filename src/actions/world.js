@@ -75,7 +75,7 @@ const Actions = {
         status: STATUS.LOADING
       })
 
-      return SEMPREquery({ q: ['q', {utterance: q, context, schema, fields:Object.keys(schema)}], sessionId: sessionId })
+      return SEMPREquery({ q: ['q', {utterance: q, context, schema}], sessionId: sessionId })
       .then((response) => {
         const candidates = response.candidates
         /* Remove no-ops */

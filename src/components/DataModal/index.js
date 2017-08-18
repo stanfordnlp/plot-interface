@@ -5,34 +5,11 @@ import Actions from "actions/world"
 import DataTable from 'components/DataTable'
 import dsUtils from 'helpers/dataset-utils'
 import "./styles.css"
-
+import exampleDatasets from 'constants/exampleDatasets'
 
 var RawValuesTextArea = require('./RawValuesTextArea'),
     DataURL = require('./DataURL'),
     NAME_REGEX = dsUtils.NAME_REGEX;
-
-const exampleDatasets = [
-  {
-    name: 'Cars',
-    description: 'Vehicular data which consists of names, cylinders and displacement',
-    url: '/data/cars.json'
-  },
-  {
-    name: 'Jobs',
-    description: 'Job demographics such as job type, sex and count',
-    url:  '/data/jobs.json'
-  },
-  {
-    name: 'Gapminder',
-    description: 'Year, country, population, fertility',
-    url:  '/data/gapminder.json'
-  },
-  {
-    name: 'Climate',
-    description: 'Climate attributes such as temperature by lat-long',
-    url:  '/data/climate.json'
-  }
-];
 
 class DataSource extends Component {
   constructor(props) {
@@ -41,7 +18,6 @@ class DataSource extends Component {
       error: null,
       success: null,
       selectedExample: null,
-      isOpen: true,
       preview: false,
     };
   }
@@ -51,7 +27,6 @@ class DataSource extends Component {
     this.setState({...state,
       error: null,
       success: msg || null,
-      selectedExample: null,
       preview: true,
     });
   }
@@ -64,7 +39,6 @@ class DataSource extends Component {
       preview: false,
     });
   }
-
 
   loadURL(msg, url) {
     var that = this;
@@ -88,8 +62,12 @@ class DataSource extends Component {
       });
   }
 
-  close() {
-    this.setState({isOpen: false})
+  importData() {
+    this.props.dispatch(Actions.clear())
+    this.props.dispatch(Actions.setState({schema: this.state.schema}))
+    this.props.dispatch(Actions.setState({schema: this.state.schema}))
+    this.props.dispatch(Actions.tryQuery(''))
+    this.props.onRequestClose()
   }
 
   render() {
@@ -110,11 +88,12 @@ class DataSource extends Component {
         padding: null
       }
     };
+
     return (
-      <Modal isOpen={state.isOpen} onRequestClose={() => this.close()} contentLabel="label-modal"
+      <Modal isOpen={this.props.isOpen} onRequestClose={() => this.props.onRequestClose()} contentLabel="label-modal"
        style={style}>
        <div className="pipelineModal">
-       <span className="closeModal" onClick={() => this.close()}>close</span>
+       <span className="closeModal" onClick={() => this.props.onRequestClose()}>close</span>
           <div className="examples">
             <h2>Example Datasets</h2>
             <ul>
@@ -157,8 +136,8 @@ class DataSource extends Component {
               <DataTable className="source"
                 values={state.values} schema={state.schema} />
 
-              <button className="button button-success"
-                onClick={null}>
+              <button className="active"
+                onClick={() => this.importData()}>
                 Import
               </button>
             </div>
