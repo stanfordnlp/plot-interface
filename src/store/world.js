@@ -2,8 +2,21 @@ import Constants from 'actions/constants'
 import { STATUS } from "constants/strings"
 // import {histogramSpec} from "constants/specs"
 import {prettyStringify} from "helpers/vega-utils"
+import dsUtils from 'helpers/dataset-utils'
+
 // must have key initialContext
 const emptyContext = {'initialContext': 'no current plot'};
+const initialData = [
+  {"a": "C", "b": 2},
+  {"a": "C", "b": 7},
+  {"a": "C", "b": 4},
+  {"a": "D", "b": 1},
+  {"a": "D", "b": 2},
+  {"a": "D", "b": 6},
+  {"a": "E", "b": 8},
+  {"a": "E", "b": 4},
+  {"a": "E", "b": 7}
+];
 const initialState = {
   context: emptyContext,
   editorString: prettyStringify(emptyContext),
@@ -11,8 +24,8 @@ const initialState = {
   status: STATUS.TRY,
   query: "",
 
-  dataValues: null,
-  schema: null,
+  dataValues: initialData,
+  schema: dsUtils.schema(initialData),
 
   issuedQuery: "",
   showErrors: false,
