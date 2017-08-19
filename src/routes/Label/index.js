@@ -26,7 +26,7 @@ class Label extends Component {
     const location = props.routing.location || props.routing.locationBeforeTransitions
     const sessionId = location.query.uid
 
-    this.config = {numCandidates: 75, maxShow: 5, countPerExample: 5, hint: '10', plotInd: null, ...location.query}
+    this.config = {numCandidates: 75, maxShow: 5, countPerExample: 5, hint: '10', plotInd: null, showFormula: false, ...location.query}
 
     this.state = {submitted: false, context: null, responses: [], sessionId}
   }
@@ -150,7 +150,7 @@ class Label extends Component {
             </div>
           </div>
         </div>
-        //<div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>
+        {this.config.showFormula? <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>: null}
 
         {[...Array(5).keys()].map((uIdx)=>
             <input className="Label-input"
