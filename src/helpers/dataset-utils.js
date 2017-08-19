@@ -117,7 +117,7 @@ function schema(arg) {
       s[k] = {
         name: k,
         type: types[k],
-        // mtype: MTYPES[types[k]], 
+        // mtype: MTYPES[types[k]],
         source: true
       };
       return s;
@@ -144,14 +144,16 @@ function aggregateSchema(src, aggregate) {
       field, i, len, name;
 
   for (field in summarize) {
-    for (i = 0, len = summarize[field].length; i < len; ++i) {
-      name = summarize[field][i] + '_' + field;
-      aggSchema[name] = {
-        name: name,
-        type: 'number',
-        mtype: MTYPES.number,
-        source: false
-      };
+    if ({}.hasOwnProperty.call(summarize, field)) {
+      for (i = 0, len = summarize[field].length; i < len; ++i) {
+        name = summarize[field][i] + '_' + field;
+        aggSchema[name] = {
+          name: name,
+          type: 'number',
+          mtype: MTYPES.number,
+          source: false
+        };
+      }
     }
   }
 

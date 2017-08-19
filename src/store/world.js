@@ -1,16 +1,19 @@
 import Constants from 'actions/constants'
 import { STATUS } from "constants/strings"
-// import specs from "constants/specs"
+// import {histogramSpec} from "constants/specs"
 import {prettyStringify} from "helpers/vega-utils"
 // must have key initialContext
-const emptyContext = {'initialContext': 'no current plot, pick an example'};
+const emptyContext = {'initialContext': 'no current plot'};
 const initialState = {
   context: emptyContext,
   editorString: prettyStringify(emptyContext),
   responses: [],
   status: STATUS.TRY,
   query: "",
-  schema: {},
+
+  dataValues: null,
+  schema: null,
+
   issuedQuery: "",
   showErrors: false,
   showFormulas: false

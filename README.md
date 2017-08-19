@@ -26,3 +26,11 @@ check that the parameters are loaded correctly!
 * data for vegalite and example specifications are in `public`
 
 * `public/spec/vega-lite/index.json` together with `src/helper/vega-utils.responsesFromExamples` determines which examples get displayed in the beginning.
+
+## Labeling procedure
+
+Label JSON can be used to manually label some data, the sempre readable example will be printed to the javascript console.
+
+## Workflow
+
+see [schema documentation](https://github.com/vega/vega-loader#data-format-parsing)

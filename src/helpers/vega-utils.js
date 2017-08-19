@@ -49,27 +49,30 @@ export function parseWithErrors(spec) {
   return {vegaSpec: vegaSpec, logger: currLogger}
 }
 
-export function vegaLiteToDataURL(vegaLiteSpec) {
-  return vegaToDataURL(parseWithErrors(vegaLiteSpec).vegaSpec);
-}
-
-export function vegaLiteToDataURLWithErrors(vegaLiteSpec) {
+export function vegaLiteToDataURLWithErrors(vegaLiteSpec, values) {
+  // optionally specify the data
+  if (values) {
+    vegaLiteSpec = JSON.parse(JSON.stringify(vegaLiteSpec))
+    vegaLiteSpec.data = {values: values}
+  }
   const vegaWithErrors = parseWithErrors(vegaLiteSpec);
   return vegaToDataURL(vegaWithErrors.vegaSpec)
     .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}})
 }
 
-export function vegaToDataURL(vegaSpec, element) {
-  // console.log('called vegaToDataURL')
+export function vegaToDataURL(vegaSpec) {
+  console.log('called vegaToDataURL')
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
     let dataURL = new vega.View(runtime)
     .logLevel(vega.Error)
     .initialize()
-    // .toImageURL('canvas')
-    .toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') ); // should be one of svg, png etc. for svg, need to deference blobs...
-    // this thing returns a promise
+    .toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
+    // should be one of svg, png etc. for svg, need to deference blobs...
+    // this thing returns a promise, and # is replaced because it might be interpreted as fragment identifier
+    // .toImageURL('canvas') converts to blob, which cannot be compared
+
     return dataURL
   } catch (err) {
     console.log('vegaToDataURL error', err)
@@ -78,7 +81,7 @@ export function vegaToDataURL(vegaSpec, element) {
 }
 
 export function prettyStringify(obj) {
- return JSON.stringify(obj, null, 4)
+ return JSON.stringify(obj, null, 4) +'\n'
 }
 
 const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');
@@ -93,7 +96,40 @@ export function responsesFromExamples() {
   }))
   .then(specs =>
      specs.map((s) => {
-       return {value: s[1], formula: s[0]}
+       return {value: s[1], formula: s[0], canonical: s[0]}
      })
   )
+}
+
+const histogramSpec = JSON.stringify({
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "bin": {},
+      "field": null,
+      "type": "norminal"
+    },
+    "y": {
+      "aggregate": "count",
+      "field": "*",
+      "type": "quantitative"
+    }
+  }
+})
+
+function toVegaType(schemaType) {
+  const map = {'boolean':null, 'integer': 'quantitative', 'number': 'quantitative', 'date': 'temporal',  'string': 'norminal'}
+  return map[schemaType]
+}
+export function fakeResponsesFromSchema(schema) {
+  return Object.keys(schema)//.filter(name => schema[name].type === 'number' || schema[name].type === 'integer')
+  .map(name => {
+    let value  = JSON.parse(histogramSpec);
+    value.encoding.x.field = name
+    const vegaType = toVegaType(schema[name].type);
+    if (vegaType)
+      value.encoding.x.type = vegaType
+
+    return {value: value, canonical: name}
+  })
 }

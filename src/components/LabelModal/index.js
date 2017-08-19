@@ -83,11 +83,11 @@ class LabelModal extends Component {
       <div className="before-after">
         <div className="before">
           <div className="label">"before"</div>
-          <VegaLite spec={this.props.context}/>
+          <VegaLite spec={this.props.context} dataValues={this.props.dataValues}/>
         </div>
         <div className="before">
           <div className="label">"after"</div>
-          <VegaLite spec={this.state.spec}/>
+          <VegaLite spec={this.state.spec} dataValues={this.props.dataValues}/>
         </div>
       </div>
       <div className="info"><b>formula:</b> {this.state.formula}</div>
@@ -112,6 +112,7 @@ class LabelModal extends Component {
 const mapStateToProps = (state) => ({
   issuedQuery: state.world.issuedQuery,
   context: state.world.context,
+  dataValues: state.world.dataValues,
 })
 
 export default connect(mapStateToProps)(LabelModal)

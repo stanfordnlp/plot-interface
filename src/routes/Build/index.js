@@ -14,7 +14,6 @@ import {MdCheck} from 'react-icons/lib/md'
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import hash from 'string-hash'
 
-
 import "./styles.css"
 
 class Build extends Component {
@@ -45,8 +44,8 @@ class Build extends Component {
 
   // set state plotData
   processPlotData() {
-    const {responses, context } = this.props
-    const contextPromise = vegaLiteToDataURLWithErrors(context)
+    const {responses, context, dataValues } = this.props
+    const contextPromise = vegaLiteToDataURLWithErrors(context, dataValues)
 
     // console.log('processing %d responses', responses.length);
     this.props.dispatch(Actions.setStatus(STATUS.RENDERING))
@@ -54,9 +53,9 @@ class Build extends Component {
     contextPromise.then(contextVega => {
       const contextHash = hash(contextVega.dataURL)
       let renderedSpecs = responses.map(r => {
-        return vegaLiteToDataURLWithErrors(r.value)
+        return vegaLiteToDataURLWithErrors(r.value, dataValues)
           .then(vega => {return {dataURL:vega.dataURL, logger: vega.logger,
-            dataHash:hash(vega.dataURL), formula:r.canonical, spec:r.value, count:0}})
+            dataHash: hash(vega.dataURL), formula: r.canonical, spec :r.value, count:0}})
           .catch(e => console.log('processing vega error', e));
       });
       // console.log('contexhash', contextHash)
@@ -79,7 +78,7 @@ class Build extends Component {
   }
 
   render() {
-    const {responses } = this.props
+    const {responses} = this.props
     let plots = [<div key='loading'>loading...</div>];
     if (this.state && this.state.plotData) {
       plots = this.state.plotData.map((r, ind) =>
@@ -95,16 +94,11 @@ class Build extends Component {
           />
         ))
     }
-    // let plots = responses.map((r, ind) =>
-    //   (
-    //     //<Plot spec={r.value} formula={r.formula} key={ind + '_' + seed} onLabel={this.onLabel}/>
-    //   )
-    // );
 
     let plotsPlus = [];
     if (this.props.showFormulas) {
       plotsPlus.push(
-         <FormulasList formulas={responses.map(r => r.formula)}/>
+         <FormulasList formulas={responses.map(r => r.canonical)}/>
       );
     }
 
@@ -117,6 +111,7 @@ class Build extends Component {
           :
           <VegaLite
             spec={this.props.context}
+            dataValues={this.props.dataValues}
             onError={() => {}}
           />
         }
@@ -142,6 +137,7 @@ class Build extends Component {
 const mapStateToProps = (state) => ({
   responses: state.world.responses,
   context: state.world.context,
+  dataValues: state.world.dataValues,
   showFormulas: state.world.showFormulas,
 })
 

@@ -6,19 +6,8 @@ import dsUtils from 'helpers/dataset-utils'
 import "./styles.css"
 
 class CurrentDataTable extends React.Component {
-  static propTypes = {
-    context: React.PropTypes.object,
-  }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      schema: null,
-      values: null,
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
+  dataFromContext(nextProps) {
     if (!nextProps.context || !nextProps.context.data) {
       this.setState({schema: null})
       return
@@ -47,16 +36,16 @@ class CurrentDataTable extends React.Component {
     }
   }
 
-
   render() {
-    if (this.state.schema === null)
+    if (this.props.schema === null)
       return null
     else
-      return <DataTable className="source" values={this.state.values} schema={this.state.schema}/>
+      return <DataTable className="source" values={this.props.values} schema={this.props.schema}/>
   }
 }
 
 const mapStateToProps = (state) => ({
-  context: state.world.context
+  schema: state.world.schema,
+  values: state.world.dataValues,
 })
 export default connect(mapStateToProps)(CurrentDataTable)

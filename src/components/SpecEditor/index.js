@@ -10,7 +10,7 @@ class InputPanel extends React.Component {
   onChange(newValue) {
     this.props.dispatch(Actions.setEditorString(newValue))
   }
-    
+
   render() {
     return (
       <div className='absolute-wrapper'>
@@ -18,9 +18,10 @@ class InputPanel extends React.Component {
           name="spec-editor"
           mode="json"
           theme="github"
-          height="100%"
+          // height="100%"
           width="100%"
-          maxLines="Infinity"
+          maxLines={Infinity}
+          // minLines={30}
           autoScrollEditorIntoView="true"
           value={this.props.editorString}
           onChange={v => this.onChange(v)}

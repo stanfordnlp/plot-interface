@@ -15,6 +15,6 @@ export function SEMPREquery(cmds, callback) {
       return response.json()
     })
     .catch((ex) => {
-      console.log("fetch issue?", ex)
+      console.log(`Exception when querying`, SEMPRE_SERVER_URL, cmdstr, ex)
     })
 }

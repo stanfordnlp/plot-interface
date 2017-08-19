@@ -15,14 +15,24 @@ class VegaLite extends React.Component {
 
   constructor(props) {
     super(props)
-    const {vegaSpec, logger} = parseWithErrors(props.spec)
+    let spec = props.spec
+    if (this.props.dataValues) {
+      spec = JSON.parse(JSON.stringify(spec))
+      spec.data = {values: this.props.dataValues}
+    }
+    const {vegaSpec, logger} = parseWithErrors(spec)
     const hasError = logger.warns.length > 0 || logger.errors.length > 0
     this.state = {vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null}
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.spec !== nextProps.spec) {
-      const {vegaSpec, logger} = parseWithErrors(nextProps.spec)
+    if (this.props.spec !== nextProps.spec || this.props.dataValues !== nextProps.dataValues) {
+      let spec = nextProps.spec
+      if (this.props.dataValues) {
+        spec = JSON.parse(JSON.stringify(spec))
+        spec.data = {values: this.props.dataValues}
+      }
+      const {vegaSpec, logger} = parseWithErrors(spec)
       const hasError = logger.warns.length > 0 || logger.errors.length > 0
       this.setState({vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null})
     }

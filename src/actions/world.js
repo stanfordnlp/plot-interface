@@ -1,9 +1,11 @@
 import { SEMPREquery } from "helpers/sempre"
-import { persistStore } from "redux-persist"
-import { getStore } from "../"
+// import { persistStore } from "redux-persist"
+// import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {prettyStringify, parseWithErrors, responsesFromExamples} from '../helpers/vega-utils';
+import {prettyStringify, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
+
+import {fakeResponsesFromSchema} from 'helpers/vega-utils'
 
 const Actions = {
   setState: (state) => {
@@ -33,8 +35,6 @@ const Actions = {
     }
   },
 
-
-
   setShowErrors: (showErrors) => {
     return (dispatch) => {
       dispatch({
@@ -62,14 +62,44 @@ const Actions = {
     }
   },
 
+  getRandom: () => {
+    return (dispatch, getState) => {
+      const { sessionId } = getState().user
+      const { context, schema } = getState().world
+
+      const serverRecommendation = false
+      if (!serverRecommendation) {
+        fakeResponsesFromSchema(schema)
+        dispatch({
+          type: Constants.SET_RESPONSES,
+          responses: fakeResponsesFromSchema(schema)
+        })
+        return true
+      }
+
+      SEMPREquery({q: ['random', {amount: 50, context, schema}], sessionId: sessionId})
+      .then((response) => {
+        dispatch({
+          type: Constants.SET_RESPONSES,
+          responses: response.candidates
+        })
+        return true
+      })
+      .catch((e) => {
+        console.log("getRandom failed", e)
+        return false
+      })
+    }
+  },
+
   tryQuery: (q) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { context, query, schema } = getState().world
-      if ('initialContext' in context) {
-        window.alert('you need a starting plot before issuing a command');
-        return
-      }
+      // if ('initialContext' in context) {
+      //   window.alert('you need a starting plot before issuing a command');
+      //   return
+      // }
       dispatch({
         type: Constants.SET_STATUS,
         status: STATUS.LOADING
@@ -183,13 +213,7 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
-      responsesFromExamples().then(responses =>
-        dispatch({
-          type: Constants.SET_RESPONSES,
-          responses: responses
-      })).catch(e => console.log('responseFromExamples', e))
-
-      persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
+      // persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
     }
   }
 }
