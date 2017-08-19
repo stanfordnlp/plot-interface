@@ -37,7 +37,7 @@ class Label extends Component {
       const context = initial[plotInd].value;
       // console.log(context)
       // send the actual sempre command
-      SEMPREquery({ q: ['random', this.config.numCandidates, context], sessionId: this.state.sessionId})
+      SEMPREquery({ q: ['random', {amount:this.config.numCandidates, context}], sessionId: this.state.sessionId})
       .then((response) => {
         // console.log('sempre returned', response)
         let candidates = response.candidates;
