@@ -67,7 +67,7 @@ const Actions = {
       const { sessionId } = getState().user
       const { context, schema } = getState().world
 
-      const serverRecommendation = false
+      const serverRecommendation = true
       if (!serverRecommendation) {
         let fakeCandidates = fakeResponsesFromSchema(schema);
         console.log(fakeCandidates[0]);
@@ -78,7 +78,7 @@ const Actions = {
         return true
       }
 
-      SEMPREquery({q: ['random', {amount: 10, context, schema}], sessionId: sessionId})
+      SEMPREquery({q: ['random', {amount: 20, context, schema}], sessionId: sessionId})
       .then((response) => {
         console.log(response.candidates[0]);
         dispatch({
