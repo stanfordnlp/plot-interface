@@ -72,7 +72,7 @@ export function vegaToDataURL(vegaSpec) {
     // should be one of svg, png etc. for svg, need to deference blobs...
     // this thing returns a promise, and # is replaced because it might be interpreted as fragment identifier
     // .toImageURL('canvas') converts to blob, which cannot be compared
-
+    console.log('vegaToDataURL success', dataURL);
     return dataURL
   } catch (err) {
     console.log('vegaToDataURL error', err)
