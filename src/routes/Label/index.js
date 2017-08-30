@@ -185,7 +185,7 @@ class Label extends Component {
       return (
           <div className='Label'>
             <div>
-              For each pair of plots, provide 5 commands, using English, that transform the BEFORE plot to the AFTER plot. When you are done, please press the submit button.
+              Provided below is a table consisting of the data the following pairs of plots use. For each pair of plots, provide 5 commands, using English, that transform the BEFORE plot to the AFTER plot. When you are done, please press the submit button.
               <button className={classnames({active: true})}
                 onClick={() => this.submit()}>click here to submit</button>
             </div>
