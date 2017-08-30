@@ -2,12 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import Actions from 'actions/world'
 import { connect } from "react-redux"
 
-import { STATUS } from "constants/strings"
+import { STATUS } from "constants/strings" 
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import hash from 'string-hash'
 import classnames from 'classnames'
 import { SEMPREquery } from 'helpers/sempre'
 import {responsesFromExamples} from 'helpers/vega-utils'
+
+import DataTable from 'components/DataTable'
+import dsUtils from 'helpers/dataset-utils'
+
+var dl = require('datalib');
+
 
 import "./styles.css"
 
@@ -35,7 +41,7 @@ class Label extends Component {
     responsesFromExamples().then(initial => {
       const plotInd = this.config.plotInd || Math.floor(Math.random() * initial.length);
       const context = initial[plotInd].value;
-      // console.log(context)
+      console.log(context.data.url)
       // send the actual sempre command
       SEMPREquery({ q: ['random', {amount:this.config.numCandidates, context}], sessionId: this.state.sessionId})
       .then((response) => {
@@ -164,6 +170,18 @@ class Label extends Component {
     )
 
     if (!this.state.submitted) {
+
+      if (!this.state.context.data.values) {
+        console.log("No data values - URL instead :-( Let us load")
+        const d = dl.load({url: this.state.context.data.url})
+        const parsed = dsUtils.parseRaw(d);
+        this.state.context.data.values = parsed.values
+      }
+
+      for (var i = 0; i < this.state.context.data.values.length; i++) {  
+        delete this.state.context.data.values[i]._id;
+      }
+
       return (
           <div className='Label'>
             <div>
@@ -171,6 +189,10 @@ class Label extends Component {
               <button className={classnames({active: true})}
                 onClick={() => this.submit()}>click here to submit</button>
             </div>
+            {console.log(this.state.context)}
+            {console.log(this.state.context.data.values)}
+            {console.log(dsUtils.schema(this.state.context.data.values))}
+            <DataTable className="source" values={this.state.context.data.values} schema={dsUtils.schema(this.state.context.data.values)}/>
             {plots}
           </div>
       )
@@ -187,7 +209,7 @@ class Label extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  routing: state.routing,
+  routing: state.routing, 
 })
 
 export default connect(mapStateToProps)(Label)
