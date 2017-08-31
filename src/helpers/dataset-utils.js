@@ -123,6 +123,8 @@ function schema(arg) {
         // mtype: MTYPES[types[k]],
         uniqueCount: uniqued.size,
         count: arg.length,
+        probablyYears: arg.every(x => (
+            Number.isInteger(x[k]) && x[k] >= 1000 && x[k] < 3000)),
         source: true
       };
       return s;
