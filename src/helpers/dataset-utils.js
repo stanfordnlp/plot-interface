@@ -114,10 +114,17 @@ function schema(arg) {
   } else if (dl.isArray(arg)) {
     var types = dl.type.inferAll(arg);
     return dl.keys(types).reduce(function(s, k) {
+      // Count the number of unique elements
+      let uniqued = new Set();
+      arg.forEach(x => uniqued.add(x[k]));
       s[k] = {
         name: k,
         type: types[k],
         // mtype: MTYPES[types[k]],
+        uniqueCount: uniqued.size,
+        count: arg.length,
+        probablyYears: arg.every(x => (
+            Number.isInteger(x[k]) && x[k] >= 1000 && x[k] < 3000)),
         source: true
       };
       return s;
