@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import SpecEditor from "components/SpecEditor"
 import DataModal from 'components/DataModal'
 import CurrentDataTable from './CurrentDataTable'
+import {parseWithErrors} from 'helpers/vega-utils'
+
 import "./styles.css"
 
 class Editor extends React.Component {
@@ -23,6 +25,21 @@ class Editor extends React.Component {
     this.setState({isOpen: false})
   }
 
+  labelJSON() {
+    try {
+      const spec = JSON.parse(this.props.editorString)
+      const {logger} = parseWithErrors(spec)
+      if (logger.warns.length > 0 || logger.errors.length > 0) {
+        window.alert('current spec has errors, cannot be labeled')
+        console.log('validation errors', logger)
+        return
+      }
+      this.props.onLabel(spec, '(no formula, you are labeling json..)')
+    } catch (e) {
+      window.alert('error in spec (see console)')
+      console.error('spec error', e);
+    }
+  }
 
   render() {
     return (
