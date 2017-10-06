@@ -65,13 +65,13 @@ export function vegaToDataURL(vegaSpec) {
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
-    let dataURL = new vega.View(runtime)
+    const dataView = new vega.View(runtime)
     .logLevel(vega.Error)
     .initialize()
-    .toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
-    // should be one of svg, png etc. for svg, need to deference blobs...
-    // this thing returns a promise, and # is replaced because it might be interpreted as fragment identifier
-    // .toImageURL('canvas') converts to blob, which cannot be compared
+
+    let dataURL = dataView.toImageURL('png')
+    // let dataURL = dataView.toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
+
     console.log('vegaToDataURL success', dataURL);
     return dataURL
   } catch (err) {

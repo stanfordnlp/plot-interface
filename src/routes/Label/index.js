@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Actions from 'actions/world'
 import { connect } from "react-redux"
 
-import { STATUS } from "constants/strings" 
+import { STATUS } from "constants/strings"
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import hash from 'string-hash'
 import classnames from 'classnames'
@@ -171,15 +171,16 @@ class Label extends Component {
 
     if (!this.state.submitted) {
 
-      if (!this.state.context.data.values) {
-        console.log("No data values - URL instead :-( Let us load")
+      let dataValues = this.state.context.data.values
+      if (!dataValues) {
+        console.log("no literal data values, load from URL")
         const d = dl.load({url: this.state.context.data.url})
         const parsed = dsUtils.parseRaw(d);
-        this.state.context.data.values = parsed.values
+        dataValues = parsed.values
       }
 
-      for (var i = 0; i < this.state.context.data.values.length; i++) {  
-        delete this.state.context.data.values[i]._id;
+      for (var i = 0; i < dataValues.length; i++) {
+        delete dataValues[i]._id;
       }
 
       return (
@@ -189,10 +190,7 @@ class Label extends Component {
               <button className={classnames({active: true})}
                 onClick={() => this.submit()}>click here to submit</button>
             </div>
-            {console.log(this.state.context)}
-            {console.log(this.state.context.data.values)}
-            {console.log(dsUtils.schema(this.state.context.data.values))}
-            <DataTable className="source" values={this.state.context.data.values} schema={dsUtils.schema(this.state.context.data.values)}/>
+            <DataTable className="source" values={dataValues} schema={dsUtils.schema(dataValues)}/>
             {plots}
           </div>
       )
@@ -209,7 +207,7 @@ class Label extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  routing: state.routing, 
+  routing: state.routing,
 })
 
 export default connect(mapStateToProps)(Label)
