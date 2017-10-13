@@ -122,7 +122,7 @@ class Build extends Component {
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
-          <Editor/>
+          <Editor onLabel={(spec, formula) => this.onLabel(spec, formula)}/>
           <div className="Candidates" ref={c => this.candidates = c}>
             {plotsPlus}
           </div>

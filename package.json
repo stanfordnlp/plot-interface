@@ -22,6 +22,7 @@
     "d3": "^4.10.0",
     "datalib": "^1.8.0",
     "es6-promisify": "^5.0.0",
+    "fast-json-patch": "^2.0.5",
     "hashids": "^1.1.1",
     "normalize.css": "^5.0.0",
     "react": "^15.3.2",

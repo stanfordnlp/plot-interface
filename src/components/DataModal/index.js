@@ -72,7 +72,7 @@ class DataSource extends Component {
   render() {
     const state = this.state,
     {error, success, preview} = this.state
-    var style = {
+    const style = {
       overlay: {
         display: 'flex',
         alignItems: 'center',
@@ -89,7 +89,7 @@ class DataSource extends Component {
     };
 
     return (
-      <Modal isOpen={this.props.isOpen} onRequestClose={() => this.props.onRequestClose()} contentLabel="label-modal"
+      <Modal isOpen={this.props.isOpen} onRequestClose={() => this.props.onRequestClose()} 
        style={style}>
        <div className="pipelineModal">
        <span className="closeModal" onClick={() => this.props.onRequestClose()}>close</span>

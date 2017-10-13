@@ -1,24 +1,3 @@
-.ReactModal__Overlay{
-  top: '50%';
-  left: '50%';
-  right: 'auto';
-  bottom: 'auto';
-  transform: 'translate(-50%, -50%)';
-  z-index: 9999;
-}
- .ReactModal__Overlay  .ReactModal__Content {
-    position: relative !important;
-  }
- .ReactModal__Overlay .closeModal {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-  }
- .ReactModal__Overlay .wrapper {
-    padding: 20px;
-  }
-
 /* from scss lyra*/
 .pipelineModal {
   display: flex;

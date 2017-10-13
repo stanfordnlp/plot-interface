@@ -26,7 +26,9 @@ class VegaLite extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('vegalite received props', nextProps, this.props)
     if (this.props.spec !== nextProps.spec || this.props.dataValues !== nextProps.dataValues) {
+      console.log('passed will receive props')
       let spec = nextProps.spec
       if (this.props.dataValues) {
         spec = JSON.parse(JSON.stringify(spec))
@@ -43,8 +45,11 @@ class VegaLite extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevStates) {
-    if (this.props.spec !== prevProps.spec)
+    console.log('didUpdate outside', this.props, prevProps)
+    if (this.state.dataURL!==prevStates.dataURL || this.props.spec !== prevProps.spec) {
       this.updateVegaWrap(this.props.spec)
+      console.log('didUpdate', this.props.spec)
+    }
   }
 
   updateVegaWrap() {

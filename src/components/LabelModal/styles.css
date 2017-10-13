@@ -1,4 +1,4 @@
-.Overlay  {
+/*.Overlay  {
   position          : fixed;
   top               : 0;
   left              : 0;
@@ -23,7 +23,7 @@
   width: 800px;
   height: 700px;
 }
-
+*/
 /*.LabelModal_after-open  {
   position                   : absolute;
   border                     : 1px solid #ccc;
@@ -39,6 +39,7 @@
 .control-bar {
   float:right;
 }
+
 
 .header {
   font-size: 1.3em;

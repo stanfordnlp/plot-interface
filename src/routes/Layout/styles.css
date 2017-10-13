@@ -155,3 +155,35 @@ button.full {
   cursor: pointer;
   color: rgb(30, 190, 206);
 }
+
+.Overlay  {
+  position          : fixed;
+  top               : 0;
+  left              : 0;
+  right             : 0;
+  bottom            : 0;
+  background-color   : rgba(75, 75, 75, 0.4);
+  z-index: 1001;
+}
+
+.ReactModal__Overlay  {
+  top: '50%';
+  left: '50%';
+  right: 'auto';
+  bottom: 'auto';
+  transform: 'translate(-50%, -50%)';
+  background-color   : rgba(75, 75, 75, 0.4);
+  z-index: 9999;
+}
+.ReactModal__Overlay  .ReactModal__Content {
+  position: relative !important;
+}
+.ReactModal__Overlay .closeModal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+.ReactModal__Overlay .wrapper {
+  padding: 20px;
+}

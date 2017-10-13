@@ -36,10 +36,10 @@ class Plot extends React.Component {
   }
 
   onLabel() {
-    if ("initialContext" in this.props.context) {
-      window.alert("No current plot, you need to pick one before you can label")
-      return
-    }
+    // if ("initialContext" in this.props.context) {
+    //   window.alert("No current plot, you need to pick one before you can label")
+    //   return
+    // }
     this.props.onLabel(this.state.spec, this.state.formula)
   }
 

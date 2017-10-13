@@ -35,15 +35,15 @@ class Editor extends React.Component {
       }
       this.props.onLabel(spec, '(no formula, you are labeling json..)')
     } catch (e) {
-      window.alert('error in spec (see console)')
-      console.error('spec error', e);
+      const logger = {errors: [e.message], warns:[]}
+      this.setState({logger})
     }
   }
 
   render() {
     let messages = null
     if (this.state.logger !== undefined) {
-      const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
+      const errors = this.state.logger.errors.map((v, i) => <li className='editor-display-errors' key={'error'+i}>{v}</li>)
       const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
       messages = errors.concat(warns)
     }
@@ -61,7 +61,7 @@ class Editor extends React.Component {
             <SpecEditor key='spec-editor' spec={this.props.editorString}/>
           </div>
         </div>
-        <div>,,
+        <div>
           <ul>{messages}</ul>
         </div>
       </div>
