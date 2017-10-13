@@ -9,3 +9,15 @@
 .absolute-container {
   position: absolute; top: 0; bottom: 0; width: 100%; height: 100%;
 }
+
+
+.display-errors {
+  font-size: 0.5em;
+  margin: 0;
+  color: red;
+}
+.display-warns {
+  font-size: 0.5em;
+  margin: 0;
+  color: orange;
+}

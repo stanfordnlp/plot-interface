@@ -18,9 +18,9 @@ class InputPanel extends React.Component {
           name="spec-editor"
           mode="json"
           theme="github"
-          // height="100%"
+          height="100%"
           width="100%"
-          maxLines={Infinity}
+          // maxLines={Infinity}
           // minLines={30}
           autoScrollEditorIntoView="true"
           value={this.props.editorString}

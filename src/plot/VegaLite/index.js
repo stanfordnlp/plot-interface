@@ -69,38 +69,6 @@ class VegaLite extends React.Component {
     })
   }
 
-  // renderVega(state) {
-  //   return;
-  //   this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
-  //   let runtime;
-  //   try {
-  //     runtime = vega.parse(this.state.vegaSpec);
-  //     let view = new vega.View(runtime)
-  //     .logLevel(vega.Warn)
-  //     //.initialize()
-  //     .initialize(this.refs.chart)
-  //     .renderer(this.config.renderer);
-  //     view.run();
-  //     if (this.props.onDoneRendering !== undefined)
-  //       this.props.onDoneRendering(this.refs.chart.children[0]);
-  //     // console.log('innerHTML', this.refs.chart.children[0].toDataURL())
-  //
-  //     // const prevView = view.scenegraph().root;
-  //     // console.log('scenegraph2', prevView)
-  //     // console.log('scenegraph2svg', prevView._svg.outerHTML  )
-  //     // view.toSVG().then(svg => {console.log('renderVega.toSVG %s', svg)})
-  //     // this.setState({view: view});
-  //     // console.log(view.scenegraph())
-  //     // console.log(view._runtime)
-  //   } catch (err) {
-  //     console.log('VegaLite.error %s', err.toString());
-  //     // throw err;
-  //   }
-  //   this.refs.chart.style.width = 'auto';
-  //   // window.VEGA_DEBUG.view = view;
-  // }
-  //
-
   test(e) {
     console.log('hash', hash(this.state.dataURL))
     console.log('info', {dataurl: this.state.dataURL})
