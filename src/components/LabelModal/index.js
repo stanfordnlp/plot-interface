@@ -108,7 +108,7 @@ class LabelModal extends Component {
         onKeyDown={e => this.handleKeyDown(e)}
         onChange={e => this.updateInputValue(e)}
         placeholder={'Provide a command that would change "before" to "after":'}
-      />jsonPatch
+      />
       <div className='control-bar'>
         <button className={classnames({active: this.state.inputValue.trim().length>0})} onClick={() => this.submit(this.state.inputValue)}>Submit (enter)</button>
         <button className={classnames({active: true})} onClick={() => this.close()}>Close (ESC)</button>

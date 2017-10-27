@@ -24,11 +24,6 @@ class Build extends Component {
     dispatch: PropTypes.func,
   }
 
-  // shouldComponentUpdate() {
-  //   this.props.dispatch(Actions.setStatus('rendering'))
-  //   return true
-  // }
-
   onLabel = (spec, formula) => {
     this.labelModal.onLabel(spec, formula)
   };
