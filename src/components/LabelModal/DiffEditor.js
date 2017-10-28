@@ -4,6 +4,7 @@ import AceEditor from 'react-ace'
 import {prettyStringify} from 'helpers/vega-utils'
 import JsonDiffMode from './JsonDiffMode.js'
 import * as ace from 'brace'
+var Range = ace.acequire('ace/range').Range
 import "./styles.css"
 import 'brace/mode/javascript';
 
@@ -29,17 +30,29 @@ class DiffEditor extends Component {
     //this.refs.aceEditor.editor.setMode("ace/mode/text");
     const editor = this.refs.aceEditor.editor
     // this.refs.aceEditor.editor.setReadOnly('false')
+
     editor.getSession().setMode(new JsonDiffMode());
-    editor.getSession().foldAll(0,100)
+    this.updateHighlights()
     // editor.getSession().addGutterDecoration(2, 'test-gutter')
-    var Range = ace.acequire('ace/range').Range
-    editor.getSession().addMarker(new Range(0,3,2,6), 'changed-lines', 'fullLine', false)
+
+    // editor.getSession().addMarker(new Range(0,0,2,0), 'changed-lines', 'fullLine', false)
+  }
+
+  updateHighlights() {
+    const editorSession = this.refs.aceEditor.editor.getSession()
+
+    const contextLines = prettyStringify(this.props.context).split('\n').map(t => t.replace(/,|\{|\}|\t/g, ''))
+    const specLines = this.state.specString.split('\n').map(t => t.replace(/,|\{|\}|\t/g, ''))
+    const lineIndices = specLines.map((l, i) => !contextLines.includes(l)? i : -1).filter(l => l!==-1)
+    console.log(lineIndices)
+
+    lineIndices.map(i => editorSession.addMarker(new Range(i, 0, i+1, 0), 'changed-lines'))
   }
 
   render() {
     return (
       <div className='diffEditor'>
-        <div>Edit properties below, the changes are highlighted</div>
+        <div>Edit properties below, changes are highlighted</div>
         <div>
           <AceEditor
             ref="aceEditor"
