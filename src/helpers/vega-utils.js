@@ -13,22 +13,37 @@ ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
 const vegaValidator = ajv.compile(require('../../schema/vega.schema.json'));
 const vegaLiteValidator = ajv.compile(require('../../schema/vl.schema.json'));
 
-export function validateVegaLite(spec, logger) {
-  const valid = vegaLiteValidator(spec);
+function validate(validator, spec, logger) {
+  const valid = validator(spec);
+  const messages = []
   if (!valid) {
     for (const error of vegaLiteValidator.errors) {
-      logger.warn(`ValidationVegaLite: ${error.dataPath} ${error.message}`);
+      const key = error.keyword
+      let message
+      if (key === 'additionalProperties') {
+        message = `should not have additionalProperties ${error.params.additionalProperty}`
+      } else if (key === 'type') {
+        message = `${error.dataPath} ${error.message}` // dataPath should be message
+      } else if (key === 'anyOf') {
+        message = `${error.message}`
+      } else {
+        message = JSON.stringify(error)
+      }
+      messages.push(message)
+    }
+    const uniqueMessages = messages.filter((item, pos) => messages.indexOf(item) === pos);
+    for (const m of uniqueMessages) {
+      logger.warn(`VegaLite: ${m}`)
     }
   }
 }
 
+export function validateVegaLite(spec, logger) {
+  validate(vegaLiteValidator, spec, logger)
+}
+
 export function validateVega(spec, logger) {
-  const valid = vegaValidator(spec);
-  if (!valid) {
-    for (const error of vegaValidator.errors) {
-      logger.warn(`ValidationVega: ${error.dataPath} ${error.message}`);
-    }
-  }
+  validate(vegaValidator, spec, logger)
 }
 
 export function parseAndCheckStr(jsonStr) {
@@ -81,7 +96,7 @@ export function vegaToDataURL(vegaSpec) {
 }
 
 export function prettyStringify(obj) {
- return JSON.stringify(obj, null, 4) +'\n'
+ return JSON.stringify(obj, null, '\t')
 }
 
 const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');

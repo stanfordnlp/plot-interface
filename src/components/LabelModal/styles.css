@@ -59,6 +59,8 @@
   display: flex;
   width: 775px;
   height: 400px;
+  padding: 10px;
+  float: center;
 }
 
 .before {
@@ -87,4 +89,14 @@
   margin: 5px;
   margin-top: 5px;
   font-weight: normal;
+}
+
+.diffEditor {
+  padding: 10px;
+}
+
+.changed-lines{
+  position:absolute;
+  background:rgba(100,200,100,0.5);
+  z-index:40
 }

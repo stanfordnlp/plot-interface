@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import JsonPatch from 'fast-json-patch'
 import AceEditor from 'react-ace'
+import {prettyStringify} from 'helpers/vega-utils'
 import "./styles.css"
 class JsonPatchEditor extends Component {
   constructor(props) {
@@ -9,9 +10,9 @@ class JsonPatchEditor extends Component {
     if (props.initial!==undefined && props.context!==undefined) {
       initialPatch = JsonPatch.compare(props.context, this.props.initial)
     }
-
+    console.log(initialPatch)
     const stringPatch = initialPatch.filter(p => p.value!==undefined)
-      .map(p => {p.value = JSON.stringify(p.value); return p})
+      .map(p => {p.value = prettyStringify(p.value); return p})
     this.state = {
       jsonPatch: stringPatch,
       context: props.context,
@@ -40,13 +41,14 @@ class JsonPatchEditor extends Component {
      const deepCopy = JSON.parse(JSON.stringify(this.state.context))
      const after = JsonPatch.applyPatch(deepCopy, actualPatch).newDocument
      this.props.update(after)
-
   }
 
   render() {
+
     const diffUI = this.state.jsonPatch.map((p,ind) =>
       <div>
-        {`${ind}) ${p.op} ${p.path}: `}
+        {`${ind+1}) ${p.op} ${p.path}: `}
+
         <AceEditor
           name="spec-editor"
           mode="json"
@@ -61,7 +63,12 @@ class JsonPatchEditor extends Component {
         />
       </div>
     )
-    return <div>{diffUI}</div>
+    return (
+      <div className='diffEditor'>
+        <div>Edit properties below</div>
+        {diffUI}
+      </div>
+    )
   }
 }
 export default JsonPatchEditor

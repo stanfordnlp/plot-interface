@@ -4,7 +4,7 @@ import classnames from "classnames"
 import Actions from "actions/world"
 import Modal from "react-modal"
 import VegaLite from "plot/VegaLite"
-import JsonPatchEditor from './JsonPatchEditor'
+import DiffEditor from './DiffEditor'
 import "./styles.css"
 
 const headerText = 'Comparisons';
@@ -86,7 +86,7 @@ class LabelModal extends Component {
         isOpen={this.state.isOpen}
         onRequestClose={() => this.close()}
         style={style}
-        // contentLabel="label-modal"
+        contentLabel="label-modal"
         // style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
       <div className="header">{this.state.headerText}</div>
@@ -100,7 +100,7 @@ class LabelModal extends Component {
           <VegaLite spec={spec} dataValues={this.props.dataValues}/>
         </div>
       </div>
-      <JsonPatchEditor context={context} initial={spec} update={(spec) => this.setState({spec})}/>
+      <DiffEditor context={context} initial={spec} update={(spec) => this.setState({spec})}/>
       <div className="info">Provide a command (in English) that changes "before" to "after":</div>
       <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
         type="text"

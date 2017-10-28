@@ -89,7 +89,7 @@ class DataSource extends Component {
     };
 
     return (
-      <Modal isOpen={this.props.isOpen} onRequestClose={() => this.props.onRequestClose()} 
+      <Modal contentLabel='labelModal' isOpen={this.props.isOpen} onRequestClose={() => this.props.onRequestClose()} 
        style={style}>
        <div className="pipelineModal">
        <span className="closeModal" onClick={() => this.props.onRequestClose()}>close</span>
