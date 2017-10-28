@@ -19,7 +19,8 @@
     margin: 10px 0;
     margin-bottom: 10px; }
   .pipelineModal .examples li {
-    padding: 10px;
+    margin: 10px;
+    list-style-type: none;
     cursor: pointer;
     font-size: 80%;
     vertical-align: baseline;

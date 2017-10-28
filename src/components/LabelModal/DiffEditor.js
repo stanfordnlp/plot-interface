@@ -52,7 +52,7 @@ class DiffEditor extends Component {
   render() {
     return (
       <div className='diffEditor'>
-        <div>Edit properties below, changes are highlighted</div>
+        <div className='info'>Edit properties below if "after" is not what you want </div>
         <div>
           <AceEditor
             ref="aceEditor"

@@ -52,35 +52,31 @@
 
 .label-box {
   font-size: 1em;
-  margin: 5px;
 }
 
 .before-after {
   display: flex;
-  width: 775px;
-  height: 400px;
+  justify-content: center;
+  width: auto;
+  height: auto;
   padding: 10px;
   float: center;
 }
 
 .before {
-  width: 395px;
-  height: 400px;
-  overflow: auto;
+  width: 400px;
+  height: auto;
   padding: 10px;
-  overflow-x: scroll;
+  margin: 5px;
   border: 1px solid rgba(0, 0, 0, 1);
 }
 
 .info {
-  margin: 5px;
-  padding: 5px;
-  font-size: 1.2em;
+  margin-top: 10px;
+  font-size: 1em;
 }
 
 .label {
-  align-items: center;
-  justify-content: center;
   font-size: 1.2em;
   font-weight: bold;
 }
@@ -92,7 +88,6 @@
 }
 
 .diffEditor {
-  padding: 10px;
 }
 
 .changed-lines{

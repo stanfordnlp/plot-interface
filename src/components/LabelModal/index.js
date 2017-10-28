@@ -7,13 +7,13 @@ import VegaLite from "plot/VegaLite"
 import DiffEditor from './DiffEditor'
 import "./styles.css"
 
-const headerText = 'Comparisons';
+const headerText = 'Edit and label';
 class LabelModal extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      inputValue: '',
+      inputValue: props.issuedQuery,
       headerText: headerText,
     }
   }
@@ -29,18 +29,13 @@ class LabelModal extends Component {
   // note that props.issuedQuery is the query used to retrieve the original results
   // vs. props.query, which tracks the live value in query box
   onLabel(spec, formula) {
-    this.setState({isOpen: true, spec: spec, formula: formula,})
+    this.setState({isOpen: true, spec: spec, formula: formula, inputValue: this.props.issuedQuery,})
   }
 
   close() {this.setState({headerText: headerText, inputValue: '', isOpen: false})}
 
   submit(value) {
-    if (value.trim().length === 0) {
-      this.props.dispatch(Actions.updateSpec());
-      this.setState({headerText: `updating the current plot...` })
-      setTimeout(() => {this.close()}, 200);
-      return
-    }
+    this.props.dispatch(Actions.accept(this.state.spec));
     this.props.dispatch(Actions.label(value, this.state.spec));
     this.setState({headerText: `labeled this plot as "${value}"...` })
     setTimeout(() => {this.close()}, 800);
@@ -64,22 +59,22 @@ class LabelModal extends Component {
       overlay: {
         display: 'flex',
         alignItems: 'center',
-        'backgroundColor': 'rgba(75,75,75,0.5)',
+        backgroundColor: 'rgba(75,75,75,0.5)',
         justifyContent: 'center'
       },
       content: {
         // position: null,
         overflow: 'hidden',
         top: null, bottom: null, left: null, right: null,
-        width: '800px',
+        width: 'auto',
         height: 'auto',
-        padding: null
+        padding: '10px',
+        margin: '20px',
       }
     };
     const {context} = this.props
     const {spec} = this.state
 
-    console.log('labelModal', spec)
     return (
 
       <Modal
@@ -92,11 +87,11 @@ class LabelModal extends Component {
       <div className="header">{this.state.headerText}</div>
       <div className="before-after">
         <div className="before">
-          <div className="label">"before"</div>
+          <div className="label">"Before"</div>
           <VegaLite spec={context} dataValues={this.props.dataValues}/>
         </div>
         <div className="before">
-          <div className="label">"after"</div>
+          <div className="label">"After"</div>
           <VegaLite spec={spec} dataValues={this.props.dataValues}/>
         </div>
       </div>

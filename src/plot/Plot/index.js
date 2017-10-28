@@ -63,19 +63,19 @@ class Plot extends React.Component {
                     {'remove this'}
                 </div>
              </span>
-             <span className='header-button'>
+             {/* <span className='header-button'>
                <MdCheck className='md-button' size={iconSize} onClick={(e) => {this.accept()}}/>
                 <div className="header-button-tooltip">
                     {'use this'}
                 </div>
-             </span>
+             </span> */}
 
              <span className='header-button'>
-               <MdCompare className='md-button' size={iconSize} onClick={(e) => {
+               <MdCheck className='md-button' size={iconSize} onClick={(e) => {
                   this.onLabel()}
                 } />
                 <div className="header-button-tooltip">
-                    {'compare and label'}
+                    {'edit and accept'}
                 </div>
              </span>
           </div>

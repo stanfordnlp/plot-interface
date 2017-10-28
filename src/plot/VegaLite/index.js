@@ -26,10 +26,10 @@ class VegaLite extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('vegalite received props', nextProps, this.props)
-    // if (this.props.spec !== nextProps.spec)
+    // console.log('vegalite received props', nextProps, this.props)
+    if (this.props.spec !== nextProps.spec)
     {
-      console.log('passed will receive props')
+      // console.log('passed will receive props')
       let spec = nextProps.spec
       if (this.props.dataValues) {
         spec = JSON.parse(JSON.stringify(spec))
