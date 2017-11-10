@@ -4,7 +4,6 @@ import Layout from './Layout'
 import Build from './Build';
 import Help from "./Help"
 import Label from "./Label"
-import Demo from "./Demo"
 const Routes = ({ history }) => (
   <Router history={history}>
     <Route path="/" component={Layout}>
@@ -13,7 +12,6 @@ const Routes = ({ history }) => (
       <Route path="help" component={Help} />
     </Route>
     <Route path="label" component={Label} />
-    <Route path="demo" component={Demo} />
   </Router>
 )
 

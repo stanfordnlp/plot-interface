@@ -5,7 +5,7 @@ import Actions from 'actions/world'
 import hash from 'string-hash'
 
 // import ContextOverlay from './context-overlay'
-import {MdClose, MdCheck, MdCompare} from 'react-icons/lib/md'
+import {MdClose, MdCheck,} from 'react-icons/lib/md'
 import './styles.css'
 
 class Plot extends React.Component {

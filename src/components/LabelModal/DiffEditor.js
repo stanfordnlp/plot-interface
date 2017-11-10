@@ -19,22 +19,24 @@ class DiffEditor extends Component {
   }
 
   onChange(value) {
-    this.setState({'specString':value})
-    try {
-      const after = JSON.parse(value)
-      this.props.update(after)
-    } catch (ex) {}
+    this.setState({'specString':value}, () => {
+      try {
+        const after = JSON.parse(value)
+        this.updateHighlights()
+        this.props.update(after)
+      } catch (ex) {
+        console.log(ex)
+      }
+    })
   }
 
   componentDidMount() {
     //this.refs.aceEditor.editor.setMode("ace/mode/text");
     const editor = this.refs.aceEditor.editor
     // this.refs.aceEditor.editor.setReadOnly('false')
-
     editor.getSession().setMode(new JsonDiffMode());
     this.updateHighlights()
     // editor.getSession().addGutterDecoration(2, 'test-gutter')
-
     // editor.getSession().addMarker(new Range(0,0,2,0), 'changed-lines', 'fullLine', false)
   }
 
@@ -44,9 +46,8 @@ class DiffEditor extends Component {
     const contextLines = prettyStringify(this.props.context).split('\n').map(t => t.replace(/,|\{|\}|\t/g, ''))
     const specLines = this.state.specString.split('\n').map(t => t.replace(/,|\{|\}|\t/g, ''))
     const lineIndices = specLines.map((l, i) => !contextLines.includes(l)? i : -1).filter(l => l!==-1)
-    console.log(lineIndices)
-
-    lineIndices.map(i => editorSession.addMarker(new Range(i, 0, i+1, 0), 'changed-lines'))
+    //lineIndices.map(i => editorSession.addMarker(new Range(i, 0, i+1, 0), 'changed-lines'))
+    lineIndices.map(i => editorSession.addGutterDecoration(i, 'changed-gutter'))
   }
 
   render() {

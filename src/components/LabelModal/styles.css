@@ -90,8 +90,13 @@
 .diffEditor {
 }
 
+.changed-gutter{
+    border-radius: 0px 0px 0px 0px;
+    background: rgba(100,200,100,0.5);
+}
+
 .changed-lines{
   position:absolute;
   background:rgba(100,200,100,0.5);
-  z-index:40
+  /*z-index:40*/
 }
