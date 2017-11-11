@@ -5,9 +5,9 @@ import classnames from 'classnames'
 import {parseWithErrors} from 'helpers/vega-utils'
 import './index.css'
 class Toolbar extends React.Component {
-  clearAll() {
-    this.props.dispatch(Actions.clear());
-  }
+  // clearAll() {
+  //   this.props.dispatch(Actions.clear());
+  // }
 
   toggleShowErrors() {
     this.props.dispatch(Actions.setShowErrors(!this.props.showErrors));
@@ -38,8 +38,7 @@ class Toolbar extends React.Component {
     return (
       <div className='Toolbar'>
         <button># candidates: {this.props.numCandidates}</button>
-        <button className={classnames({active: true})} onClick={() => this.clearAll()}>Reset</button>
-        <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse JSON Spec</button>
+        {/* <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse JSON Spec</button> */}
         <button className={classnames({active: true})} onClick={() => this.toggleShowErrors()}>
           {this.props.showErrors? 'hide errors' : 'show errors'}
         </button>

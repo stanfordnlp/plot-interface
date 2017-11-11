@@ -1,5 +1,6 @@
 import React from "react"
 import {connect} from "react-redux";
+import Actions from 'actions/world'
 import SpecEditor from "components/SpecEditor"
 import DataModal from 'components/DataModal'
 import CurrentDataTable from './CurrentDataTable'
@@ -23,6 +24,10 @@ class Editor extends React.Component {
   }
   closeDataModal() {
     this.setState({isOpen: false})
+  }
+
+  clearAll() {
+    this.props.dispatch(Actions.clear());
   }
 
   labelJSON() {
@@ -50,9 +55,9 @@ class Editor extends React.Component {
     return (
       <div className='editor-container'>
         <div>
-          <button className="active" onClick={() => this.openDataModal()}>select data</button>
-          <button className="active" onClick={() => this.labelJSON()}>update spec</button>
-
+          <button className="active" onClick={() => this.openDataModal()}>Data</button>
+          <button className="active" onClick={() => this.labelJSON()}>Check</button>
+          <button className="active" onClick={() => this.clearAll()}>Reset</button>
           <CurrentDataTable/>
           <DataModal isOpen={this.state.isOpen} onRequestClose={() => this.closeDataModal()}/>
         </div>

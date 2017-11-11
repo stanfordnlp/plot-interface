@@ -1,4 +1,5 @@
 import { SEMPREquery } from "helpers/sempre"
+import dsUtils from 'helpers/dataset-utils'
 // import { persistStore } from "redux-persist"
 // import { getStore } from "../"
 import { STATUS } from "constants/strings"
@@ -215,6 +216,22 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
+      const datasetURL = getState().routing.locationBeforeTransitions.query.dataset
+      if (datasetURL === undefined) {
+        this.props.dispatch(Actions.getRandom())
+      } else {
+        dsUtils.loadURL(datasetURL)
+          .then(loaded => {
+            const parsed = dsUtils.parseRaw(loaded.data),
+             values = parsed.values,
+             schema = dsUtils.schema(values)
+            dispatch(Actions.setState({schema: schema, dataValues: values}))
+            dispatch(Actions.getRandom())
+          })
+          .catch(function(err) {
+            console.log(err)
+          });
+      }
       // persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
     }
   }

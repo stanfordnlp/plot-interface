@@ -76,27 +76,32 @@ class LabelModal extends Component {
     const {context} = this.props
     const {spec} = this.state
 
-    let body
+    let body, promptString
     if (Object.keys(context).length === 0) {
+      promptString = 'Provide a command (in English) that gives this plot: '
       body = (
         <div className="before-after">
           <div className="before">
-            <div className="label">"New plot"</div>
+            <div className="label">New plot</div>
             <VegaLite spec={spec} dataValues={this.props.dataValues}/>
           </div>
         </div>
       )
     } else {
+      promptString = 'Provide a command (in English) that changes "before" to "after":'
       body = (
-      <div className="before-after">
-        <div className="before">
-          <div className="label">"Before"</div>
-          <VegaLite spec={context} dataValues={this.props.dataValues}/>
+      <div>
+        <div className="before-after">
+          <div className="before">
+            <div className="label">"Before"</div>
+            <VegaLite spec={context} dataValues={this.props.dataValues}/>
+          </div>
+          <div className="before">
+            <div className="label">"After"</div>
+            <VegaLite spec={spec} dataValues={this.props.dataValues}/>
+          </div>
         </div>
-        <div className="before">
-          <div className="label">"After"</div>
-          <VegaLite spec={spec} dataValues={this.props.dataValues}/>
-        </div>
+
       </div>
       )
     }
@@ -111,16 +116,17 @@ class LabelModal extends Component {
         // style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
       <div className="header">{this.state.headerText}</div>
+      <div className="info">{promptString}</div>
+        <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
+          type="text"
+          value={this.state.inputValue}
+          onKeyDown={e => this.handleKeyDown(e)}
+          onChange={e => this.updateInputValue(e)}
+          placeholder={promptString}
+        />
       {body}
+
       <DiffEditor context={context} initial={spec} update={(spec) => this.setState({spec})}/>
-      <div className="info">Provide a command (in English) that changes "before" to "after":</div>
-      <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
-        type="text"
-        value={this.state.inputValue}
-        onKeyDown={e => this.handleKeyDown(e)}
-        onChange={e => this.updateInputValue(e)}
-        placeholder={'Provide a command that would change "before" to "after":'}
-      />
       <div className='control-bar'>
         <button className={classnames({active: this.state.inputValue.trim().length>0})} onClick={() => this.submit(this.state.inputValue)}>Submit (enter)</button>
         <button className={classnames({active: true})} onClick={() => this.close()}>Close (ESC)</button>
