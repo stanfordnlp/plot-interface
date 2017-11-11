@@ -37,8 +37,9 @@ class LabelModal extends Component {
   submit(value) {
     this.props.dispatch(Actions.accept(this.state.spec));
     this.props.dispatch(Actions.label(value, this.state.spec));
-    this.setState({headerText: `labeled this plot as "${value}"...` })
-    setTimeout(() => {this.close()}, 800);
+    this.close()
+    // this.setState({headerText: `labeled this plot as "${value}"...` })
+    // setTimeout(() => {this.close()}, 800);
   }
 
   handleKeyDown(e) {
@@ -75,16 +76,18 @@ class LabelModal extends Component {
     const {context} = this.props
     const {spec} = this.state
 
-    return (
-
-      <Modal
-        isOpen={this.state.isOpen}
-        onRequestClose={() => this.close()}
-        style={style}
-        contentLabel="label-modal"
-        // style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
-      >
-      <div className="header">{this.state.headerText}</div>
+    let body
+    if (Object.keys(context).length === 0) {
+      body = (
+        <div className="before-after">
+          <div className="before">
+            <div className="label">"New plot"</div>
+            <VegaLite spec={spec} dataValues={this.props.dataValues}/>
+          </div>
+        </div>
+      )
+    } else {
+      body = (
       <div className="before-after">
         <div className="before">
           <div className="label">"Before"</div>
@@ -95,6 +98,20 @@ class LabelModal extends Component {
           <VegaLite spec={spec} dataValues={this.props.dataValues}/>
         </div>
       </div>
+      )
+    }
+
+    return (
+
+      <Modal
+        isOpen={this.state.isOpen}
+        onRequestClose={() => this.close()}
+        style={style}
+        contentLabel="label-modal"
+        // style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
+      >
+      <div className="header">{this.state.headerText}</div>
+      {body}
       <DiffEditor context={context} initial={spec} update={(spec) => this.setState({spec})}/>
       <div className="info">Provide a command (in English) that changes "before" to "after":</div>
       <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"

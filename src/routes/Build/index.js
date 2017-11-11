@@ -101,7 +101,7 @@ class Build extends Component {
       <div className='chart-container' key='current'>
         <div className='chart-header'><b>Current plot</b></div>
         {
-          'initialContext' in this.props.context?
+          this.props.isInitial?
           <div>click <MdCheck className='md-button' size={20}/> to select a plot</div>
           :
           <VegaLite
@@ -134,6 +134,7 @@ const mapStateToProps = (state) => ({
   context: state.world.context,
   dataValues: state.world.dataValues,
   showFormulas: state.world.showFormulas,
+  isInitial: Object.keys(state.world.context).length === 0
 })
 
 export default connect(mapStateToProps)(Build)

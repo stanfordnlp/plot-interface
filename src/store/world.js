@@ -5,7 +5,7 @@ import {prettyStringify} from "helpers/vega-utils"
 import dsUtils from 'helpers/dataset-utils'
 
 // must have key initialContext
-const emptyContext = {'initialContext': 'no current plot'};
+const emptyContext = {};
 const initialData = [
   {"a": "C", "b": 2},
   {"a": "C", "b": 7},
