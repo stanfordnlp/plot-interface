@@ -89,7 +89,7 @@ class DataSource extends Component {
     };
 
     return (
-      <Modal contentLabel='labelModal' isOpen={this.props.isOpen} onRequestClose={() => this.props.onRequestClose()} 
+      <Modal contentLabel='labelModal' isOpen={this.props.isOpen} onRequestClose={() => this.props.onRequestClose()}
        style={style}>
        <div className="pipelineModal">
        <span className="closeModal" onClick={() => this.props.onRequestClose()}>close</span>
@@ -149,7 +149,8 @@ class DataSource extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    data : null
+    data : null,
+    routing: state.routing
   };
 }
 export default connect(mapStateToProps)(DataSource)

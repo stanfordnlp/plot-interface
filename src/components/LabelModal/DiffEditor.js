@@ -1,10 +1,10 @@
 import React, { Component } from "react"
-import JsonPatch from 'fast-json-patch'
+// import JsonPatch from 'fast-json-patch'
 import AceEditor from 'react-ace'
 import {prettyStringify} from 'helpers/vega-utils'
 import JsonDiffMode from './JsonDiffMode.js'
-import * as ace from 'brace'
-var Range = ace.acequire('ace/range').Range
+// import * as ace from 'brace'
+// var Range = ace.acequire('ace/range').Range
 import "./styles.css"
 import 'brace/mode/javascript';
 
@@ -36,8 +36,6 @@ class DiffEditor extends Component {
     // this.refs.aceEditor.editor.setReadOnly('false')
     editor.getSession().setMode(new JsonDiffMode());
     this.updateHighlights()
-    // editor.getSession().addGutterDecoration(2, 'test-gutter')
-    // editor.getSession().addMarker(new Range(0,0,2,0), 'changed-lines', 'fullLine', false)
   }
 
   updateHighlights() {
