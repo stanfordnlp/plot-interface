@@ -216,9 +216,12 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
-      const datasetURL = getState().routing.locationBeforeTransitions.query.dataset
+
+      const routing = getState().routing
+      const location = routing.location || routing.locationBeforeTransitions
+      const datasetURL = location.query.dataset
       if (datasetURL === undefined) {
-        this.props.dispatch(Actions.getRandom())
+        dispatch(Actions.getRandom())
       } else {
         dsUtils.loadURL(datasetURL)
           .then(loaded => {
