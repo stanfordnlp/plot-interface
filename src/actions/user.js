@@ -30,6 +30,7 @@ const Actions = {
         type: Constants.SET_SESSION_ID,
         sessionId: sessionId
       })
+      // console.log('UserActions.setSessionId set: ', getState().user)
     }
   },
 

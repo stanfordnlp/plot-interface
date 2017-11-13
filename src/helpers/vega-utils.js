@@ -76,7 +76,7 @@ export function vegaLiteToDataURLWithErrors(vegaLiteSpec, values) {
 }
 
 export function vegaToDataURL(vegaSpec) {
-  console.log('called vegaToDataURL')
+  // console.log('called vegaToDataURL')
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
@@ -87,7 +87,7 @@ export function vegaToDataURL(vegaSpec) {
     let dataURL = dataView.toImageURL('png')
     // let dataURL = dataView.toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
 
-    console.log('vegaToDataURL success', dataURL);
+    // console.log('vegaToDataURL success', dataURL);
     return dataURL
   } catch (err) {
     console.log('vegaToDataURL error', err)

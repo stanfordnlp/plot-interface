@@ -51,7 +51,7 @@ class DiffEditor extends Component {
   render() {
     return (
       <div className='diffEditor'>
-        <div className='info'>Edit properties below if "after" is not what you want </div>
+        <div className='info'>Edit the spec below to change the plot:</div>
         <div>
           <AceEditor
             ref="aceEditor"

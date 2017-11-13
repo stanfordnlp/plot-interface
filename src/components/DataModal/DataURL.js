@@ -1,8 +1,9 @@
 var React = require('react');
+import PropTypes from 'prop-types';
 
 var Loader = React.createClass({
   propTypes: {
-    loadURL: React.PropTypes.func.isRequired
+    loadURL: PropTypes.func.isRequired
   },
 
   handleSubmit: function(evt) {

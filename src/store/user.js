@@ -16,7 +16,7 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, task: action.task }
     case Constants.SIGN_IN:
       return { ...state, sessionId: action.id, email: action.email, signedIn: true, token: action.token }
-    case Constants.CLEAR:
+    case Constants.CLEAR_USER:
       return initialState
     default:
       return state

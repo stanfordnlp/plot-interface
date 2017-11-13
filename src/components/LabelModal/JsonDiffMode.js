@@ -17,8 +17,8 @@ export default class JsonDiffMode extends ace.acequire('ace/mode/json').Mode {
   // autoOutdent(state, doc, row) {
   // }
 
-  constructor() {
-    super()
-    console.log(this)
-  }
+  // constructor() {
+  //   super()
+  //   // console.log(this)
+  // }
 }

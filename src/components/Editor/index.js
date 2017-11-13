@@ -5,12 +5,12 @@ import SpecEditor from "components/SpecEditor"
 import DataModal from 'components/DataModal'
 import CurrentDataTable from './CurrentDataTable'
 import {parseWithErrors} from 'helpers/vega-utils'
-
+import PropTypes from 'prop-types';
 import "./styles.css"
 
 class Editor extends React.Component {
   static propTypes = {
-    context: React.PropTypes.object,
+    context: PropTypes.object,
   }
   constructor(props) {
     super(props)

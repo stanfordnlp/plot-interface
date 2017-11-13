@@ -10,7 +10,7 @@ class JsonPatchEditor extends Component {
     if (props.initial!==undefined && props.context!==undefined) {
       initialPatch = JsonPatch.compare(props.context, this.props.initial)
     }
-    console.log(initialPatch)
+    // console.log(initialPatch)
     const stringPatch = initialPatch.filter(p => p.value!==undefined)
       .map(p => {p.value = prettyStringify(p.value); return p})
     this.state = {

@@ -1,10 +1,11 @@
 import React from 'react'
 import dsUtils from 'helpers/dataset-utils'
+import PropTypes from 'prop-types';
 
 var DraggableTextArea = React.createClass({
   propTypes: {
-    success: React.PropTypes.func.isRequired,
-    error: React.PropTypes.func.isRequired
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired
   },
 
   getInitialState: function() {

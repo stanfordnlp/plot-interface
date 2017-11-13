@@ -6,8 +6,6 @@ import { STATUS } from "constants/strings"
 import {prettyStringify, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 
-import {fakeResponsesFromSchema} from 'helpers/vega-utils'
-
 const Actions = {
   setState: (state) => {
     return (dispatch) => {
@@ -68,20 +66,8 @@ const Actions = {
       const { sessionId } = getState().user
       const { context, schema } = getState().world
 
-      const serverRecommendation = true
-      if (!serverRecommendation) {
-        let fakeCandidates = fakeResponsesFromSchema(schema);
-        console.log(fakeCandidates[0]);
-        dispatch({
-          type: Constants.SET_RESPONSES,
-          responses: fakeCandidates
-        })
-        return true
-      }
-
       SEMPREquery({q: ['random', {amount: 20, context, schema}], sessionId: sessionId})
       .then((response) => {
-        console.log(response.candidates[0]);
         dispatch({
           type: Constants.SET_RESPONSES,
           responses: response.candidates
@@ -216,7 +202,6 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
-
       const routing = getState().routing
       const location = routing.location || routing.locationBeforeTransitions
       const datasetURL = location.query.dataset
