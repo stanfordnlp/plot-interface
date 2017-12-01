@@ -64,7 +64,7 @@ class DataSource extends Component {
 
   importData() {
     this.props.dispatch(Actions.clear())
-    this.props.dispatch(Actions.setState({schema: this.state.schema, dataValues: this.state.values}))
+    this.props.dispatch(Actions.setState({schema: this.state.schema, dataValues: this.state.values, datasetURL: this.state.selectedExample}))
     this.props.dispatch(Actions.getRandom())
     this.props.onRequestClose()
   }

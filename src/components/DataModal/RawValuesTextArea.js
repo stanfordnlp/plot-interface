@@ -40,7 +40,8 @@ var DraggableTextArea = React.createClass({
         parsed = dsUtils.parseRaw(raw);
         props.success({
           values: (values = parsed.values),
-          schema: dsUtils.schema(values)
+          schema: dsUtils.schema(values),
+          selectedExample: 'paste',
         }, 'Successfully imported data!');
       } else if (type === 'drop') {
         file = evt.dataTransfer.files[0];
@@ -52,7 +53,8 @@ var DraggableTextArea = React.createClass({
             parsed = dsUtils.parseRaw(raw);
             props.success({
               values: (values = parsed.values),
-              schema: dsUtils.schema(values)
+              schema: dsUtils.schema(values),
+              selectedExample: 'drop',
             }, 'Successfully imported ' + name[0] + '!');
           } catch (err) {
             props.error(err);

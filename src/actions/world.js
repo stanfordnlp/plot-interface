@@ -64,9 +64,9 @@ const Actions = {
   getRandom: () => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { context, schema } = getState().world
+      const { context, schema, datasetURL } = getState().world
 
-      SEMPREquery({q: ['random', {amount: 20, context, schema}], sessionId: sessionId})
+      SEMPREquery({q: ['random', {amount: 20, context, schema, datasetURL}], sessionId: sessionId})
       .then((response) => {
         dispatch({
           type: Constants.SET_RESPONSES,
@@ -84,7 +84,7 @@ const Actions = {
   tryQuery: (q) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { context, query, schema } = getState().world
+      const { context, query, schema, datasetURL } = getState().world
       // if ('initialContext' in context) {
       //   window.alert('you need a starting plot before issuing a command');
       //   return
@@ -94,7 +94,7 @@ const Actions = {
         status: STATUS.LOADING
       })
 
-      return SEMPREquery({ q: ['q', {utterance: q, context, schema}], sessionId: sessionId })
+      return SEMPREquery({ q: ['q', {utterance: q, context, schema, datasetURL}], sessionId: sessionId })
       .then((response) => {
         const candidates = response.candidates
         /* Remove no-ops */
@@ -129,9 +129,10 @@ const Actions = {
   accept: (spec, formula) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { issuedQuery, context, schema } = getState().world
+      const { issuedQuery, context, schema, datasetURL } = getState().world
 
-      const q = ['accept', {utterance: issuedQuery, targetFormula:formula, type: "accept", context, schema, targetValue:spec}]
+      const q = ['accept', {utterance: issuedQuery, targetFormula:formula,
+        context, schema, targetValue:spec, datasetURL, type: "accept"}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
@@ -151,10 +152,10 @@ const Actions = {
   label: (utterance, spec, formula) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { issuedQuery, context, schema } = getState().world
+      const { issuedQuery, context, schema, datasetURL } = getState().world
       const sempreExample = {
         utterance, targetFormula: formula,
-        context, schema, targetValue: spec, issuedQuery: issuedQuery, type: "label"};
+        context, schema, targetValue: spec, issuedQuery: issuedQuery, datasetURL, type: "label"};
       console.log(JSON.stringify(sempreExample))
       const q = ['accept', sempreExample]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
@@ -165,9 +166,9 @@ const Actions = {
   reject: (spec) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { query, context, schema} = getState().world
+      const { query, context, schema, datasetURL} = getState().world
 
-      const q = ['reject', {utterance: query, context, schema, targetValue:spec }]
+      const q = ['reject', {utterance: query, context, schema, targetValue:spec, datasetURL }]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       return true
@@ -213,7 +214,7 @@ const Actions = {
             const parsed = dsUtils.parseRaw(loaded.data),
              values = parsed.values,
              schema = dsUtils.schema(values)
-            dispatch(Actions.setState({schema: schema, dataValues: values}))
+            dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: datasetURL}))
             dispatch(Actions.getRandom())
           })
           .catch(function(err) {

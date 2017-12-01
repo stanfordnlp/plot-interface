@@ -24,6 +24,7 @@ const initialState = {
   status: STATUS.TRY,
   query: "",
 
+  datasetURL: 'initialData',
   dataValues: initialData,
   schema: dsUtils.schema(initialData),
 
