@@ -79,7 +79,7 @@ class CommandBar extends React.Component {
     const { query, status } = this.props
     const { suggestions } = this.state;
     const inputProps = {
-       //  autoFocus: true,
+       autoFocus: true,
        value: this.state.value,
        placeholder: "type command to modify plot",
        onChange: this.onChange,

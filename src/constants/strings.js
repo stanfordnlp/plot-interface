@@ -8,7 +8,7 @@ export const DEFAULT_SESSIONID = "deadbeef"
 
 /* Control strings */
 export const STATUS = {
-  TRY: "TRY",
+  TRY: "ENTER",
   RENDERING: "RENDERING",
   LOADING: "LOADING",
 }

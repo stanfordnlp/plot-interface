@@ -44,7 +44,7 @@ class Build extends Component {
     const contextPromise = vegaLiteToDataURLWithErrors(context, dataValues)
     this.setState({plotData: []})
     // console.log('processing %d responses', responses.length);
-    this.props.dispatch(Actions.setStatus(STATUS.RENDERING))
+
     // if (responses.length === 0) return
     contextPromise.then(contextVega => {
       const contextHash = hash(contextVega.dataURL)
@@ -55,8 +55,12 @@ class Build extends Component {
 
       for (let i = 0; i<responses.length; i++) {
         const r = responses[i]
-        const delay = i > 3? Math.min((i-3)*100, 500) : 0
-        window.setTimeout( () => {
+        const delay = i > 3? Math.min((i-3)*100, 2000) : 0
+        setTimeout( () => {
+          if (i === responses.length - 1)
+            this.props.dispatch(Actions.setStatus(STATUS.TRY))
+          else
+            this.props.dispatch(Actions.setStatus(`RENDERING ${i+1} of ${responses.length}`))
           vegaLiteToDataURLWithErrors(r.value, dataValues)
           .then(vega => {
             console.log(new Date().getTime(), i)
@@ -71,23 +75,6 @@ class Build extends Component {
           .catch(e => console.log('processing vega error', e))
         }, delay)
       }
-      //
-      // // console.log('contexhash', contextHash)
-      // Promise.all(renderedSpecs).then( plotData => {
-      //   // console.log('plotData', plotData);
-      //   plotData = plotData.filter(p => p !== undefined)
-      //   plotData = plotData.filter(p => p.dataHash !== contextHash)
-      //   let hashes = new Set();
-      //   let uniques = [];
-      //   for (let p of plotData) {
-      //     if (!hashes.has(p.dataHash)) {
-      //       hashes.add(p.dataHash)
-      //       uniques.push(p)
-      //     }
-      //   }
-      //   this.setState({plotData: uniques})
-      //   this.props.dispatch(Actions.setStatus(STATUS.TRY))
-      // }).catch(e => console.log('plotData error', e))
     })
   }
 
