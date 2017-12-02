@@ -42,34 +42,52 @@ class Build extends Component {
   processPlotData() {
     const {responses, context, dataValues } = this.props
     const contextPromise = vegaLiteToDataURLWithErrors(context, dataValues)
-
+    this.setState({plotData: []})
     // console.log('processing %d responses', responses.length);
     this.props.dispatch(Actions.setStatus(STATUS.RENDERING))
     // if (responses.length === 0) return
     contextPromise.then(contextVega => {
       const contextHash = hash(contextVega.dataURL)
-      let renderedSpecs = responses.map(r => {
-        return vegaLiteToDataURLWithErrors(r.value, dataValues)
-          .then(vega => {return {dataURL:vega.dataURL, logger: vega.logger,
-            dataHash: hash(vega.dataURL), formula: r.canonical, spec :r.value, count:0}})
-          .catch(e => console.log('processing vega error', e));
-      });
-      // console.log('contexhash', contextHash)
-      Promise.all(renderedSpecs).then( plotData => {
-        // console.log('plotData', plotData);
-        plotData = plotData.filter(p => p !== undefined)
-        plotData = plotData.filter(p => p.dataHash !== contextHash)
-        let hashes = new Set();
-        let uniques = [];
-        for (let p of plotData) {
-          if (!hashes.has(p.dataHash)) {
-            hashes.add(p.dataHash)
-            uniques.push(p)
-          }
-        }
-        this.setState({plotData: uniques})
-        this.props.dispatch(Actions.setStatus(STATUS.TRY))
-      }).catch(e => console.log('plotData error', e))
+
+      let uniques = []
+      let hashes = new Set()
+      hashes.add(contextHash)
+
+      for (let i = 0; i<responses.length; i++) {
+        const r = responses[i]
+        const delay = i > 3? Math.min((i-3)*100, 500) : 0
+        window.setTimeout( () => {
+          vegaLiteToDataURLWithErrors(r.value, dataValues)
+          .then(vega => {
+            console.log(new Date().getTime(), i)
+            const p = {dataURL:vega.dataURL, logger: vega.logger,
+            dataHash: hash(vega.dataURL), formula: r.canonical, spec :r.value}
+            if (!hashes.has(p.dataHash) ) {
+              hashes.add(p.dataHash)
+              uniques.push(p)
+              this.setState({plotData: uniques})
+            }
+          })
+          .catch(e => console.log('processing vega error', e))
+        }, delay)
+      }
+      //
+      // // console.log('contexhash', contextHash)
+      // Promise.all(renderedSpecs).then( plotData => {
+      //   // console.log('plotData', plotData);
+      //   plotData = plotData.filter(p => p !== undefined)
+      //   plotData = plotData.filter(p => p.dataHash !== contextHash)
+      //   let hashes = new Set();
+      //   let uniques = [];
+      //   for (let p of plotData) {
+      //     if (!hashes.has(p.dataHash)) {
+      //       hashes.add(p.dataHash)
+      //       uniques.push(p)
+      //     }
+      //   }
+      //   this.setState({plotData: uniques})
+      //   this.props.dispatch(Actions.setStatus(STATUS.TRY))
+      // }).catch(e => console.log('plotData error', e))
     })
   }
 
