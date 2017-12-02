@@ -66,21 +66,18 @@ export function parseWithErrors(spec) {
 
 export function vegaLiteToDataURLWithErrors(vegaLiteSpec, values) {
   // optionally specify the data
-  if (values) {
-    vegaLiteSpec = JSON.parse(JSON.stringify(vegaLiteSpec))
-    vegaLiteSpec.data = {values: values}
-  }
   const vegaWithErrors = parseWithErrors(vegaLiteSpec);
-  return vegaToDataURL(vegaWithErrors.vegaSpec)
+  return vegaToDataURL(vegaWithErrors.vegaSpec, values)
     .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}})
 }
 
-export function vegaToDataURL(vegaSpec) {
+export function vegaToDataURL(vegaSpec, values) {
   // console.log('called vegaToDataURL')
   let runtime;
   try {
     runtime = vega.parse(vegaSpec);
     const dataView = new vega.View(runtime)
+    .insert('source', values)
     .logLevel(vega.Error)
     .initialize()
 

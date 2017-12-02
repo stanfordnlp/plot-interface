@@ -16,10 +16,7 @@ class VegaLite extends React.Component {
   constructor(props) {
     super(props)
     let spec = props.spec
-    if (this.props.dataValues) {
-      spec = JSON.parse(JSON.stringify(spec))
-      spec.data = {values: this.props.dataValues}
-    }
+    
     const {vegaSpec, logger} = parseWithErrors(spec)
     const hasError = logger.warns.length > 0 || logger.errors.length > 0
     this.state = {vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null}
@@ -31,10 +28,7 @@ class VegaLite extends React.Component {
     {
       // console.log('passed will receive props')
       let spec = nextProps.spec
-      if (this.props.dataValues) {
-        spec = JSON.parse(JSON.stringify(spec))
-        spec.data = {values: this.props.dataValues}
-      }
+
       const {vegaSpec, logger} = parseWithErrors(spec)
       const hasError = logger.warns.length > 0 || logger.errors.length > 0
       this.setState({vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null})
@@ -58,7 +52,7 @@ class VegaLite extends React.Component {
   }
   // without the timeout, promise is sync...
   updateVega() {
-    vegaToDataURL(this.state.vegaSpec).then(dataURL => {
+    vegaToDataURL(this.state.vegaSpec, this.props.dataValues).then(dataURL => {
       this.setState({dataURL: dataURL})
       // this.refs.chartImg.src = dataURL;
       if (this.props.onError!==undefined && this.state.hasError)

@@ -66,8 +66,9 @@ class Build extends Component {
             console.log(new Date().getTime(), i)
             const p = {dataURL:vega.dataURL, logger: vega.logger,
             dataHash: hash(vega.dataURL), formula: r.canonical, spec :r.value}
-            if (!hashes.has(p.dataHash) ) {
+            if (!hashes.has(p.dataHash)) {
               hashes.add(p.dataHash)
+              // uniques[i] = p
               uniques.push(p)
               this.setState({plotData: uniques})
             }
