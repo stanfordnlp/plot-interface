@@ -66,7 +66,7 @@ const Actions = {
       const { sessionId } = getState().user
       const { context, schema, datasetURL } = getState().world
 
-      SEMPREquery({q: ['random', {amount: 20, context, schema, datasetURL}], sessionId: sessionId})
+      SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
       .then((response) => {
         dispatch({
           type: Constants.SET_RESPONSES,

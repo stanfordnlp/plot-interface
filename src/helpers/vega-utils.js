@@ -68,7 +68,7 @@ export function vegaLiteToDataURLWithErrors(vegaLiteSpec, values) {
   // optionally specify the data
   const vegaWithErrors = parseWithErrors(vegaLiteSpec);
   return vegaToDataURL(vegaWithErrors.vegaSpec, values)
-    .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}})
+    .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}}).catch(e => {console.log('vegaLiteToDataURLWithErrors error', e)})
 }
 
 export function vegaToDataURL(vegaSpec, values) {
