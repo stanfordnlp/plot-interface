@@ -63,15 +63,16 @@ class Build extends Component {
             this.props.dispatch(Actions.setStatus(`RENDERING ${i+1} of ${responses.length}`))
           vegaLiteToDataURLWithErrors(r.value, dataValues)
           .then(vega => {
-            console.log(new Date().getTime(), i)
             const p = {dataURL:vega.dataURL, logger: vega.logger,
             dataHash: hash(vega.dataURL), formula: r.canonical, spec :r.value}
-            if (!hashes.has(p.dataHash)) {
+            const isIdentical = hashes.has(p.dataHash)
+            if (!isIdentical) {
               hashes.add(p.dataHash)
               // uniques[i] = p
               uniques.push(p)
               this.setState({plotData: uniques})
             }
+            console.log(i, r.canonical, isIdentical)
           })
           .catch(e => console.log('processing vega error', e))
         }, delay)

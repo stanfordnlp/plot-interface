@@ -1,6 +1,11 @@
 const exampleDatasets = [
   {
-    name: 'Iris',
+    name: 'anscombe',
+    description: '',
+    url: '/data/anscombe.json'
+  },
+  {
+    name: 'iris',
     description: '',
     url: '/data/iris.json'
   },
@@ -10,23 +15,18 @@ const exampleDatasets = [
     url: '/data/wheat.json'
   },
   {
-    name: 'Iris',
-    description: '',
-    url: '/data/iris.json'
-  },
-  {
     name: 'sp500',
     description: '',
     url: '/data/sp500.csv'
   },
   {
     name: 'Airports',
-    description: 'information about airports',
+    description: '',
     url:  '/data/airports.csv'
   },
   {
     name: 'stocks',
-    description: 'price of tech stocks',
+    description: '',
     url:  '/data/stocks.csv'
   },
   // {

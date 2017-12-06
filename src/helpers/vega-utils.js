@@ -2,6 +2,7 @@ import Ajv from 'ajv';
 import {LocalLogger} from '../helpers/logger'
 import * as vl from 'vega-lite';
 import * as vega from 'vega';
+import config from 'config.js'
 
 const ajv = new Ajv({
   jsonPointers: true,
@@ -75,19 +76,24 @@ export function vegaToDataURL(vegaSpec, values) {
   // console.log('called vegaToDataURL')
   let runtime;
   try {
+    if (Object.keys(vegaSpec).length === 0 && vegaSpec.constructor === Object)
+      throw new Error('empty spec')
     runtime = vega.parse(vegaSpec);
     const dataView = new vega.View(runtime)
     .insert('source', values)
-    .logLevel(vega.Error)
+    .logLevel(config.logLevel)
     .initialize()
 
-    let dataURL = dataView.toImageURL('png')
-    // let dataURL = dataView.toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
+    let dataURL
+    if (config.renderer === 'png')
+      dataURL = dataView.toImageURL('png')
+    else
+      dataURL = dataView.toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
 
     // console.log('vegaToDataURL success', dataURL);
     return dataURL
   } catch (err) {
-    console.log('vegaToDataURL error', err)
+    console.log('vegaToDataURL error', vegaSpec, err)
     return Promise.resolve('data:,'+encodeURIComponent(err))
   }
 }
@@ -111,37 +117,4 @@ export function responsesFromExamples() {
        return {value: s[1], formula: s[0], canonical: s[0]}
      })
   )
-}
-
-const histogramSpec = JSON.stringify({
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "bin": {},
-      "field": null,
-      "type": "norminal"
-    },
-    "y": {
-      "aggregate": "count",
-      "field": "*",
-      "type": "quantitative"
-    }
-  }
-})
-
-function toVegaType(schemaType) {
-  const map = {'boolean':null, 'integer': 'quantitative', 'number': 'quantitative', 'date': 'temporal',  'string': 'norminal'}
-  return map[schemaType]
-}
-export function fakeResponsesFromSchema(schema) {
-  return Object.keys(schema)//.filter(name => schema[name].type === 'number' || schema[name].type === 'integer')
-  .map(name => {
-    let value  = JSON.parse(histogramSpec);
-    value.encoding.x.field = name
-    const vegaType = toVegaType(schema[name].type);
-    if (vegaType)
-      value.encoding.x.type = vegaType
-
-    return {value: value, canonical: name}
-  })
 }

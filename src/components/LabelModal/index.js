@@ -54,7 +54,6 @@ class LabelModal extends Component {
     this.setState({inputValue: evt.target.value})
   }
 
-
   render() {
     const style = {
       overlay: {
@@ -107,7 +106,6 @@ class LabelModal extends Component {
     }
 
     return (
-
       <Modal
         isOpen={this.state.isOpen}
         onRequestClose={() => this.close()}

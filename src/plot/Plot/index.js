@@ -45,6 +45,10 @@ class Plot extends React.Component {
 
   onClick(e) {
     console.log('plotHash', hash(this.state.dataURL))
+    // let newWindow = window.open(this.state.dataURL, '')
+    // const img = new Image()
+    // img.src = this.state.dataURL
+    // newWindow.document.write(img.outerHTML)
   }
 
   renderChart() {
