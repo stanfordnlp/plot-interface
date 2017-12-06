@@ -7,11 +7,9 @@ import { STATUS } from "constants/strings"
 import Plot from "plot/Plot"
 import Editor from "components/Editor"
 import FormulasList from "components/FormulasList"
-import VegaLite from "plot/VegaLite"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
-import {MdCheck} from 'react-icons/lib/md'
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import hash from 'string-hash'
 
@@ -60,7 +58,7 @@ class Build extends Component {
           if (i === responses.length - 1)
             this.props.dispatch(Actions.setStatus(STATUS.TRY))
           else
-            this.props.dispatch(Actions.setStatus(`RENDERING ${i+1} of ${responses.length}`))
+            this.props.dispatch(Actions.setStatus(`Rendering ${i+1} of ${responses.length}`))
           vegaLiteToDataURLWithErrors(r.value, dataValues)
           .then(vega => {
             const p = {dataURL:vega.dataURL, logger: vega.logger,
@@ -105,30 +103,16 @@ class Build extends Component {
       );
     }
 
-    plotsPlus.push(
-      <div className='chart-container' key='current'>
-        <div className='chart-header'><b>Current plot</b></div>
-        {
-          this.props.isInitial?
-          <div>click <MdCheck className='md-button' size={20}/> to select a plot</div>
-          :
-          <VegaLite
-            spec={this.props.context}
-            dataValues={this.props.dataValues}
-            onError={() => {}}
-          />
-        }
-      </div>
-    );
-
     plotsPlus = plotsPlus.concat(plots);
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
-          <Editor/>
+          <Editor onLabel={this.onLabel}/>
+          {this.props.showFormulas? 'show formulas':
           <div className="Candidates" ref={c => this.candidates = c}>
             {plotsPlus}
           </div>
+          }
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
         <Toolbar onLabel={this.onLabel}/>

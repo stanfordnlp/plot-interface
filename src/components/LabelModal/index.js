@@ -7,7 +7,7 @@ import VegaLite from "plot/VegaLite"
 import DiffEditor from './DiffEditor'
 import "./styles.css"
 
-const headerText = 'Edit and label';
+const headerText = 'Editor';
 class LabelModal extends Component {
 
   constructor(props) {
@@ -43,6 +43,7 @@ class LabelModal extends Component {
   }
 
   handleKeyDown(e) {
+    console.log(e)
     if (e.keyCode === 13) {
       this.submit(this.state.inputValue)
     } else if (e.keyCode === 27) {
@@ -59,7 +60,7 @@ class LabelModal extends Component {
       overlay: {
         display: 'flex',
         alignItems: 'center',
-        backgroundColor: 'rgba(75,75,75,0.5)',
+        backgroundColor: 'rgba(75,75,75,0.1)',
         justifyContent: 'center'
       },
       content: {
@@ -108,26 +109,28 @@ class LabelModal extends Component {
     return (
       <Modal
         isOpen={this.state.isOpen}
-        onRequestClose={() => this.close()}
+        // onRequestClose={() => this.close()}
         style={style}
         contentLabel="label-modal"
+        onKeyDown={e => this.handleKeyDown(e)}
         // style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
       <div className="header">{this.state.headerText}</div>
-      <div className="info">{promptString}</div>
-        <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
-          type="text"
-          value={this.state.inputValue}
-          onKeyDown={e => this.handleKeyDown(e)}
-          onChange={e => this.updateInputValue(e)}
-          placeholder={promptString}
-        />
       {body}
-
       <DiffEditor context={context} initial={spec} update={(spec) => this.setState({spec})}/>
+      <div className="info">{promptString}</div>
+      <input autoFocus ref={(input) => { this.textInput = input; }} className="label-box"
+        type="text"
+        value={this.state.inputValue}
+        onKeyDown={e => this.handleKeyDown(e)}
+        onChange={e => this.updateInputValue(e)}
+        placeholder={promptString}
+      />
+
+
       <div className='control-bar'>
-        <button className={classnames({active: this.state.inputValue.trim().length>0})} onClick={() => this.submit(this.state.inputValue)}>Submit (enter)</button>
-        <button className={classnames({active: true})} onClick={() => this.close()}>Close (ESC)</button>
+        <button className={classnames({active: true})} onClick={() => this.submit(this.state.inputValue)}>Submit</button>
+        <button className={classnames({active: true})} onClick={() => this.close()}>Close</button>
       </div>
     </Modal>
     )

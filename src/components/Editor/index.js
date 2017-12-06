@@ -1,11 +1,12 @@
 import React from "react"
 import {connect} from "react-redux";
 import Actions from 'actions/world'
-import SpecEditor from "components/SpecEditor"
 import DataModal from 'components/DataModal'
 import CurrentDataTable from './CurrentDataTable'
 import {parseWithErrors} from 'helpers/vega-utils'
 import PropTypes from 'prop-types';
+import {MdCheck} from 'react-icons/lib/md'
+import VegaLite from "plot/VegaLite"
 import "./styles.css"
 
 class Editor extends React.Component {
@@ -55,20 +56,24 @@ class Editor extends React.Component {
     return (
       <div className='editor-container'>
         <div>
-          <button className="active" onClick={() => this.openDataModal()}>Data</button>
-          <button className="active" onClick={() => this.labelJSON()}>Check</button>
-          <button className="active" onClick={() => this.clearAll()}>Reset</button>
           <CurrentDataTable/>
+          <button className="active" onClick={() => this.openDataModal()}>Import Data</button>
+          <button className="active" onClick={() => this.props.onLabel(this.props.context, '')}>Edit</button>
+          <button className="active" onClick={() => this.clearAll()}>Reset</button>
           <DataModal isOpen={this.state.isOpen} onRequestClose={() => this.closeDataModal()}/>
         </div>
-        <div className='relative-container'>
-          <div className='absoluate-container'>
-            <SpecEditor key='spec-editor' spec={this.props.editorString}/>
+          <div className='chart-container' key='current'>
+            {
+              this.props.isInitial?
+              <div>No current plot, click <MdCheck className='md-button' size={20}/> to select one.</div>
+              :
+              <VegaLite
+                spec={this.props.context}
+                dataValues={this.props.dataValues}
+              />
+            }
           </div>
-        </div>
-        <div>
-          <ul>{messages}</ul>
-        </div>
+        <ul>{messages}</ul>
       </div>
     )
   }
@@ -77,5 +82,7 @@ class Editor extends React.Component {
 const mapStateToProps = (state) => ({
   context: state.world.context,
   editorString: state.world.editorString,
+  dataValues: state.world.dataValues,
+  isInitial: Object.keys(state.world.context).length === 0
 })
 export default connect(mapStateToProps)(Editor)

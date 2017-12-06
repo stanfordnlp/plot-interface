@@ -17,7 +17,7 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
   height: 100%;
   min-width: 100%;
   min-height: 100%;
-  background-color: rgb(244, 244, 244);
+  background-color: #fafbfc;
 }
 
 html {
@@ -41,7 +41,7 @@ body {
 
 input {
   width: 100%;
-  background-color: #FFF;
+  background-color: rgba(255,255,255,0);
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   font-size: 2.2rem;
   line-height: 1.4;
@@ -61,39 +61,30 @@ button {
   line-height: 1.6;
   height: 35px;
   width: auto;
-  padding: 5px 10px;
+  padding: 5px 5px;
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   font-weight: 900;
   border: 0;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   color: #000;
-  background-color: rgb(220, 220, 220);
-  border-radius: 3px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 1px;
   transition: 0.2s ease background-color;
   outline: none;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: rgb(200, 200, 200);
+  background-color: rgba(200,200,200,0.5);
 }
 
 button.active {
-  background-color: rgb(0, 160, 176);
-  color: #FFF;
+  color: #000;
   cursor: pointer;
 }
 
 button.active:hover {
-  background-color: rgb(30, 190, 206);
-}
-
-button.accepting {
-  background-color: rgb(60, 220, 236);
-}
-
-button.full {
-  border-radius: 2px;
+  background-color: rgba(200,200,200,0.5);
 }
 
 .Resizer {
@@ -147,13 +138,14 @@ button.full {
 }
 
 .md-button {
-  color: rgb(0, 160, 176);
+  color: rgb(100, 100, 100);
   margin-left: 5px;
   cursor: pointer;
+  align-self: center;
 }
 .md-button:hover {
   cursor: pointer;
-  color: rgb(30, 190, 206);
+  color: rgb(200, 200, 200);
 }
 
 .Overlay  {

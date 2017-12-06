@@ -7,7 +7,7 @@ import JsonDiffMode from './JsonDiffMode.js'
 // var Range = ace.acequire('ace/range').Range
 import "./styles.css"
 import 'brace/mode/javascript';
-
+import 'brace/theme/github';
 
 class DiffEditor extends Component {
   constructor(props) {

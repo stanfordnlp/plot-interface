@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from "react-redux"
 import Actions from "actions/world"
-import classnames from "classnames"
-import { STATUS } from "constants/strings"
 import Autosuggest from 'react-autosuggest'
 import {VEGALITE_ENUMS} from './VegaConstants/vegalite-enums'
 import {VEGALITE_PATHS} from './VegaConstants/vegalite-paths'
+import {MdSearch} from 'react-icons/lib/md'
 
 import "./styles.css"
 import './autocomplete.css'
@@ -72,7 +71,6 @@ class CommandBar extends React.Component {
   }
 
   render() {
-    const { query, status } = this.props
     const { suggestions } = this.state;
     const inputProps = {
        autoFocus: true,
@@ -91,9 +89,9 @@ class CommandBar extends React.Component {
           renderSuggestion={v => v}
           inputProps={inputProps}
         />
-        <button className={classnames({ "active": ((status === STATUS.TRY) && query.length > 0) })} onClick={() => this.handleClick()}>
-          {status}
-        </button>
+        <MdSearch className='md-button' size={30}
+          onClick={(e) => {this.handleClick()}}
+        />
       </div>
 
     );
@@ -102,7 +100,6 @@ class CommandBar extends React.Component {
 
 const mapStateToProps = (state) => ({
   query: state.world.query,
-  status: state.world.status,
   isInitial: Object.keys(state.world.context).length === 0
 })
 

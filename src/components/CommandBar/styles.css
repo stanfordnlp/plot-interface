@@ -1,14 +1,14 @@
 .CommandBar {
-  width: 100%;
-  box-shadow: 0 6px 24px rgba(60, 60, 60, 0.18);
+  top: 8px;
+  left: 8px;
   display: flex;
+  height: 34px;
+  background-color: rgba(255,255,255,1);
+  border-radius: 3px;
+  justify-content: center;
 }
 
 .CommandBar button {
-  margin: 0;
-  box-sizing: border-box;
-  height: auto;
-  min-width: 15%;
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
+  display: inline;
+  float: left;
 }
