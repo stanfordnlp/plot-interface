@@ -77,7 +77,8 @@ export function vegaToDataURL(vegaSpec, values) {
   let runtime;
   try {
     if (Object.keys(vegaSpec).length === 0 && vegaSpec.constructor === Object)
-      throw new Error('empty spec')
+      return Promise.resolve('data:,'+encodeURIComponent('empty spec'))
+
     runtime = vega.parse(vegaSpec);
     const dataView = new vega.View(runtime)
     .insert('source', values)
@@ -90,7 +91,7 @@ export function vegaToDataURL(vegaSpec, values) {
     else
       dataURL = dataView.toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
 
-    // console.log('vegaToDataURL success', dataURL);
+    // console.log('vegaToDataURL success', vegaSpec, dataURL);
     return dataURL
   } catch (err) {
     console.log('vegaToDataURL error', vegaSpec, err)

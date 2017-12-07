@@ -1,57 +1,41 @@
-/*.Overlay  {
-  position          : fixed;
-  top               : 0;
-  left              : 0;
-  right             : 0;
-  bottom            : 0;
-  background-color   : rgba(75, 75, 75, 0.4);
-  z-index: 1001;
-}
-
-.LabelModal {
-  margin: 5px;
-  background-color: #FFF;
-  box-shadow: 0 4px 8px rgba(51, 51, 51, 0.15);
-  padding: 5px;
-  border    : 1px solid #ccc;
-  outline   : none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -400px;
-  margin-left: -400px;
-  width: 800px;
-  height: 700px;
-}
-*/
-/*.LabelModal_after-open  {
-  position                   : absolute;
-  border                     : 1px solid #ccc;
-  overflow                   : hidden;
-  WebkitOverflowScrolling    : touch;
-  borderRadius               : 4px;
-  outline                    : none;
-  padding                    : 20px;
-  background-color   : rgba(244, 244, 244, 1);
-  z-index                 : 3;
-}*/
-
 .control-bar {
   float:right;
 }
 
 
 .header {
-  font-size: 1.3em;
-  font-weight: bold;
-  width: 800px;
-  padding-bottom: 10px;
-  padding: 5px;
-  margin-bottom: 10px;
+  /*font-size: 1em;*/
+  padding: 10px;
+
+  display: flex;
 }
 
-.label-box {
+.status {
+  border-bottom: 1px solid #000;
+  padding-bottom: 10px;
+}
+
+.headerButton {
+  align-self: center;
   font-size: 1em;
+  margin-left: 20px;
+}
+
+.absolute-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.labelInput {
+  /*font-size: 1em;*/
+  margin-left: 1em;
+  padding-left: 0.5em;
+  width: 50%;
+  max-width: 30em;
+  background-color: rgba(200, 200, 200, 0.5);
 }
 
 .before-after {

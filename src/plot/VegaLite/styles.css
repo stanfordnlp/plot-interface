@@ -3,10 +3,16 @@
   width: auto;
   display: inline-block;
 }
+.big-chart-img {
+  padding: 0px;
+  max-width: 1600px;
+  max-height: 1600px;
+  display: inline-block;
+}
 .chart-img {
   padding: 0px;
-  max-width: 400px;
-  max-height: 400px;
+  max-width: 600px;
+  max-height: 600px;
   display: inline-block;
 }
 .chart .vega-bindings {
@@ -32,12 +38,12 @@
 }
 
 .display-errors {
-  font-size: 0.5em;
+  font-size: 0.8em;
   margin: 0;
   color: red;
 }
 .display-warns {
-  font-size: 0.5em;
+  font-size: 0.8em;
   margin: 0;
   color: orange;
 }

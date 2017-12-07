@@ -2,7 +2,7 @@ import React from "react"
 import {connect} from "react-redux";
 import Actions from 'actions/world'
 import DataModal from 'components/DataModal'
-import CurrentDataTable from './CurrentDataTable'
+import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import {parseWithErrors} from 'helpers/vega-utils'
 import PropTypes from 'prop-types';
 import {MdCheck} from 'react-icons/lib/md'

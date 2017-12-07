@@ -41,14 +41,13 @@ body {
 
 input {
   width: 100%;
-  background-color: rgba(255,255,255,0);
+  background-color: rgba(0,0,0,0);
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
-  font-size: 2.2rem;
-  line-height: 1.4;
-  padding: 0.5em 1em;
+  /*line-height: 1.4;*/
+  /*padding: 0.5em 1em;*/
   border: 0;
   outline: none;
-  border: 1px solid rgba(60, 60, 60, 0.1);
+  /*border: 1px solid rgba(60, 60, 60, 0.1);*/*/
   font-weight: 700;
 }
 
@@ -57,17 +56,18 @@ input {
 }
 
 button {
-  font-size: 1.4rem;
-  line-height: 1.6;
-  height: 35px;
+  font-size: 1em;
+  /*line-height: 1.5em;*/
+  height: 2em;
   width: auto;
-  padding: 5px 5px;
+  padding: 0.5em 0.5em;
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   font-weight: 900;
+
   border: 0;
   /*text-transform: uppercase;*/
-  color: #000;
-  background-color: rgba(255,255,255,0.5);
+  color: #111;
+  background-color: rgba(200,200,200,0.5);
   border-radius: 1px;
   transition: 0.2s ease background-color;
   outline: none;
@@ -75,16 +75,16 @@ button {
 }
 
 button:hover {
-  background-color: rgba(200,200,200,0.5);
+  background-color: rgba(200,200,200,1);
 }
 
 button.active {
-  color: #000;
+  color: #111;
   cursor: pointer;
 }
 
 button.active:hover {
-  background-color: rgba(200,200,200,0.5);
+  background-color: rgba(200,200,200,1);
 }
 
 .Resizer {

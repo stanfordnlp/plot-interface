@@ -64,13 +64,14 @@ class Build extends Component {
             const p = {dataURL:vega.dataURL, logger: vega.logger,
             dataHash: hash(vega.dataURL), formula: r.canonical, spec :r.value}
             const isIdentical = hashes.has(p.dataHash)
+            p.isIdentical = isIdentical;
             if (!isIdentical) {
               hashes.add(p.dataHash)
               // uniques[i] = p
               uniques.push(p)
               this.setState({plotData: uniques})
             }
-            console.log(i, r.canonical, isIdentical)
+            // console.log(i, r.canonical, isIdentical)
           })
           .catch(e => console.log('processing vega error', e))
         }, delay)
@@ -99,7 +100,7 @@ class Build extends Component {
     let plotsPlus = [];
     if (this.props.showFormulas) {
       plotsPlus.push(
-         <FormulasList formulas={responses.map(r => r.canonical)}/>
+         <FormulasList formulas={responses.map(r => `${r.canonical} : ${r.prob}`)}/>
       );
     }
 
@@ -108,11 +109,9 @@ class Build extends Component {
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor onLabel={this.onLabel}/>
-          {this.props.showFormulas? 'show formulas':
           <div className="Candidates" ref={c => this.candidates = c}>
             {plotsPlus}
           </div>
-          }
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
         <Toolbar onLabel={this.onLabel}/>

@@ -37,6 +37,7 @@ class Toolbar extends React.Component {
   render() {
     return (
       <div className='Toolbar'>
+        <button>{this.props.status}</button>
         <button># candidates: {this.props.numCandidates}</button>
         {/* <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse JSON Spec</button> */}
         <button className={classnames({active: true})} onClick={() => this.toggleShowErrors()}>
@@ -58,6 +59,7 @@ function mapStateToProps(state, ownProps) {
     showFormulas: state.world.showFormulas,
     numCandidates: state.world.responses.length,
     editorString: state.world.editorString,
+    status: state.world.status,
   };
 }
 export default connect(mapStateToProps)(Toolbar);

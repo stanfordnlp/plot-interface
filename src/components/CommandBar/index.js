@@ -5,7 +5,7 @@ import Autosuggest from 'react-autosuggest'
 import {VEGALITE_ENUMS} from './VegaConstants/vegalite-enums'
 import {VEGALITE_PATHS} from './VegaConstants/vegalite-paths'
 import {MdSearch} from 'react-icons/lib/md'
-
+import Mousetrap from 'mousetrap'
 import "./styles.css"
 import './autocomplete.css'
 const suggestionLexicon = VEGALITE_ENUMS.concat(VEGALITE_PATHS)
@@ -23,6 +23,16 @@ class CommandBar extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.state.value !== nextProps.query)
       this.setState({'value': nextProps.query})
+  }
+
+  componentDidMount() {
+    Mousetrap.prototype.stopCallback = () => false;
+    Mousetrap.bind("ctrl+m", (e) => { console.log(this.Autosuggest.input.focus()) })
+    // this.Autosuggest.focus()
+  }
+  componentWillUnmount() {
+    // Mousetrap.unbind("enter")
+    Mousetrap.unbind("ctrl+m")
   }
 
   onChange = (event, { newValue, method }) => {
@@ -75,13 +85,14 @@ class CommandBar extends React.Component {
     const inputProps = {
        autoFocus: true,
        value: this.state.value,
-       placeholder: "type command to modify plot",
+       placeholder: "command",
        onChange: this.onChange,
-       onKeyDown: e => this.handleKeyDown(e)
+       onKeyDown: e => this.handleKeyDown(e),
     };
     return (
       <div className="CommandBar">
         <Autosuggest
+          ref={(input) => { this.Autosuggest = input; }}
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}

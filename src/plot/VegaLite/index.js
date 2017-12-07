@@ -16,22 +16,22 @@ class VegaLite extends React.Component {
   constructor(props) {
     super(props)
     let spec = props.spec
-    
+
     const {vegaSpec, logger} = parseWithErrors(spec)
     const hasError = logger.warns.length > 0 || logger.errors.length > 0
-    this.state = {vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null}
+    this.state = {spec: spec, vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null}
   }
 
   componentWillReceiveProps(nextProps) {
     // console.log('vegalite received props', nextProps, this.props)
-    if (this.props.spec !== nextProps.spec)
+    if (JSON.stringify(this.state.spec) !== JSON.stringify(nextProps.spec))
     {
       // console.log('passed will receive props')
       let spec = nextProps.spec
 
       const {vegaSpec, logger} = parseWithErrors(spec)
       const hasError = logger.warns.length > 0 || logger.errors.length > 0
-      this.setState({vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null})
+      this.setState({spec: spec, vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null})
     }
   }
 
@@ -40,7 +40,7 @@ class VegaLite extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevStates) {
-    if (this.state.dataURL!==prevStates.dataURL) {
+    if (JSON.stringify(this.state.spec)!==JSON.stringify(prevStates.spec)) {
       this.updateVegaWrap(this.props.spec)
     }
   }
@@ -55,8 +55,11 @@ class VegaLite extends React.Component {
     vegaToDataURL(this.state.vegaSpec, this.props.dataValues).then(dataURL => {
       this.setState({dataURL: dataURL})
       // this.refs.chartImg.src = dataURL;
-      if (this.props.onError!==undefined && this.state.hasError)
-        this.props.onError()
+      if (this.props.onError) {
+        // console.log('hmm, errors');
+        this.props.onError(this.state.hasError)
+      }
+
       if (this.props.onDoneRendering !== undefined)
         this.props.onDoneRendering(dataURL)
       console.log('done rendering')
@@ -77,10 +80,10 @@ class VegaLite extends React.Component {
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
 
     return (
-      <div>
+      <div className='VegaLite'>
         <div className='chart'>
           <div ref='chart' onClick={e => {this.test(e)}}>
-             <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>
+             <img ref='chartImg' className='big-chart-img' alt='rendering...' src={this.state.dataURL}/>
           </div>
         </div>
         <div >

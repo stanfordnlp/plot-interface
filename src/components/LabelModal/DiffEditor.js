@@ -51,18 +51,18 @@ class DiffEditor extends Component {
   render() {
     return (
       <div className='diffEditor'>
-        <div className='info'>Edit the spec below to change the plot:</div>
-        <div>
+        <div className='absolute-wrapper'>
           <AceEditor
             ref="aceEditor"
             mode="text"
             theme="github"
-            height="20px"
+            height="400px"
             width="100%"
-            maxLines={30}
-            minLines={1}
+            maxLines={100}
+            minLines={10}
             value={this.state.specString}
             onChange={e => this.onChange(e)}
+            readOnly={this.props.readOnly}
             editorProps={{$blockScrolling: true}}
           />
         </div>
