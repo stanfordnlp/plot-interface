@@ -5,14 +5,15 @@
 }
 .big-chart-img {
   padding: 0px;
-  max-width: 1600px;
-  max-height: 1600px;
+  max-width: 1200px;
+  max-height: 800px;
+  /*max-width: 100%;*/
   display: inline-block;
 }
 .chart-img {
   padding: 0px;
-  max-width: 600px;
-  max-height: 600px;
+  max-width: 400px;
+  max-height: 400px;
   display: inline-block;
 }
 .chart .vega-bindings {

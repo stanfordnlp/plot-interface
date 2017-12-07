@@ -47,7 +47,7 @@ class Build extends Component {
     contextPromise.then(contextVega => {
       const contextHash = hash(contextVega.dataURL)
 
-      let uniques = []
+      let plots = []
       let hashes = new Set()
       hashes.add(contextHash)
 
@@ -61,16 +61,19 @@ class Build extends Component {
             this.props.dispatch(Actions.setStatus(`Rendering ${i+1} of ${responses.length}`))
           vegaLiteToDataURLWithErrors(r.value, dataValues)
           .then(vega => {
-            const p = {dataURL:vega.dataURL, logger: vega.logger,
-            dataHash: hash(vega.dataURL), formula: r.canonical, spec :r.value}
-            const isIdentical = hashes.has(p.dataHash)
-            p.isIdentical = isIdentical;
-            if (!isIdentical) {
-              hashes.add(p.dataHash)
-              // uniques[i] = p
-              uniques.push(p)
-              this.setState({plotData: uniques})
+            const dataHash = hash(vega.dataURL);
+            const p = {
+              dataURL:vega.dataURL,
+              logger: vega.logger,
+              dataHash: dataHash,
+              formula: r.canonical,
+              spec :r.value,
+              isIdentical: hashes.has(dataHash)
             }
+
+            hashes.add(p.dataHash)
+            plots[i] = p
+            this.setState({plotData: plots})
             // console.log(i, r.canonical, isIdentical)
           })
           .catch(e => console.log('processing vega error', e))
@@ -80,10 +83,10 @@ class Build extends Component {
   }
 
   render() {
-    const {responses} = this.props
+    const {showFormulas, responses} = this.props
     let plots = [<div key='loading'>loading...</div>];
     if (this.state && this.state.plotData) {
-      plots = this.state.plotData.map((r, ind) =>
+      plots = this.state.plotData.filter(p => showFormulas || !p.isIdentical).map((r, ind) =>
         (
           <Plot
             key={r.dataHash+'_'+r.formula}
@@ -98,9 +101,9 @@ class Build extends Component {
     }
 
     let plotsPlus = [];
-    if (this.props.showFormulas) {
+    if (showFormulas) {
       plotsPlus.push(
-         <FormulasList formulas={responses.map(r => `${r.canonical} : ${r.prob}`)}/>
+         <FormulasList formulas={responses.map(r => `${r.canonical} : ${r.prob.toPrecision(4)}`)}/>
       );
     }
 
