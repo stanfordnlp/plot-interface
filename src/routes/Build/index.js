@@ -89,7 +89,7 @@ class Build extends Component {
       plots = this.state.plotData.filter(p => showFormulas || !p.isIdentical).map((r, ind) =>
         (
           <Plot
-            key={r.dataHash+'_'+r.formula}
+            key={ind+'_'+r.dataHash}
             dataURL={r.dataURL}
             spec={r.spec}
             logger={r.logger}
@@ -103,7 +103,7 @@ class Build extends Component {
     let plotsPlus = [];
     if (showFormulas) {
       plotsPlus.push(
-         <FormulasList formulas={responses.map(r => `${r.canonical} : ${r.prob.toPrecision(4)}`)}/>
+         <FormulasList key='formulasList' formulas={responses.map(r => `${r.canonical} : ${r.prob.toPrecision(4)}`)}/>
       );
     }
 
