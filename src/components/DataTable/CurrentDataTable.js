@@ -2,8 +2,6 @@ import React from "react"
 import {connect} from "react-redux";
 import DataTable from 'components/DataTable'
 
-import "./styles.css"
-
 class CurrentDataTable extends React.Component {
   render() {
     if (this.props.schema === null)

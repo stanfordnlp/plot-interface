@@ -6,7 +6,6 @@ import { STATUS } from "constants/strings"
 
 import Plot from "plot/Plot"
 import Editor from "components/Editor"
-import FormulasList from "components/FormulasList"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
@@ -103,7 +102,24 @@ class Build extends Component {
     let plotsPlus = [];
     if (showFormulas) {
       plotsPlus.push(
-         <FormulasList key='formulasList' formulas={responses.map(r => `${r.canonical} : ${r.prob.toPrecision(4)}`)}/>
+        <div className="debug" style={{height:'400px', overflow: 'scroll'}}>
+          <table>
+            <tbody>
+            {
+              responses.map((c, r) => {
+                return (
+                  <tr key={r} className={r % 2 ? 'even' : 'odd'}>
+                    <td>{r}</td>
+                    <td>{c.canonical}</td>
+                    <td>{c.prob.toPrecision(4)}</td>
+                    <td>{c.score.toPrecision(4)}</td>
+                  </tr>
+                );
+              })
+            }
+            </tbody>
+          </table>
+        </div>
       );
     }
 

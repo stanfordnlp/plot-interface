@@ -19,21 +19,21 @@ const exampleDatasets = [
     description: '',
     url: '/data/sp500.csv'
   },
-  {
-    name: 'Airports',
-    description: '',
-    url:  '/data/airports.csv'
-  },
+  // {
+  //   name: 'Airports',
+  //   description: '',
+  //   url:  '/data/airports.csv'
+  // },
   {
     name: 'stocks',
     description: '',
     url:  '/data/stocks.csv'
   },
-  // {
-  //   name: 'Cars',
-  //   description: 'Vehicular data which consists of names, cylinders and displacement',
-  //   url: '/data/cars.json'
-  // },
+  {
+    name: 'Cars',
+    description: 'Vehicular data which consists of names, cylinders and displacement',
+    url: '/data/cars.json'
+  },
   // {
   //   name: 'Gapminder',
   //   description: 'Year, country, population, fertility',
