@@ -66,6 +66,11 @@ const Actions = {
       const { sessionId } = getState().user
       const { context, schema, datasetURL } = getState().world
 
+      dispatch({
+        type: Constants.SET_STATUS,
+        status: STATUS.LOADING
+      })
+      
       SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
       .then((response) => {
         dispatch({

@@ -52,12 +52,14 @@ class Build extends Component {
 
       for (let i = 0; i<responses.length; i++) {
         const r = responses[i]
-        const delay = i > 3? Math.min((i-3)*100, 2000) : 0
+        const delay = i > 5? 100 : 0
+
         setTimeout( () => {
           if (i === responses.length - 1)
             this.props.dispatch(Actions.setStatus(STATUS.TRY))
           else
             this.props.dispatch(Actions.setStatus(`Rendering ${i+1} of ${responses.length}`))
+
           vegaLiteToDataURLWithErrors(r.value, dataValues)
           .then(vega => {
             const dataHash = hash(vega.dataURL);
@@ -126,7 +128,7 @@ class Build extends Component {
     plotsPlus = plotsPlus.concat(plots);
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
+        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", overflow: 'hidden'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor onLabel={this.onLabel}/>
           <div className="Candidates" ref={c => this.candidates = c}>
             {plotsPlus}

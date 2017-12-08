@@ -65,7 +65,8 @@ class Editor extends React.Component {
           <div className='chart-container' key='current'>
             {
               this.props.isInitial?
-              <div>No current plot, click <MdCheck className='md-button' size={20}/> to select one.</div>
+              <div>No current plot: click <MdCheck className='md-button' size={20}/> on the right panel to select one,
+              or type a command to get other candidates. </div>
               :
               <VegaLite
                 spec={this.props.context}
