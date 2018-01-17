@@ -18,7 +18,9 @@ function validate(validator, spec, logger) {
   const valid = validator(spec);
   const messages = []
   if (!valid) {
-    for (const error of vegaLiteValidator.errors) {
+    console.log('not valid: ', spec, validator.errors)
+
+    for (const error of validator.errors) {
       const key = error.keyword
       let message
       if (key === 'additionalProperties') {
@@ -59,6 +61,7 @@ export function parseWithErrors(spec) {
     vegaSpec = vl.compile(spec, currLogger).spec;
     validateVega(vegaSpec, currLogger);
   } catch (e) {
+    console.log(e)
     currLogger.error(e.message);
     return {vegaSpec: {}, logger: currLogger}
   }
@@ -76,8 +79,10 @@ export function vegaToDataURL(vegaSpec, values) {
   // console.log('called vegaToDataURL')
   let runtime;
   try {
-    if (Object.keys(vegaSpec).length === 0 && vegaSpec.constructor === Object)
+    if (Object.keys(vegaSpec).length === 0 && vegaSpec.constructor === Object) {
+      console.log(vegaSpec)
       return Promise.resolve('data:,'+encodeURIComponent('empty spec'))
+    }
 
     runtime = vega.parse(vegaSpec);
     const dataView = new vega.View(runtime)

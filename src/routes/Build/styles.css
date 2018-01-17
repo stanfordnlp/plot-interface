@@ -20,7 +20,6 @@ div.Candidates {
   align-items: stretch;
   align-content: flex-start;
   flex-wrap: wrap;
-  /*background-color: #fafbfc;*/
 }
 
 .Build-status {

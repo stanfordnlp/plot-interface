@@ -25,7 +25,7 @@ class DiffEditor extends Component {
         this.updateHighlights()
         this.props.update(after)
       } catch (ex) {
-        console.log(ex)
+        console.log(ex.message)
       }
     })
   }
@@ -65,6 +65,7 @@ class DiffEditor extends Component {
             readOnly={this.props.readOnly}
             editorProps={{$blockScrolling: true}}
           />
+          <span>{this.state.parseError}</span>
         </div>
       </div>
     )

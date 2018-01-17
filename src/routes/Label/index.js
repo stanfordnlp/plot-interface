@@ -160,11 +160,11 @@ class Label extends Component {
         {this.config.showFormula? <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>: null}
 
         {[...Array(5).keys()].map((uIdx)=>
-            <input className="Label-input"
-                      type="text"
-                      onChange={e => this.onChange(e, ind, uIdx)}
-                      placeholder={uIdx+'. Provide a full English command that transforms the plot from "before" to "after" here'}
-            />
+          <input className="Label-input"
+            type="text"
+            onChange={e => this.onChange(e, ind, uIdx)}
+            placeholder={uIdx+'. Provide a full English command that transforms the plot from "before" to "after" here'}
+          />
         )}
 
       </div>

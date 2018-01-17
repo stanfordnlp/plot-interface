@@ -8,7 +8,6 @@ const Help = () => (
     <hr />
     <p>This is a natural language interface for plotting. Users will give a natural language utterance, such as "make a scatter plot of GDP and population", and the computer will parse the utterance and produce a plot. </p>
     <h2>Getting Started</h2>
-    <p>
     <ul>
     <li>Pick a plot to start by selecting the checkmark next to a desired plot.</li>
     <li>Try some simple commands like "change x axis to Manufacturer".</li>
@@ -24,8 +23,6 @@ const Help = () => (
     </ul>
     <li>Once you have tried some basic commands, try to experiment and push the computer to learn to produce more interesting plots!</li>
     </ul>
-    </p>
   </div>
 )
-
 export default Help

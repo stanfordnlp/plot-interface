@@ -15,6 +15,7 @@ const Header = ({ query, signedIn, sessionId, email, dispatch }) => (
     </div> */}
     <div className="Header-nav">
       <Link to={{ pathname: "/build", query: query }} activeClassName="active"><div>Plot</div></Link>
+      <Link to={{ pathname: "/label", query: query }} activeClassName="active"><div>Label</div></Link>
       <Link to={{ pathname: "/help", query: query }} activeClassName="active"><div>Help</div></Link>
     </div>
   </div>
