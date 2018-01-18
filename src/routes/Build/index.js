@@ -6,7 +6,6 @@ import Editor from "components/Editor"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
-import Plot from "components/Plot/Candidate.js"
 import Candidates from './candidates.js'
 import "./styles.css"
 
@@ -17,7 +16,7 @@ class Build extends Component {
   static propTypes = {
     /* Injected by Redux */
     context: PropTypes.object,
-    responses: PropTypes.array,
+    candidate: PropTypes.element,
     dispatch: PropTypes.func,
   }
 
@@ -31,25 +30,12 @@ class Build extends Component {
     this.labelModal.onLabel(spec, formula)
   };
 
-  // generate regular candidate
-  candidate = (r, ind) => (
-    <Plot
-      key={ind}
-      dataURL={r.dataURL}
-      spec={r.spec}
-      logger={r.logger}
-      formula={r.formula}
-      errorLogger={r.logger}
-      onLabel={this.props.onLabel}
-    />
-  )
-
   render() {
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
           <Editor onLabel={this.onLabel}/>
-          <Candidates onLabel={this.onLabel} candidate={this.candidate}/>
+          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
         <Toolbar onLabel={this.onLabel}/>

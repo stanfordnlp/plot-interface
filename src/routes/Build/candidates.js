@@ -79,8 +79,17 @@ class Candidates extends Component {
     const {showFormulas, responses} = this.props
     let plots = [<div key='loading'>loading...</div>];
     if (this.state && this.state.plotData) {
-      plots = this.state.plotData.filter(p => showFormulas || !p.isIdentical).map((r, ind) =>
-        this.props.candidate(r, ind)
+      plots = this.state.plotData.filter(p => showFormulas || !p.isIdentical).map((r, ind) => (
+        <this.props.candidate
+          key={ind}
+          dataURL={r.dataURL}
+          spec={r.spec}
+          logger={r.logger}
+          formula={r.formula}
+          errorLogger={r.logger}
+          onLabel={this.props.onLabel}
+        />
+        )
       )
     }
 

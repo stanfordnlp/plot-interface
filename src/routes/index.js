@@ -4,8 +4,11 @@ import { connect } from "react-redux"
 import { Router, Route, IndexRedirect } from "react-router"
 import Build from './Build';
 import Help from "./Help"
-import Label from "./Build/label.js"
+
 import LabelHelp from "./Help/LabelHelp"
+
+import Candidate from "components/Plot/Candidate.js"
+import LabelCandidate from "components/Plot/LabelCandidate.js"
 
 import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
@@ -21,7 +24,7 @@ const Routes = ({ history }) => (
       </div>
     )}>
       <IndexRedirect to="build"/>
-      <Route path="build" component={Build} />
+      <Route path="build" component={() => <Build candidate={Candidate}/>} />
       <Route path="help" component={Help} />
     </Route>
 
@@ -32,7 +35,7 @@ const Routes = ({ history }) => (
       </div>
     )}>
       <IndexRedirect to="build"/>
-      <Route path="build" component={() => <Build/>} />
+      <Route path="build"  component={() => <Build candidate={LabelCandidate}/>} />
       <Route path="help" component={LabelHelp} />
     </Route>
   </Router>
