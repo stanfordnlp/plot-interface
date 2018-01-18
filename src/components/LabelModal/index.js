@@ -2,13 +2,14 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import Actions from "actions/world"
 import Modal from "react-modal"
-import VegaLite from "plot/VegaLite"
+import VegaLite from "components/Plot/VegaLite"
 import DiffEditor from './DiffEditor'
-import "./styles.css"
 import {MdClose, } from 'react-icons/lib/md'
 import SplitPane from 'react-split-pane';
 import Mousetrap from 'mousetrap'
 // import CurrentDataTable from 'components/DataTable/CurrentDataTable'
+import "./styles.css"
+
 const headerText = 'Editor';
 class LabelModal extends Component {
 

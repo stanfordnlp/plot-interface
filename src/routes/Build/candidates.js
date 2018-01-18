@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
+import hash from 'string-hash'
+
 import Actions from 'actions/world'
 import { STATUS } from "constants/strings"
-
-import Plot from "plot/Plot"
+import Plot from "components/Plot/Candidate.js"
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
-import hash from 'string-hash'
 
 import "./styles.css"
 
@@ -44,7 +44,7 @@ class Candidates extends Component {
 
       for (let i = 0; i<responses.length; i++) {
         const r = responses[i]
-        const delay = i > 5? 100 : 0
+        const delay = i < 5 ? 0 : 10 
 
         setTimeout( () => {
           if (i === responses.length - 1)

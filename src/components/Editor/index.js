@@ -6,7 +6,7 @@ import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import {parseWithErrors} from 'helpers/vega-utils'
 import PropTypes from 'prop-types';
 import {MdCheck} from 'react-icons/lib/md'
-import VegaLite from "plot/VegaLite"
+import VegaLite from "components/Plot/VegaLite"
 import "./styles.css"
 
 class Editor extends React.Component {

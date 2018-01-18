@@ -6,7 +6,6 @@ import Editor from "components/Editor"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
-
 import Candidates from './candidates.js'
 import "./styles.css"
 

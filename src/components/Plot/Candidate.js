@@ -6,7 +6,7 @@ import hash from 'string-hash'
 
 // import ContextOverlay from './context-overlay'
 import {MdClose, MdCheck,} from 'react-icons/lib/md'
-import './styles.css'
+import './candidate.css'
 
 class Plot extends React.Component {
   static propTypes = {
@@ -36,10 +36,6 @@ class Plot extends React.Component {
   }
 
   onLabel() {
-    // if ("initialContext" in this.props.context) {
-    //   window.alert("No current plot, you need to pick one before you can label")
-    //   return
-    // }
     this.props.onLabel(this.state.spec, this.state.formula)
   }
 

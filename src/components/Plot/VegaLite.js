@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import hash from 'string-hash'
 import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
-import "./styles.css"
+import "./vegalite.css"
 
 
 // renders vegalite plot and display errors
