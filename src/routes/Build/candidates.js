@@ -5,7 +5,6 @@ import hash from 'string-hash'
 
 import Actions from 'actions/world'
 import { STATUS } from "constants/strings"
-import Plot from "components/Plot/Candidate.js"
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 
 import "./styles.css"
@@ -14,6 +13,7 @@ class Candidates extends Component {
   static propTypes = {
     /* Injected by Redux */
     context: PropTypes.object,
+    candidate: PropTypes.func,
     responses: PropTypes.array,
     dispatch: PropTypes.func,
   }
@@ -44,7 +44,7 @@ class Candidates extends Component {
 
       for (let i = 0; i<responses.length; i++) {
         const r = responses[i]
-        const delay = i < 5 ? 0 : 10 
+        const delay = i < 5 ? 0 : 10
 
         setTimeout( () => {
           if (i === responses.length - 1)
@@ -80,20 +80,8 @@ class Candidates extends Component {
     let plots = [<div key='loading'>loading...</div>];
     if (this.state && this.state.plotData) {
       plots = this.state.plotData.filter(p => showFormulas || !p.isIdentical).map((r, ind) =>
-      {
-        // console.log(r)
-        return  (
-          <Plot
-            key={ind+'_'+r.dataHash}
-            dataURL={r.dataURL}
-            spec={r.spec}
-            logger={r.logger}
-            formula={r.formula}
-            errorLogger={r.logger}
-            onLabel={this.props.onLabel}
-          />
-        )
-      })
+        this.props.candidate(r, ind)
+      )
     }
 
     let plotsPlus = [];
