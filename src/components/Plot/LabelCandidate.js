@@ -23,7 +23,7 @@ class Plot extends React.Component {
     const {logger} = this.props;
     const hasError = logger.warns.length > 0 || logger.errors.length > 0;
     this.config = { showTools: true, iconSize: 20}
-    this.state = { isClosed: false, labeling: false, hasError, ...props}
+    this.state = { isClose: false, isLabeled: false, hasError, ...props}
   }
 
   accept() {
@@ -41,6 +41,7 @@ class Plot extends React.Component {
     //   return
     // }
     this.props.onLabel(this.state.spec, this.state.formula)
+    this.setState({isLabeled: true})
   }
 
   onClick(e) {
@@ -52,39 +53,22 @@ class Plot extends React.Component {
   }
 
   renderChart() {
-    const {iconSize, showTools} = this.config;
+
     const equalMsg = this.state.isEqual? <li className='display-errors' key={'equalmsg'}>no change</li>: null
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
 
+    const {isClosed, isLabeled} = this.state;
     return (
       <div className='chart-container'>
-        {showTools===true?
-          <div className='chart-header'>
-             <span className='header-button'>
-                <MdClose className='md-button' size={iconSize} onClick={(e) => {this.remove()}}/>
-                <div className="header-button-tooltip">
-                    {'remove this'}
-                </div>
-             </span>
-             
-             <span className='header-button'>
-               <MdCheck className='md-button' size={iconSize} onClick={(e) => {this.accept()}}/>
-                <div className="header-button-tooltip">
-                    {'use this'}
-                </div>
-             </span>
-
-             <span className='header-button'>
-               <MdCheck className='md-button' size={iconSize} onClick={(e) => {
-                  this.onLabel()}
-                } />
-                <div className="header-button-tooltip">
-                    {'edit and accept'}
-                </div>
-             </span>
-          </div>
-        : <div className='chart-header'>{this.state.header}</div> }
+        <div className='chart-header'>
+          <button onClick={() => this.onLabel()}>Label</button>
+          <button onClick={() => this.remove()}>Reject</button>
+        </div>
+        <div>
+          {isLabeled? 'labeled' : 'not labeled'}
+          {isClosed? ', rejected' : ''}
+        </div>
         <div className='canonical'>{this.props.formula}</div>
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>
@@ -100,10 +84,6 @@ class Plot extends React.Component {
   }
 
   render() {
-    if (!this.props.showErrors && this.state.hasError)
-      return null;
-    if (this.state.isClosed)
-      return null;
     return (
       this.renderChart()
     );

@@ -64,7 +64,7 @@ class Plot extends React.Component {
              <span className='header-button'>
                 <MdClose className='md-button' size={iconSize} onClick={(e) => {this.remove()}}/>
                 <div className="header-button-tooltip">
-                    {'remove this'}
+                    {'Reject'}
                 </div>
              </span>
              {/* <span className='header-button'>
