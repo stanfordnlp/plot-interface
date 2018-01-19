@@ -54,7 +54,7 @@ class LabelModal extends Component {
       window.alert('label is too short')
       return;
     }
-    this.props.dispatch(Actions.label(value, this.state.spec));
+    this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
     this.props.dispatch(UserActions.increaseCount(1));
 
     this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
@@ -69,7 +69,7 @@ class LabelModal extends Component {
       return
     }
 
-    this.props.dispatch(Actions.accept(this.state.spec));
+    this.props.dispatch(Actions.accept(this.state.spec, this.state.formula ));
     this.close()
   }
 

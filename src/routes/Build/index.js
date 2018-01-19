@@ -22,8 +22,10 @@ class Build extends Component {
 
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
-    this.props.dispatch(UserActions.setSessionId())
-    this.props.dispatch(Actions.clear())
+    const {dispatch} = this.props
+    dispatch(UserActions.setSessionId())
+    dispatch(Actions.clear())
+    Promise.resolve(dispatch(Actions.initData())).then(() => {this.props.dispatch(Actions.getRandom())})
   }
 
   onLabel = (spec, formula) => {

@@ -59,7 +59,8 @@ class Candidates extends Component {
               dataURL:vega.dataURL,
               logger: vega.logger,
               dataHash: dataHash,
-              formula: r.canonical,
+              formula: r.formula,
+              canonical: r.canonical,
               spec :r.value,
               rank: i,
               // changed, no dup, and no error
@@ -90,6 +91,7 @@ class Candidates extends Component {
           spec={r.spec}
           logger={r.logger}
           formula={r.formula}
+          canonical={r.canonical}
           errorLogger={r.logger}
           onLabel={this.props.onLabel}
         />

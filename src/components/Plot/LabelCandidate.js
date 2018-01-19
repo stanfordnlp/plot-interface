@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import hash from 'string-hash'
 
+import config from 'config'
 // import ContextOverlay from './context-overlay'
 import './candidate.css'
 
@@ -64,7 +65,7 @@ class Plot extends React.Component {
           <button onClick={() => this.onLabel()}>Label</button>
           {this.props.header}
         </div>
-        <div className='canonical'>{this.props.formula}</div>
+        {config.showFormula? <div className='canonical'>{this.props.canonical}</div> : null}
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>
             <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>

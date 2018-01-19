@@ -61,30 +61,30 @@ class Plot extends React.Component {
       <div className='chart-container'>
         {showTools===true?
           <div className='chart-header'>
-             <span className='header-button'>
+             {/* <span className='header-button'>
                 <MdClose className='md-button' size={iconSize} onClick={(e) => {this.remove()}}/>
                 <div className="header-button-tooltip">
                     {'Reject'}
                 </div>
-             </span>
-             {/* <span className='header-button'>
+             </span> */}
+             <span className='header-button'>
                <MdCheck className='md-button' size={iconSize} onClick={(e) => {this.accept()}}/>
                 <div className="header-button-tooltip">
                     {'use this'}
                 </div>
-             </span> */}
+             </span>
 
-             <span className='header-button'>
+             {/* <span className='header-button'>
                <MdCheck className='md-button' size={iconSize} onClick={(e) => {
                   this.onLabel()}
                 } />
                 <div className="header-button-tooltip">
                     {'edit and accept'}
                 </div>
-             </span>
+             </span> */}
           </div>
         : <div className='chart-header'>{this.state.header}</div> }
-        <div className='canonical'>{this.props.formula}</div>
+        <div className='canonical'>{this.props.canonical}</div>
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>
             <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>
