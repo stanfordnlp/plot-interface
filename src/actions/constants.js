@@ -15,6 +15,7 @@ const Actions = {
   SET_SESSION_ID: "SET_SESSION_ID",
   CLEAR: "CLEAR",
   SIGN_IN: "SIGN_IN",
+  INCREASE_COUNT: "INCREASE_COUNT",
 }
 
 export default Actions

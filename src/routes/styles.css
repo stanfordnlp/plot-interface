@@ -40,7 +40,7 @@ body {
 }
 
 input {
-  width: 100%;
+  /*width: 100%;*/
   background-color: rgba(0,0,0,0);
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   /*line-height: 1.4;*/

@@ -41,6 +41,15 @@ const Actions = {
         task
       })
     }
+  },
+
+  increaseCount: (count) => {
+    return (dispatch) => {
+      dispatch({
+        type: Constants.INCREASE_COUNT,
+        count: count
+      })
+    }
   }
 }
 

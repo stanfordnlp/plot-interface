@@ -2,15 +2,18 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router"
 import { connect } from "react-redux"
-
+import hash from 'string-hash'
+import config from "config"
 import "./styles.css"
 
-const Header = ({ query, signedIn, sessionId, email, dispatch, location }) => (
+const Header = ({ query, sessionId, dispatch, location, count }) => (
   <div className="Header">
-    {/* <div className="Header-logo">
-      <span>Plotting</span>
-      <span className="Header-sublogo">catch phrase</span>
-    </div> */}
+    <div className="HeaderInfo">
+      Labels provided: {count}
+    </div>
+    <div className="HeaderInfo">
+      Completion code: {count >= config.numLabels? hash(JSON.stringify(query)) : `provide ${config.numLabels} labels`}
+    </div>
     <div className="Header-nav">
       <Link to={{ pathname: "/label/build", query: query }} activeClassName="active"><div>Label</div></Link>
       <Link to={{ pathname: "/label/help", query: query }} activeClassName="active"><div>Help</div></Link>
@@ -27,9 +30,8 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => ({
   sessionId: state.user.sessionId,
-  email: state.user.email,
-  signedIn: state.user.signedIn,
   route: state.location,
+  count: state.user.count,
 })
 
 export default connect(mapStateToProps)(Header)

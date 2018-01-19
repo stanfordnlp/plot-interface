@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import Actions from "actions/world"
+import UserActions from "actions/user"
 import Modal from "react-modal"
 import VegaLite from "components/Plot/VegaLite"
 import DiffEditor from './DiffEditor'
@@ -54,6 +55,8 @@ class LabelModal extends Component {
       return;
     }
     this.props.dispatch(Actions.label(value, this.state.spec));
+    this.props.dispatch(UserActions.increaseCount(1));
+
     this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
 
     // this.setState({headerText: `labeled this plot as "${value}"...` })
@@ -86,9 +89,9 @@ class LabelModal extends Component {
     const style = {
       overlay: {
         display: 'flex',
-        alignItems: 'center',
+        // alignItems: 'center',
         backgroundColor: 'rgba(75,75,75,0.1)',
-        justifyContent: 'center',
+        // justifyContent: 'center',
       },
       content: {
         // position: 'absolute',
@@ -126,11 +129,13 @@ class LabelModal extends Component {
           placeholder={promptString}
         />
         <button className='headerButton' onClick={() => this.label(this.state.inputValue)}>Label</button>
-        <button className='headerButton' onClick={() => this.accept()}>Accept</button>
+        <button className='headerButton' onClick={() => this.close()}>Close</button>
       </div>
+
       <div className="status">
         {this.state.status}
       </div>
+
 
       <div style={{position: 'relative', height: `calc(100vh - ${100}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
@@ -139,7 +144,7 @@ class LabelModal extends Component {
                 <div className="label">Current plot</div>
                 {
                   Object.keys(context).length === 0?
-                  'You have not picked a current plot yet, in this case, the label should be how you would refer to the new plot'
+                  'There is no current plot, in this case, the label should be how you would refer to the new plot'
                     : <VegaLite spec={context} dataValues={this.props.dataValues}/>
                 }
             </div>

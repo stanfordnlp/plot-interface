@@ -2,15 +2,17 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
-import Editor from "components/Editor"
 import SplitPane from 'react-split-pane';
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
+import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
-import "./styles.css"
+import VegaLite from "components/Plot/VegaLite"
 
 import UserActions from "actions/user"
 import Actions from "actions/world"
+
+import "./styles.css"
 
 class Build extends Component {
   static propTypes = {
@@ -23,7 +25,8 @@ class Build extends Component {
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
     this.props.dispatch(UserActions.setSessionId())
-    this.props.dispatch(Actions.clear())
+    this.props.dispatch(Actions.labelInit())
+
   }
 
   onLabel = (spec, formula) => {
@@ -34,8 +37,22 @@ class Build extends Component {
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
-          <Editor onLabel={this.onLabel}/>
-          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+          <div className='editor-container'>
+            <CurrentDataTable/>
+            <div className='chart-container' key='current'>
+              {
+                this.props.isInitial?
+                'no current plot'
+                :
+                <VegaLite
+                  spec={this.props.context}
+                  dataValues={this.props.dataValues}
+                />
+              }
+            </div>
+        </div>
+
+        <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
         <Toolbar onLabel={this.onLabel}/>
@@ -45,7 +62,9 @@ class Build extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isInitial: Object.keys(state.world.context).length === 0
+  isInitial: Object.keys(state.world.context).length === 0,
+  context: state.world.context,
+  dataValues: state.world.dataValues,
 })
 
 export default connect(mapStateToProps)(Build)

@@ -5,6 +5,7 @@ import dsUtils from 'helpers/dataset-utils'
 import { STATUS } from "constants/strings"
 import {prettyStringify, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
+import config from 'config'
 
 const Actions = {
   setState: (state) => {
@@ -70,7 +71,7 @@ const Actions = {
         type: Constants.SET_STATUS,
         status: STATUS.LOADING
       })
-      
+
       SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
       .then((response) => {
         dispatch({
@@ -117,7 +118,7 @@ const Actions = {
         // })
 
         dispatch({
-          type: Constants.TRY_QUERY,
+          type: Constants.SET_RESPONSES,
           responses: candidates
         })
 
@@ -136,7 +137,7 @@ const Actions = {
       const { sessionId } = getState().user
       const { issuedQuery, context, schema, datasetURL } = getState().world
 
-      const q = ['accept', {utterance: issuedQuery, targetFormula:formula,
+      const q = ['accept', {utterance: issuedQuery, targetFormula: formula,
         context, schema, targetValue:spec, datasetURL, type: "accept"}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
@@ -168,14 +169,23 @@ const Actions = {
     }
   },
 
-  reject: (spec) => {
+  reject: (spec, isBad) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { query, context, schema, datasetURL} = getState().world
 
-      const q = ['reject', {utterance: query, context, schema, targetValue:spec, datasetURL }]
+      const q = ['reject', {unreject: isBad, utterance: query, context, schema, targetValue:spec, datasetURL }]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
+      return true
+    }
+  },
+
+  log: (info) => {
+    return (dispatch, getState) => {
+      const { sessionId } = getState().user
+      const q = ['log', info]
+      SEMPREquery({ q: q, sessionId: sessionId }, () => { })
       return true
     }
   },
@@ -208,25 +218,62 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
+      // persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
+    }
+  },
+
+  initData: () => {
+    return (dispatch, getState) => {
       const routing = getState().routing
       const location = routing.location || routing.locationBeforeTransitions
       const datasetURL = location.query.dataset
       if (datasetURL === undefined) {
-        dispatch(Actions.getRandom())
+        return false
       } else {
-        dsUtils.loadURL(datasetURL)
+        return dsUtils.loadURL(datasetURL)
           .then(loaded => {
             const parsed = dsUtils.parseRaw(loaded.data),
-             values = parsed.values,
-             schema = dsUtils.schema(values)
+            values = parsed.values,
+            schema = dsUtils.schema(values)
             dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: datasetURL}))
-            dispatch(Actions.getRandom())
           })
           .catch(function(err) {
             console.log(err)
           });
       }
-      // persistStore(getStore(), { whitelist: ['world', 'user'] }, () => { }).purge()
+    }
+  },
+
+  labelInit: () => {
+    return (dispatch, getState) => {
+      dispatch({
+        type: Constants.CLEAR
+      })
+      Promise.resolve(dispatch(Actions.initData())).then(() => {
+        const {sessionId} = getState().user;
+        const { context, schema, datasetURL } = getState().world
+        SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
+        .then(initial => {
+          dispatch({
+            type: Constants.ACCEPT,
+            target: initial.candidates[0].value
+          })
+
+          const {context} = getState().world;
+          // send the actual sempre command
+          SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
+          .then((response) => {
+            // console.log('sempre returned', response)
+            let candidates = response.candidates;
+            if (candidates.length > config.numCandidates)
+            candidates = candidates.slice(0, config.numCandidates)
+            dispatch({
+              type: Constants.SET_RESPONSES,
+              responses: candidates
+            })
+          });
+        }).catch(e => console.log('labelInit', e))
+      })
     }
   }
 }

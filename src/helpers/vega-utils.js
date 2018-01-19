@@ -18,7 +18,7 @@ function validate(validator, spec, logger) {
   const valid = validator(spec);
   const messages = []
   if (!valid) {
-    console.log('not valid: ', spec, validator.errors)
+    // console.log('not valid: ', spec, validator.errors)
 
     for (const error of validator.errors) {
       const key = error.keyword
@@ -61,7 +61,7 @@ export function parseWithErrors(spec) {
     vegaSpec = vl.compile(spec, currLogger).spec;
     validateVega(vegaSpec, currLogger);
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     currLogger.error(e.message);
     return {vegaSpec: {}, logger: currLogger}
   }
@@ -80,7 +80,7 @@ export function vegaToDataURL(vegaSpec, values) {
   let runtime;
   try {
     if (Object.keys(vegaSpec).length === 0 && vegaSpec.constructor === Object) {
-      console.log(vegaSpec)
+      // console.log(vegaSpec)
       return Promise.resolve('data:,'+encodeURIComponent('empty spec'))
     }
 

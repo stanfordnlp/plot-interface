@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import { Router, Route, IndexRedirect } from "react-router"
 import Build from './Build';
+import LabelBuild from './Build/label'
 import Help from "./Help"
 
 import LabelHelp from "./Help/LabelHelp"
@@ -35,7 +36,7 @@ const Routes = ({ history }) => (
       </div>
     )}>
       <IndexRedirect to="build"/>
-      <Route path="build"  component={() => <Build candidate={LabelCandidate}/>} />
+      <Route path="build"  component={() => <LabelBuild candidate={LabelCandidate}/>} />
       <Route path="help" component={LabelHelp} />
     </Route>
   </Router>
