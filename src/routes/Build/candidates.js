@@ -61,7 +61,10 @@ class Candidates extends Component {
               dataHash: dataHash,
               formula: r.canonical,
               spec :r.value,
-              isIdentical: hashes.has(dataHash)
+              rank: i,
+              // changed, no dup, and no error
+              noDup:  contextHash!==dataHash && !hashes.has(dataHash),
+              noError: vega.logger.errors.length + vega.logger.warns.length === 0
             }
 
             hashes.add(p.dataHash)
@@ -79,9 +82,10 @@ class Candidates extends Component {
     const {showFormulas, responses} = this.props
     let plots = [<div key='loading'>loading...</div>];
     if (this.state && this.state.plotData) {
-      plots = this.state.plotData.filter(p => showFormulas || !p.isIdentical).map((r, ind) => (
+      plots = this.state.plotData.filter(r => (showFormulas || (r.noError && r.noDup))).map((r, ind) => (
         <this.props.candidate
-          key={ind}
+          key={ind+'_'+r.formula}
+          header={`${showFormulas? r.rank : ''} ${r.noError? '': '(hasError)'} ${r.noDup? '': '(isSame)'}`}
           dataURL={r.dataURL}
           spec={r.spec}
           logger={r.logger}

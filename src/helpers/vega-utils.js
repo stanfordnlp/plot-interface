@@ -24,11 +24,13 @@ function validate(validator, spec, logger) {
       const key = error.keyword
       let message
       if (key === 'additionalProperties') {
-        message = `should not have additionalProperties ${error.params.additionalProperty}`
-      } else if (key === 'type') {
-        message = `${error.dataPath} ${error.message}` // dataPath should be message
-      } else if (key === 'anyOf') {
-        message = `${error.message}`
+        message = `${error.dataPath} should not have ${error.params.additionalProperty}`
+      } else if (key === 'enum') {
+        message = `${error.dataPath} ${error.message}: ${error.params.allowedValues.join(', ')}` // dataPath should be message
+      } else if (key === 'type' || key === 'required' || key === 'maximum') {
+        message = `${key}: ${error.dataPath} ${error.message}` // dataPath should be message
+      } else if (key === 'anyOf' || key === 'oneOf') {
+        message = `${error.dataPath} ${error.message}`
       } else {
         message = JSON.stringify(error)
       }
@@ -36,7 +38,7 @@ function validate(validator, spec, logger) {
     }
     const uniqueMessages = messages.filter((item, pos) => messages.indexOf(item) === pos);
     for (const m of uniqueMessages) {
-      logger.warn(`VegaLite: ${m}`)
+      logger.warn(`${m}`)
     }
   }
 }

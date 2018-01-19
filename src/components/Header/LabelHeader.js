@@ -9,14 +9,14 @@ import "./styles.css"
 const Header = ({ query, sessionId, dispatch, location, count }) => (
   <div className="Header">
     <div className="HeaderInfo">
-      Labels provided: {count}
+      Labels provided: {count} / {config.numLabels}
     </div>
     <div className="HeaderInfo">
-      Completion code: {count >= config.numLabels? hash(JSON.stringify(query)) : `provide ${config.numLabels} labels`}
+       {count >= config.numLabels? `You are done! copy ${hash(JSON.stringify(query))} back to AMT and submit` : 'Code will appear here after you are done'}
     </div>
     <div className="Header-nav">
       <Link to={{ pathname: "/label/build", query: query }} activeClassName="active"><div>Label</div></Link>
-      <Link to={{ pathname: "/label/help", query: query }} activeClassName="active"><div>Help</div></Link>
+      {/* <Link to={{ pathname: "/label/help", query: query }} activeClassName="active"><div>Help</div></Link> */}
     </div>
   </div>
 )

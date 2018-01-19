@@ -62,6 +62,7 @@ class Plot extends React.Component {
       <div className='chart-container'>
         <div className='chart-header'>
           <button onClick={() => this.onLabel()}>Label</button>
+          {this.props.header}
         </div>
         <div className='canonical'>{this.props.formula}</div>
         <div>

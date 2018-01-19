@@ -26,7 +26,6 @@ class Build extends Component {
     /* Set the appropriate sessionId (either turker id or generated) */
     this.props.dispatch(UserActions.setSessionId())
     this.props.dispatch(Actions.labelInit())
-
   }
 
   onLabel = (spec, formula) => {
