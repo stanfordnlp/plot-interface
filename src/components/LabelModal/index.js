@@ -40,6 +40,7 @@ class LabelModal extends Component {
   // note that props.issuedQuery is the query used to retrieve the original results
   // vs. props.query, which tracks the live value in query box
   onLabel(spec, formula) {
+    // console.log('onLabel', this.props.issuedQuery)
     this.setState({isOpen: true, spec: spec, formula: formula, inputValue: this.props.issuedQuery,})
   }
 
@@ -54,6 +55,7 @@ class LabelModal extends Component {
       window.alert('label is too short')
       return;
     }
+
     this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
     this.props.dispatch(UserActions.increaseCount(1));
 

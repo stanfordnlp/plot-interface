@@ -29,6 +29,7 @@ class Editor extends React.Component {
 
   clearAll() {
     this.props.dispatch(Actions.clear());
+    Promise.resolve(this.props.dispatch(Actions.initData())).then(() => {this.props.dispatch(Actions.getRandom())})
   }
 
   labelJSON() {

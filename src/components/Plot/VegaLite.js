@@ -52,7 +52,8 @@ class VegaLite extends React.Component {
   }
   // without the timeout, promise is sync...
   updateVega() {
-    vegaToDataURL(this.state.vegaSpec, this.props.dataValues).then(dataURL => {
+    const dataValues = this.props.spec.data === undefined? this.props.dataValues : null
+    vegaToDataURL(this.state.vegaSpec, dataValues).then(dataURL => {
       this.setState({dataURL: dataURL})
       // this.refs.chartImg.src = dataURL;
       if (this.props.onError) {

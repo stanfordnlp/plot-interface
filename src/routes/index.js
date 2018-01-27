@@ -10,9 +10,11 @@ import LabelHelp from "./Help/LabelHelp"
 
 import Candidate from "components/Plot/Candidate.js"
 import LabelCandidate from "components/Plot/LabelCandidate.js"
-
+import Viewer from "./Viewer"
 import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
+
+
 import "normalize.css"
 import "./styles.css"
 
@@ -29,6 +31,7 @@ const Routes = ({ history }) => (
       <Route path="help" component={Help} />
     </Route>
 
+    <Route path="viewer" component={Viewer} />
     <Route path="label" component={(props) => (
       <div className="container">
         <LabelHeader query={props.location.query} />

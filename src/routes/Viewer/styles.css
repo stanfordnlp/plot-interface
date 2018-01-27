@@ -1,0 +1,23 @@
+.exampleTable {
+  margin: 5px;
+  margin-left: 10px;
+  font-size: 11px;
+  overflow: auto;
+}
+.exampleTable td {
+  max-width: 350px;
+  padding: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  vertical-align: top;
+}
+
+.exampleTable tr.even {
+  background: #eee;
+  border-bottom: 1px dotted #ddd;
+}
+.exampleTable tr.odd {
+  background: #fff;
+  border-bottom: 1px dotted #eee;
+}

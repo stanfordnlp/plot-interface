@@ -20,6 +20,7 @@ function validate(validator, spec, logger) {
   if (!valid) {
     // console.log('not valid: ', spec, validator.errors)
 
+    // generate human friendly error messages
     for (const error of validator.errors) {
       const key = error.keyword
       let message
@@ -27,7 +28,7 @@ function validate(validator, spec, logger) {
         message = `${error.dataPath} should not have ${error.params.additionalProperty}`
       } else if (key === 'enum') {
         message = `${error.dataPath} ${error.message}: ${error.params.allowedValues.join(', ')}` // dataPath should be message
-      } else if (key === 'type' || key === 'required' || key === 'maximum') {
+      } else if (key === 'type' || key === 'required' || key === 'maximum' || key === 'minimum') {
         message = `${key}: ${error.dataPath} ${error.message}` // dataPath should be message
       } else if (key === 'anyOf' || key === 'oneOf') {
         message = `${error.dataPath} ${error.message}`
@@ -87,9 +88,10 @@ export function vegaToDataURL(vegaSpec, values) {
     }
 
     runtime = vega.parse(vegaSpec);
-    const dataView = new vega.View(runtime)
-    .insert('source', values)
-    .logLevel(config.logLevel)
+    let dataView = new vega.View(runtime)
+    if (values !== null)
+      dataView = dataView.insert('source', values)
+    dataView.logLevel(config.logLevel)
     .initialize()
 
     let dataURL
