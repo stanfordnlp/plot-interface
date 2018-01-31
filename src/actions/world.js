@@ -222,13 +222,13 @@ const Actions = {
     }
   },
 
-  initData: () => {
+  initData: (datasetURL) => {
     return (dispatch, getState) => {
-      const routing = getState().routing
-      const location = routing.location || routing.locationBeforeTransitions
-      const datasetURL = location.query.dataset
       if (datasetURL === undefined) {
-        return false
+        const routing = getState().routing
+        const location = routing.location || routing.locationBeforeTransitions
+        const datasetURL = location.query.dataset
+        if (datasetURL === undefined) return false
       } else {
         return dsUtils.loadURL(datasetURL)
           .then(loaded => {

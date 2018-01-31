@@ -5,8 +5,9 @@ import LabelModal from 'components/LabelModal'
 import Actions from "actions/world"
 
 import './styles.css'
-
+// eslint-disable-next-line
 const turk2018url = 'https://raw.githubusercontent.com/stanfordnlp/plot-data/master/20180118_turk_all.jsonl'
+const remotelogs = 'http://jonsson.stanford.edu:8405/query.jsonl'
 
 class Viewer extends Component {
   static propTypes = {
@@ -19,7 +20,8 @@ class Viewer extends Component {
   super(props);
     this.state = {
       examples: [],
-      url: turk2018url
+      url: remotelogs,
+      isQuerylog: true,
     };
   }
 
@@ -38,7 +40,7 @@ class Viewer extends Component {
 
   loadJSONL(contents) {
     // console.log(contents)
-    const examples = contents.trim().split('\n').map((c, i) => {
+    const raw = contents.trim().split('\n').map((c, i) => {
       try {
         return JSON.parse(c);
       } catch(e) {
@@ -46,6 +48,12 @@ class Viewer extends Component {
       }
       return null;
     })
+
+    let examples = raw;
+    if (this.state.isQuerylog) {
+      examples = raw.map(r => r.q).filter(r => r[0]==="accept").map(r => r[1])
+    }
+
     this.setState({examples: examples})
   }
 
@@ -70,6 +78,7 @@ class Viewer extends Component {
 
   onInspect = (example) => {
     this.props.dispatch(Actions.setState({issuedQuery: example.utterance, context: example.context}))
+    this.props.dispatch(Actions.initData(example.datasetURL))
     // console.log('onInspect', example.utterance)
     setTimeout(() => {this.labelModal.onLabel(example.targetValue, example.targetFormula)}, 0)
     return false
