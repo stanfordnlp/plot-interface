@@ -244,7 +244,7 @@ const Actions = {
     }
   },
 
-  labelInit: () => {
+  labelInit: (useRandomInitial) => {
     return (dispatch, getState) => {
       dispatch({
         type: Constants.CLEAR
@@ -252,21 +252,28 @@ const Actions = {
       Promise.resolve(dispatch(Actions.initData())).then(() => {
         const {sessionId} = getState().user;
         const { context, schema, datasetURL } = getState().world
-        SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
-        .then(initial => {
-          dispatch({
-            type: Constants.ACCEPT,
-            target: initial.candidates[0].value
-          })
+
+        let initQuery = () => {};
+        if (config.useRandomInitial)
+          initQuery = () => SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
+
+        Promise.resolve(initQuery()).then(
+          initial => {
+          if (config.useRandomInitial) {
+            dispatch({
+              type: Constants.ACCEPT,
+              target: initial.candidates[0].value
+            })
+          }
 
           const {context} = getState().world;
           // send the actual sempre command
-          SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
+          SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
           .then((response) => {
             // console.log('sempre returned', response)
             let candidates = response.candidates;
             if (candidates.length > config.numCandidates)
-            candidates = candidates.slice(0, config.numCandidates)
+              candidates = candidates.slice(0, config.numCandidates)
             dispatch({
               type: Constants.SET_RESPONSES,
               responses: candidates

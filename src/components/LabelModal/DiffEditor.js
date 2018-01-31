@@ -58,12 +58,12 @@ class DiffEditor extends Component {
             theme="github"
             height="400px"
             width="100%"
-            maxLines={100}
+            maxLines={30}
             minLines={10}
             value={this.state.specString}
             onChange={e => this.onChange(e)}
             readOnly={this.props.readOnly}
-            editorProps={{$blockScrolling: true}}
+            // editorProps={{$blockScrolling: true}}
           />
           <span>{this.state.parseError}</span>
         </div>

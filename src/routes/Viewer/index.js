@@ -39,9 +39,14 @@ class Viewer extends Component {
   loadJSONL(contents) {
     // console.log(contents)
     const examples = contents.trim().split('\n').map((c, i) => {
-      return JSON.parse(c)
+      try {
+        return JSON.parse(c);
+      } catch(e) {
+        alert(e); // error in the above string (in this case, yes)!
+      }
+      return null;
     })
-    this.setState({examples})
+    this.setState({examples: examples})
   }
 
   handleFiles(f: FileList) {
@@ -85,14 +90,13 @@ class Viewer extends Component {
               examples.map((c, r) => {
                 return (
                   <tr key={r} className={r % 2 ? 'even' : 'odd'}>
-                    <td>{r}</td>
                     <td> <a
                       // eslint-disable-next-line
-                      href="javascript:void(0);" onClick={e => this.onInspect(c)}> inspect </a> </td>
+                      href="javascript:void(0);" onClick={e => this.onInspect(c)}> {r} </a> </td>
                     {/* <td> <span onClick={e => this.openineditor(c.context)}> context </span> </td> */}
                     {/* <td> <span onClick={e => this.openineditor(c.spec)}> spec </span> </td> */}
                     <td>{c.utterance}</td>
-                    <td>{c.targetFormula}</td>
+                    <td>{JSON.stringify(c.targetFormula)}</td>
                   </tr>
                 );
               })

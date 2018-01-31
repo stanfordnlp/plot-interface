@@ -8,6 +8,7 @@ import DiffEditor from './DiffEditor'
 import {MdClose, } from 'react-icons/lib/md'
 import SplitPane from 'react-split-pane';
 import Mousetrap from 'mousetrap'
+import config from 'config'
 // import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import "./styles.css"
 
@@ -97,7 +98,7 @@ class LabelModal extends Component {
       },
       content: {
         // position: 'absolute',
-        // overflow: 'hidden',
+        overflow: 'hidden',
         top: '0px' , bottom: '0px', left: '0px', right: '0px',
         width: '100%',
         height: '100%',
@@ -150,7 +151,7 @@ class LabelModal extends Component {
                     : <VegaLite spec={context} dataValues={this.props.dataValues}/>
                 }
             </div>
-            <DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>
+            {!config.showDiffEditor? null : <DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}
           </SplitPane>
           <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
               <div>
@@ -161,7 +162,7 @@ class LabelModal extends Component {
                     : <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})}/>
                 }
               </div>
-              <DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>
+              {!config.showDiffEditor? null : <DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}
           </SplitPane>
         </SplitPane>
       </div>
