@@ -105,7 +105,7 @@ class Viewer extends Component {
                     {/* <td> <span onClick={e => this.openineditor(c.context)}> context </span> </td> */}
                     {/* <td> <span onClick={e => this.openineditor(c.spec)}> spec </span> </td> */}
                     <td>{c.utterance}</td>
-                    <td>{JSON.stringify(c.targetFormula)}</td>
+                    <td>{typeof c.targetFormula === 'string'? c.targetFormula: JSON.stringify(c.targetFormula)}</td>
                   </tr>
                 );
               })

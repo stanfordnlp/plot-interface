@@ -72,7 +72,7 @@ const Actions = {
         status: STATUS.LOADING
       })
 
-      SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL}], sessionId: sessionId})
+      SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL, random: true}], sessionId: sessionId})
       .then((response) => {
         dispatch({
           type: Constants.SET_RESPONSES,
