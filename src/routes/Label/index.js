@@ -33,7 +33,7 @@ class Label extends Component {
     const location = props.routing.location || props.routing.locationBeforeTransitions
     const sessionId = location.query.uid
 
-    this.config = {numCandidates: 100, maxShow: 5, countPerExample: 5, hint: '10', plotInd: null, showFormula: false, ...location.query}
+    this.config = {numCandidates: 100, maxShow: 5, countPerExample: 5, hint: '10', plotInd: null, showFormula: true, ...location.query}
 
     this.state = {submitted: false, context: null, responses: [], sessionId}
   }

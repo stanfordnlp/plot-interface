@@ -73,7 +73,11 @@ export function parseWithErrors(spec) {
 
 export function vegaLiteToDataURLWithErrors(vegaLiteSpec, values) {
   // optionally specify the data
-  const vegaWithErrors = parseWithErrors(vegaLiteSpec);
+  const vegaWithErrors = parseWithErrors(vegaLiteSpec)
+
+  // do not inject value when data is specified in the spec
+  if (vegaLiteSpec.data !== undefined) values = null
+
   return vegaToDataURL(vegaWithErrors.vegaSpec, values)
     .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}}).catch(e => {console.log('vegaLiteToDataURLWithErrors error', e)})
 }
@@ -86,11 +90,11 @@ export function vegaToDataURL(vegaSpec, values) {
       // console.log(vegaSpec)
       return Promise.resolve('data:,'+encodeURIComponent('empty spec'))
     }
-
-    runtime = vega.parse(vegaSpec);
+    runtime = vega.parse(vegaSpec)
     let dataView = new vega.View(runtime)
     if (values !== null)
       dataView = dataView.insert('source', values)
+
     dataView.logLevel(config.logLevel)
     .initialize()
 
@@ -114,10 +118,10 @@ export function prettyStringify(obj) {
 
 const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');
 export function responsesFromExamples() {
-  const filenames = [...VegaLiteSpecs.TwentyDiverse] // has name and title
+  const filenames = [...VegaLiteSpecs[config.examplesName]] // has name and title
   const urls = filenames.map(s => `spec/vega-lite/${s.name}.vl.json`)
-
-  return Promise.all(urls.map(url => {
+  const urlselect = [urls[Math.floor(Math.random()*urls.length)]]
+  return Promise.all(urlselect.map(url => {
     return fetch(url).then(res => {
       return res.json().then(json => [url, json])
     })

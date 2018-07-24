@@ -8,8 +8,9 @@ const config = {
   numLabels: 10,
   numCandidates: 50,
   showFormula: false,
-  useRandomInitial: true,
+  useServerInitial: false,
   showDiffEditor: true,
+  examplesName: 'Basic',
 }
 
 export default config

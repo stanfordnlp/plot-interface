@@ -3,7 +3,7 @@ import dsUtils from 'helpers/dataset-utils'
 // import { persistStore } from "redux-persist"
 // import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {prettyStringify, parseWithErrors} from '../helpers/vega-utils';
+import {responsesFromExamples, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 import config from 'config'
 
@@ -227,8 +227,11 @@ const Actions = {
       if (datasetURL === undefined) {
         const routing = getState().routing
         const location = routing.location || routing.locationBeforeTransitions
-        const datasetURL = location.query.dataset
-        if (datasetURL === undefined) return false
+        datasetURL = location.query.dataset
+      }
+      console.log(datasetURL)
+      if (datasetURL === undefined) {
+        return false
       } else {
         return dsUtils.loadURL(datasetURL)
           .then(loaded => {
@@ -244,7 +247,7 @@ const Actions = {
     }
   },
 
-  labelInit: (useRandomInitial) => {
+  labelInit: () => {
     return (dispatch, getState) => {
       dispatch({
         type: Constants.CLEAR
@@ -254,17 +257,21 @@ const Actions = {
         const { context, schema, datasetURL } = getState().world
 
         let initQuery = () => {};
-        if (config.useRandomInitial)
-          initQuery = () => SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
-
+        if (config.useServerInitial)
+          initQuery = () => SEMPREquery({q: ['random', {utterance: '', context, schema, datasetURL, random: false, amount: config.numCandidates}], sessionId: sessionId})
+        else {
+          initQuery = () => responsesFromExamples()
+        }
         Promise.resolve(initQuery()).then(
           initial => {
-          if (config.useRandomInitial) {
-            dispatch({
-              type: Constants.ACCEPT,
-              target: initial.candidates[0].value
-            })
-          }
+          const target = config.useServerInitial? initial.candidates[0].value: initial[0].value
+          console.log(target)
+          dispatch({
+            type: Constants.ACCEPT,
+            target: target
+          })
+          if (target.data)
+            dispatch(Actions.initData(target.data.url))
 
           const {context} = getState().world;
           // send the actual sempre command

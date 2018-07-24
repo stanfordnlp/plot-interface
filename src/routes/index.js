@@ -5,7 +5,7 @@ import { Router, Route, IndexRedirect } from "react-router"
 import Build from './Build';
 import LabelBuild from './Build/label'
 import Help from "./Help"
-
+import Label from "./Label"
 import LabelHelp from "./Help/LabelHelp"
 
 import Candidate from "components/Plot/Candidate.js"
@@ -32,6 +32,7 @@ const Routes = ({ history }) => (
     </Route>
 
     <Route path="viewer" component={Viewer} />
+    <Route path="label" component={Label} />
     <Route path="label" component={(props) => (
       <div className="container">
         <LabelHeader query={props.location.query} />

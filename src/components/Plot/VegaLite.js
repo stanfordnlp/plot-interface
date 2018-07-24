@@ -4,7 +4,6 @@ import hash from 'string-hash'
 import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
 import "./vegalite.css"
 
-
 // renders vegalite plot and display errors
 class VegaLite extends React.Component {
   static propTypes = {
@@ -60,7 +59,6 @@ class VegaLite extends React.Component {
         // console.log('hmm, errors');
         this.props.onError(this.state.hasError)
       }
-
       if (this.props.onDoneRendering !== undefined)
         this.props.onDoneRendering(dataURL)
       console.log('done rendering')
