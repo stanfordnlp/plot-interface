@@ -81,7 +81,7 @@ class Candidates extends Component {
 
   render() {
     const {showFormulas, responses} = this.props
-    let plots = [<div key='loading'>loading...</div>];
+    let plots = [<div key='loading'>loading...</div>]
     if (this.state && this.state.plotData) {
       plots = this.state.plotData.filter(r => (showFormulas || (r.noError && r.noDup))).map((r, ind) => (
         <this.props.candidate

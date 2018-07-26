@@ -13,7 +13,7 @@ import LabelCandidate from "components/Plot/LabelCandidate.js"
 import Viewer from "./Viewer"
 import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
-
+import Verifier from "./Viewer/verifier"
 
 import "normalize.css"
 import "./styles.css"
@@ -42,6 +42,7 @@ const Routes = ({ history }) => (
       <IndexRedirect to="build"/>
       <Route path="build"  component={() => <LabelBuild candidate={LabelCandidate}/>} />
       <Route path="help" component={LabelHelp} />
+      <Route path="verifier" component={Verifier} />
     </Route>
   </Router>
 )

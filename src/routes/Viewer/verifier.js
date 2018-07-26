@@ -26,17 +26,13 @@ class Viewer extends Component {
   }
 
   componentDidMount() {
-    this.fetchFromURL()
+    SEMPREquery({ q: ['example', {amount: 10}], sessionId: this.state.sessionId})
+      .then((response) => {
+        console.log('sempre returned', response)
+        const examples = response.lines.map(r => JSON.parse(r)['q'][1])
+        console.log(examples)
+      })
   }
-
-  fetchFromURL() {
-    console.log(this.state.url)
-    fetch(this.state.url)
-      .then(response => {response.text().then(t => this.loadJSONL(t))})
-  }
-
-  onLabel = (spec, formula) => {
-  };
 
   loadJSONL(contents) {
     // console.log(contents)

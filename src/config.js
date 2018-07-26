@@ -7,7 +7,7 @@ const config = {
   logLevel: vega.Error,
   numLabels: 10,
   numCandidates: 50,
-  showFormula: false,
+  showFormula: true,
   useServerInitial: false,
   showDiffEditor: true,
   examplesName: 'Basic',
