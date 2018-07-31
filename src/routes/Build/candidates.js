@@ -65,7 +65,7 @@ class Candidates extends Component {
               rank: i,
               // changed, no dup, and no error
               noDup:  contextHash!==dataHash && !hashes.has(dataHash),
-              noError: vega.logger.errors.length + vega.logger.warns.length === 0
+              noError: vega.logger.errors.length + vega.logger.warns.length === 0,
             }
 
             hashes.add(p.dataHash)

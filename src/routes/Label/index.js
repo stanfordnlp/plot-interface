@@ -33,7 +33,7 @@ class Label extends Component {
     const location = props.routing.location || props.routing.locationBeforeTransitions
     const sessionId = location.query.uid
 
-    this.config = {numCandidates: 100, maxShow: 5, countPerExample: 5, hint: '10', plotInd: null, showFormula: true, ...location.query}
+    this.config = {numCandidates: 100, maxShow: 5, countPerExample: 3, plotInd: null, showFormula: true, ...location.query}
 
     this.state = {submitted: false, context: null, responses: [], sessionId}
   }
@@ -110,7 +110,7 @@ class Label extends Component {
         window.alert(`you cannot label plot ${ind} with empty utterances`)
         return
       }
-      for (var i=0; i < utt.length; i++) {
+      for (var i = 0; i < utt.length; i++) {
         if (utt.length < this.config.countPerExample || utt[i].trim().length === 0) {
           window.alert(`you cannot label plot ${ind} with empty utterances`)
           return
@@ -159,11 +159,11 @@ class Label extends Component {
         </div>
         {this.config.showFormula? <div className="Label-info"><b>Formula Expression to Rephrase:</b> {r.canonical}</div>: null}
 
-        {[...Array(5).keys()].map((uIdx)=>
+        {[...Array(this.config.countPerExample).keys()].map((uIdx)=>
           <input className="Label-input"
             type="text"
             onChange={e => this.onChange(e, ind, uIdx)}
-            placeholder={uIdx+'. Provide a full English command that transforms the plot from "before" to "after" here'}
+            placeholder={uIdx+'. Provide a command that transforms the plot from "before" to "after"'}
           />
         )}
 

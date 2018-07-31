@@ -11,8 +11,8 @@ const ajv = new Ajv({
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
 
-const vegaValidator = ajv.compile(require('../../schema/vega.schema.json'));
-const vegaLiteValidator = ajv.compile(require('../../schema/vl.schema.json'));
+const vegaValidator = ajv.compile(require('../../schema/vega/v4.2.0.json'));
+const vegaLiteValidator = ajv.compile(require('../../schema/vega-lite/v3.0.0-rc0.json'));
 
 function validate(validator, spec, logger) {
   const valid = validator(spec);
@@ -116,10 +116,11 @@ export function prettyStringify(obj) {
  return JSON.stringify(obj, null, '\t')
 }
 
-const VegaLiteSpecs = require('../../public/spec/vega-lite/index.json');
+const VegaLiteSpecs = require('../../public/spec/ls.vl.json');
 export function responsesFromExamples() {
-  const filenames = [...VegaLiteSpecs[config.examplesName]] // has name and title
-  const urls = filenames.map(s => `spec/vega-lite/${s.name}.vl.json`)
+  console.log(VegaLiteSpecs)
+  const filenames =   VegaLiteSpecs.names.filter(n => n.endsWith(".vl.json"))// has name and title
+  const urls = filenames.map(s => `spec/vega-lite/${s}`)
   const urlselect = [urls[Math.floor(Math.random()*urls.length)]]
   return Promise.all(urlselect.map(url => {
     return fetch(url).then(res => {

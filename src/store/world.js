@@ -1,7 +1,6 @@
 import Constants from 'actions/constants'
 import { STATUS } from "constants/strings"
 // import {histogramSpec} from "constants/specs"
-import {prettyStringify} from "helpers/vega-utils"
 import dsUtils from 'helpers/dataset-utils'
 
 // must have key initialContext
@@ -19,7 +18,6 @@ const initialData = [
 ];
 const initialState = {
   context: emptyContext,
-  editorString: prettyStringify(emptyContext),
   responses: [],
   status: STATUS.TRY,
   query: "",
@@ -47,8 +45,6 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, showErrors: action.showErrors }
     case Constants.SET_SHOW_FORMULAS:
       return { ...state, showFormulas: action.showFormulas }
-    case Constants.SET_EDITOR_STRING:
-      return { ...state, editorString: action.editorString }
     case Constants.SET_RESPONSES:
       return { ...state, responses: action.responses }
     case Constants.SET_ISSUED_QUERY:

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import LabelModal from 'components/LabelModal'
 import Actions from "actions/world"
-import { SEMPREquery } from 'helpers/sempre'
 import './styles.css'
 // eslint-disable-next-line
 const turk2018url = 'https://raw.githubusercontent.com/stanfordnlp/plot-data/master/20180118_turk_all.jsonl'

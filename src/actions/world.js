@@ -3,7 +3,7 @@ import dsUtils from 'helpers/dataset-utils'
 // import { persistStore } from "redux-persist"
 // import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {responsesFromExamples, prettyStringify, parseWithErrors} from '../helpers/vega-utils';
+import {responsesFromExamples, parseWithErrors} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 import config from 'config'
 
@@ -40,15 +40,6 @@ const Actions = {
       dispatch({
         type: Constants.SET_SHOW_ERRORS,
         showErrors: showErrors
-      })
-    }
-  },
-
-  setEditorString: (editorString) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.SET_EDITOR_STRING,
-        editorString: editorString
       })
     }
   },
@@ -142,11 +133,6 @@ const Actions = {
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
-        type: Constants.SET_EDITOR_STRING,
-        editorString: prettyStringify(spec)
-      })
-
-      dispatch({
         type: Constants.ACCEPT,
         target: spec
       })
@@ -227,11 +213,8 @@ const Actions = {
       if (datasetURL === undefined) {
         const routing = getState().routing
         const location = routing.location || routing.locationBeforeTransitions
-        datasetURL = location.query.dataset
-      }
-      console.log(datasetURL)
-      if (datasetURL === undefined) {
-        return false
+        const datasetURL = location.query.dataset
+        if (datasetURL === undefined) return false
       } else {
         return dsUtils.loadURL(datasetURL)
           .then(loaded => {

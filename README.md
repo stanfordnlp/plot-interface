@@ -31,6 +31,10 @@ check that the parameters are loaded correctly!
 
 * `public/spec/vega-lite/index.json` together with `src/helper/vega-utils.responsesFromExamples` determines which examples get displayed in the beginning.
 
+* To download examples `svn export https://github.com/vega/vega-lite.git/trunk/examples/specs public/spec/vega-lite`
+
+* To get data use `svn export https://github.com/vega/vega-datasets.git/tags/v1.19.0/data/ public/data`
+
 ## Labeling procedure
 
 Label JSON can be used to manually label some data, the sempre readable example will be printed to the javascript console.
