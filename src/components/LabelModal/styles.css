@@ -84,3 +84,9 @@
   background:rgba(100,200,100,0.5);
   /*z-index:40*/
 }
+
+.overlay-checkbox {
+  height: 15px;
+  width: 15px;
+  margin: 10px;
+}

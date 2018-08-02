@@ -8,7 +8,23 @@ const config = {
   showFormula: true,
   useServerInitial: false,
   showDiffEditor: true,
-  examplesName: 'Basic',
+  getExamples: getExamples,
+}
+
+function getExamples(exjson) {
+// https://raw.githubusercontent.com/vega/vega-lite/master/_data/examples.json
+// takes this file as input and return a flat list of allowed examples
+  let all = [
+    ...exjson["Single-View Plots"]["Bar Charts & Histograms"].filter(v => !v.name.startsWith('isotype')),
+    ...exjson["Single-View Plots"]["Scatter & Strip Plots"],
+    ...exjson["Single-View Plots"]["Line Charts"],
+    ...exjson["Single-View Plots"]["Area Charts & Streamgraphs"],
+    ...exjson["Single-View Plots"]["Table-based Plots"],
+    ...exjson["Composite Mark"]["Error Bars & Error Bands"],
+    ...exjson["Composite Mark"]["Box Plots"],
+  ]
+  console.log(all)
+  return all
 }
 
 export default config

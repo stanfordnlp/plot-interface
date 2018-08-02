@@ -21,6 +21,7 @@ class LabelModal extends Component {
       inputValue: props.issuedQuery,
       headerText: headerText,
       hasError: false,
+      overlay: false,
       status: 'Make desired edits, label the action that takes "current" to "new", and accept when you are done.',
     }
   }
@@ -76,6 +77,10 @@ class LabelModal extends Component {
     this.close()
   }
 
+  handleChangeOverlay(evt) {
+    this.setState({overlay: evt.target.checked})
+  }
+
   handleKeyDown(e) {
     if (e.keyCode === 13) {
       this.label(this.state.inputValue)
@@ -111,7 +116,7 @@ class LabelModal extends Component {
     const {spec} = this.state
 
     const isInitial = Object.keys(context).length === 0
-    const promptString = isInitial? 'Provide a label to get this plot' : 'Provide a command that changes "current" to "new"'
+    const promptString = isInitial? 'Provide a label to get this plot' : 'Describe the change from "Current plot" to "New plot"'
 
     return (
       <Modal
@@ -144,11 +149,23 @@ class LabelModal extends Component {
         <SplitPane split="vertical" minSize={100} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
           <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
             <div>
-                <div className="label">Current plot</div>
+                <span className="label">
+                Current plot  (
+                  <input
+                    name="overlay"
+                    className="overlay-checkbox"
+                    type="checkbox"
+                    checked={this.state.overlay}
+                    onChange={e => this.handleChangeOverlay(e)}/>
+                  show "new plot")
+                </span>
                 {
                   Object.keys(context).length === 0?
                   'There is no current plot, in this case, the label should be how you would refer to the new plot'
-                    : <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
+                    :
+                    this.state.overlay?
+                      <VegaLite spec={spec} dataValues={this.props.dataValues} bigSize={true}/> :
+                      <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
                 }
             </div>
             {!config.showDiffEditor? null : <DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}

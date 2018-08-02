@@ -116,10 +116,9 @@ export function prettyStringify(obj) {
  return JSON.stringify(obj, null, '\t')
 }
 
-const VegaLiteSpecs = require('../../public/spec/ls.vl.json');
+const VegaLiteSpecs = require('../../public/spec/examples.json');
 export function responsesFromExamples() {
-  console.log(VegaLiteSpecs)
-  const filenames =   VegaLiteSpecs.names.filter(n => n.endsWith(".vl.json"))// has name and title
+  const filenames =   config.getExamples(VegaLiteSpecs).map(ex => ex.name + '.vl.json')// has name and title
   const urls = filenames.map(s => `spec/vega-lite/${s}`)
   const urlselect = [urls[Math.floor(Math.random()*urls.length)]]
   return Promise.all(urlselect.map(url => {
