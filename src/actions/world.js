@@ -253,9 +253,14 @@ const Actions = {
             type: Constants.ACCEPT,
             target: target
           })
-          if (target.data)
-            dispatch(Actions.initData(target.data.url))
-
+          if (target.data) {
+            if (target.data.url) dispatch(Actions.initData(target.data.url))
+            if (target.data.values) {
+              const values = target.data.values
+              const schema = dsUtils.schema(values)
+              dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: 'values'}))
+            }
+          }
           const {context} = getState().world;
           // send the actual sempre command
           SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})

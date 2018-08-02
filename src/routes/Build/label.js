@@ -36,7 +36,7 @@ class Build extends Component {
   render() {
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
+        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
           <div className='editor-container'>
             <CurrentDataTable/>
             <div className='chart-container' key='current'>
@@ -51,7 +51,6 @@ class Build extends Component {
               }
             </div>
         </div>
-
         <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>

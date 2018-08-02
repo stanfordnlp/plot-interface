@@ -10,6 +10,7 @@ class VegaLite extends React.Component {
     spec: PropTypes.object,
     onDoneRendering: PropTypes.func,
     onError:  PropTypes.func,
+    bigSize: PropTypes.bool,
   }
 
   constructor(props) {
@@ -77,12 +78,11 @@ class VegaLite extends React.Component {
   render() {
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
-
     return (
       <div className='VegaLite'>
         <div className='chart'>
           <div ref='chart' onClick={e => {this.test(e)}}>
-             <img ref='chartImg' className='big-chart-img' alt='rendering...' src={this.state.dataURL}/>
+             <img ref='chartImg' className={this.props.bigSize? 'big-chart-img':'chart-img'} alt='rendering...' src={this.state.dataURL}/>
           </div>
         </div>
         <div >

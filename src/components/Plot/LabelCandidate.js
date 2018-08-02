@@ -87,7 +87,7 @@ class Plot extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  context: state.world.context,
+  // context: state.world.context,
   showErrors: state.world.showErrors,
 })
 export default connect(mapStateToProps)(Plot);

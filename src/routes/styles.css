@@ -9,7 +9,6 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
     outline: 0;
     font-size: 100%;
     vertical-align: baseline;
-    background: transparent;
 }
 
 .container {
@@ -90,7 +89,7 @@ button.active:hover {
 .Resizer {
     background: #000;
     opacity: .2;
-    z-index: 1;
+    z-index: 100;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

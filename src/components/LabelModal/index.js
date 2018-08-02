@@ -148,7 +148,7 @@ class LabelModal extends Component {
                 {
                   Object.keys(context).length === 0?
                   'There is no current plot, in this case, the label should be how you would refer to the new plot'
-                    : <VegaLite spec={context} dataValues={this.props.dataValues}/>
+                    : <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
                 }
             </div>
             {!config.showDiffEditor? null : <DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}
@@ -159,7 +159,7 @@ class LabelModal extends Component {
                 {
                   !spec || Object.keys(spec).length === 0?
                   'The new plot is empty. You should probably pick something before editing directly.'
-                    : <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})}/>
+                    : <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})} bigSize={true}/>
                 }
               </div>
               {!config.showDiffEditor? null : <DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}
