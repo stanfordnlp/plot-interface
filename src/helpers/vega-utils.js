@@ -11,8 +11,8 @@ const ajv = new Ajv({
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
 
-const vegaValidator = ajv.compile(require('../../schema/vega/v4.2.0.json'));
-const vegaLiteValidator = ajv.compile(require('../../schema/vega-lite/v3.0.0-rc0.json'));
+const vegaValidator = ajv.compile(require('../schema/vega/v4.2.0.json'));
+const vegaLiteValidator = ajv.compile(require('../schema/vega-lite/v3.0.0-rc0.json'));
 
 function validate(validator, spec, logger) {
   const valid = validator(spec);
@@ -116,7 +116,7 @@ export function prettyStringify(obj) {
  return JSON.stringify(obj, null, '\t')
 }
 
-const VegaLiteSpecs = require('../../public/spec/examples.json');
+const VegaLiteSpecs = require('../examples.json');
 export function responsesFromExamples() {
   const filenames =   config.getExamples(VegaLiteSpecs).map(ex => ex.name + '.vl.json')// has name and title
   const urls = filenames.map(s => `spec/vega-lite/${s}`)

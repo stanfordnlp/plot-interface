@@ -85,4 +85,4 @@ var DraggableTextArea = React.createClass({
   }
 });
 
-module.exports = DraggableTextArea;
+export default DraggableTextArea;

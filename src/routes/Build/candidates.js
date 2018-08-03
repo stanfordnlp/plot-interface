@@ -44,8 +44,7 @@ class Candidates extends Component {
 
       for (let i = 0; i<responses.length; i++) {
         const r = responses[i]
-        const delay = i < 5 ? 0 : 10
-
+        const delay = 0
         setTimeout( () => {
           if (i === responses.length - 1)
             this.props.dispatch(Actions.setStatus(STATUS.TRY))

@@ -12,7 +12,7 @@ const Header = ({ query, sessionId, dispatch, location, count }) => (
       Labels provided: {count} / {config.numLabels}
     </div>
     <div className="HeaderInfo">
-       {count >= config.numLabels? `You are done! copy ${hash(JSON.stringify(query))} back to AMT and submit` : 'Code will appear here after you are done'}
+       {count >= config.numLabels? `You are done! copy this code and submit: ${btoa(JSON.stringify({sessionId, count}))} ` : 'Code will appear here after you are done'}
     </div>
     <div className="Header-nav">
       <Link to={{ pathname: "/label/build", query: query }} activeClassName="active"><div>Label</div></Link>

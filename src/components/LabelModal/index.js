@@ -22,7 +22,7 @@ class LabelModal extends Component {
       headerText: headerText,
       hasError: false,
       overlay: false,
-      status: 'Make desired edits, label the action that takes "current" to "new", and accept when you are done.',
+      status: 'In the text, describe the difference between "current" and "new", click label when you are done.',
     }
   }
 
@@ -42,29 +42,28 @@ class LabelModal extends Component {
   // note that props.issuedQuery is the query used to retrieve the original results
   // vs. props.query, which tracks the live value in query box
   onLabel(spec, formula) {
-    // console.log('onLabel', this.props.issuedQuery)
     this.setState({isOpen: true, spec: spec, formula: formula, inputValue: this.props.issuedQuery,})
   }
 
-  close() {this.setState({headerText: headerText, inputValue: '', isOpen: false})}
+  close() {this.setState({headerText: headerText, inputValue: '', isOpen: false, overlay: false})}
 
   label(value) {
     if (this.state.hasError) {
       window.alert('there are errors in the spec, you have to fix them before you can accept')
       return
-    }
-    if (value.trim().length < 3) {
-      window.alert('label is too short')
+    } else if (value.trim().length < 3) {
+      window.alert('label is too short to be valid')
+      return;
+    } else if (/[\[\]\{\}\t\"\:\.]/.test(value)) {
+      window.alert('should not contain special characters from JSON')
       return;
     }
 
     this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
     this.props.dispatch(UserActions.increaseCount(1));
-
-    this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
-
-    // this.setState({headerText: `labeled this plot as "${value}"...` })
-    // setTimeout(() => {this.close()}, 800);
+    // this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
+    this.setState({headerText: `labeled this plot as "${value}"...` })
+    setTimeout(() => {this.close()}, 200);
   }
 
   accept() {
@@ -72,7 +71,6 @@ class LabelModal extends Component {
       window.alert('there are errors in the spec, you have to fix them before you can accept')
       return
     }
-
     this.props.dispatch(Actions.accept(this.state.spec, this.state.formula ));
     this.close()
   }

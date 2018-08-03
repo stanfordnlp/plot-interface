@@ -12,11 +12,9 @@ import {responsesFromExamples} from 'helpers/vega-utils'
 
 import DataTable from 'components/DataTable'
 import dsUtils from 'helpers/dataset-utils'
-
+import "./styles.css"
 var dl = require('datalib');
 
-
-import "./styles.css"
 
 class Label extends Component {
   static propTypes = {

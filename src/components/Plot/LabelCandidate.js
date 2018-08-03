@@ -16,6 +16,7 @@ class Plot extends React.Component {
     formula: PropTypes.string,
     showTools: PropTypes.bool,
     onLabel: PropTypes.func,
+    clickedLabel: PropTypes.bool,
   }
 
   constructor(props) {
@@ -39,10 +40,7 @@ class Plot extends React.Component {
   }
 
   onLabel() {
-    // if ("initialContext" in this.props.context) {
-    //   window.alert("No current plot, you need to pick one before you can label")
-    //   return
-    // }
+    this.setState({clickedLabel: true})
     this.props.onLabel(this.state.spec, this.state.formula)
   }
 
@@ -62,7 +60,7 @@ class Plot extends React.Component {
     return (
       <div className='chart-container'>
         <div className='chart-header'>
-          <button onClick={() => this.onLabel()}>Label</button>
+          <button onClick={() => this.onLabel()}>Label {this.state.clickedLabel? '(clicked)': ''}</button>
           {this.props.header}
         </div>
         {config.showFormula? <div className='canonical'>{this.props.canonical}</div> : null}
