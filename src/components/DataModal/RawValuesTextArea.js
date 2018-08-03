@@ -1,8 +1,9 @@
 import React from 'react'
 import dsUtils from 'helpers/dataset-utils'
 import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 
-var DraggableTextArea = React.createClass({
+var DraggableTextArea = createReactClass({
   propTypes: {
     success: PropTypes.func.isRequired,
     error: PropTypes.func.isRequired

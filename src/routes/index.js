@@ -32,7 +32,7 @@ const Routes = ({ history }) => (
     </Route>
 
     <Route path="viewer" component={Viewer} />
-    <Route path="label" component={Label} />
+    <Route path="oldlabel" component={Label} />
     <Route path="label" component={(props) => (
       <div className="container">
         <LabelHeader query={props.location.query} />

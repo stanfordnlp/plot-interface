@@ -254,6 +254,7 @@ const Actions = {
             target: target
           })
           if (target.data) {
+            // TODO: there is a bug here since initData is async, the rest of it will be wrong
             if (target.data.url) dispatch(Actions.initData(target.data.url))
             if (target.data.values) {
               const values = target.data.values
@@ -266,6 +267,10 @@ const Actions = {
           SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
           .then((response) => {
             // console.log('sempre returned', response)
+            if (response === undefined) {
+              window.alert('no response from server')
+              return
+            }
             let candidates = response.candidates;
             if (candidates.length > config.numCandidates)
               candidates = candidates.slice(0, config.numCandidates)

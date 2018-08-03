@@ -50,7 +50,7 @@ class Viewer extends Component {
 
     let examples = raw;
     if (this.state.isQuerylog) {
-      examples = raw.map(r => r.q).filter(r => r[0]==="accept").map(r => r[1])
+      examples = raw.filter(r => r.q[0]==="accept")
     }
 
     this.setState({examples: examples})
@@ -95,7 +95,8 @@ class Viewer extends Component {
         <table>
           <tbody>
             {
-              examples.map((c, r) => {
+              examples.map((q, r) => {
+                const c = q.q[1]
                 return (
                   <tr key={r} className={r % 2 ? 'even' : 'odd'}>
                     <td> <a
@@ -105,6 +106,7 @@ class Viewer extends Component {
                     {/* <td> <span onClick={e => this.openineditor(c.spec)}> spec </span> </td> */}
                     <td>{c.utterance}</td>
                     <td>{typeof c.targetFormula === 'string'? c.targetFormula: JSON.stringify(c.targetFormula)}</td>
+                    <td>{q.sessionId}</td>
                   </tr>
                 );
               })

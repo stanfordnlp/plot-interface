@@ -1,7 +1,7 @@
 var dl = require('datalib'),
     promisify = require('es6-promisify'),
     MTYPES = require('vega-lite').data.types,
-    NAME_REGEX = /([\w\d_-]*)\.?[^\\\/]*$/i;
+    NAME_REGEX = /([\w\d_-]*)\.?[^\\/]*$/i;
 
 /**
  * Exposes a number of utility functions for Datasets including loading the raw

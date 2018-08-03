@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+
 var React = require('react');
-var Loader = React.createClass({
+var Loader = createReactClass({
   propTypes: {
     loadURL: PropTypes.func.isRequired
   },
@@ -20,4 +22,4 @@ var Loader = React.createClass({
   }
 });
 
-module.exports = Loader;
+export default Loader;

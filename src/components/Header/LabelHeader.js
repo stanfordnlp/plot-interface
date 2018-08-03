@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router"
 import { connect } from "react-redux"
-import hash from 'string-hash'
+// import hash from 'string-hash'
 import config from "config"
 import "./styles.css"
 

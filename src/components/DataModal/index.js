@@ -7,9 +7,9 @@ import dsUtils from 'helpers/dataset-utils'
 import "./styles.css"
 import exampleDatasets from 'constants/exampleDatasets'
 
-var RawValuesTextArea = require('./RawValuesTextArea'),
-    DataURL = require('./DataURL'),
-    NAME_REGEX = dsUtils.NAME_REGEX;
+import RawValuesTextArea from './RawValuesTextArea'
+import DataURL from './DataURL'
+var NAME_REGEX = dsUtils.NAME_REGEX
 
 class DataSource extends Component {
   constructor(props) {

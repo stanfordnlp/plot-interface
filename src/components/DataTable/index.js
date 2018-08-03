@@ -25,11 +25,11 @@ class DataTable extends Component {
   }
 
   prevPage() {
-    this.setState({page: --this.state.page})
+    this.setState({page: this.state.page - 1})
   }
 
   nextPage() {
-    this.setState({page: ++this.state.page})
+    this.setState({page: this.state.page + 1})
   }
 
   clickHeader(e, header) {

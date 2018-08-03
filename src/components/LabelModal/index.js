@@ -51,19 +51,28 @@ class LabelModal extends Component {
     if (this.state.hasError) {
       window.alert('there are errors in the spec, you have to fix them before you can accept')
       return
-    } else if (value.trim().length < 3) {
-      window.alert('label is too short to be valid')
-      return;
-    } else if (/[\[\]\{\}\t\"\:\.]/.test(value)) {
+    } else if (/[[\]{}\t":.,']/.test(value)) {
       window.alert('should not contain special characters from JSON')
+      return;
+    } else if (value.trim().length < 5) {
+      this.props.dispatch(Actions.log({msg: 'spam_label_too_short', value}));
+      window.alert('too short to be valid')
+      return;
+    }  else if (value.trim().indexOf(' ') === -1) {
+      this.props.dispatch(Actions.log({msg: 'spam_JSON_chars', value}));
+      window.alert('should not only contain a single word')
+      return;
+    } else if (value.trim().indexOf(' ') === -1) {
+      this.props.dispatch(Actions.log({msg: 'spam_single_word', value}));
+      window.alert('should not be a single word')
       return;
     }
 
     this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
     this.props.dispatch(UserActions.increaseCount(1));
     // this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
-    this.setState({headerText: `labeled this plot as "${value}"...` })
-    setTimeout(() => {this.close()}, 200);
+    // this.setState({headerText: `labeled this plot as "${value}"...` })
+    setTimeout(() => {this.close()}, 0);
   }
 
   accept() {
@@ -190,6 +199,7 @@ const mapStateToProps = (state) => ({
   issuedQuery: state.world.issuedQuery,
   context: state.world.context,
   dataValues: state.world.dataValues,
+  schema: state.world.schema,
   status: state.world.status,
 })
 
