@@ -77,7 +77,7 @@ class Viewer extends Component {
 
   onInspect = (example) => {
     this.props.dispatch(Actions.setState({issuedQuery: example.utterance, context: example.context}))
-    this.props.dispatch(Actions.initData(example.datasetURL))
+    // this.props.dispatch(Actions.initData(example.datasetURL))
     // console.log('onInspect', example.utterance)
     setTimeout(() => {this.labelModal.onLabel(example.targetValue, example.targetFormula)}, 0)
     return false

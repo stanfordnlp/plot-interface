@@ -70,7 +70,7 @@ class LabelModal extends Component {
 
     this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
 
-    if (value !== 'no detectable change')
+    if (value === 'no change')
       this.props.dispatch(UserActions.increaseCount(0.1));
     else {
       this.props.dispatch(UserActions.increaseCount(1));
