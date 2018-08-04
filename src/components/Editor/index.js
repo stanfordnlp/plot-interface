@@ -5,7 +5,7 @@ import DataModal from 'components/DataModal'
 import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import {parseWithErrors} from 'helpers/vega-utils'
 import PropTypes from 'prop-types';
-import {MdCheck} from 'react-icons/lib/md'
+import {MdCheck} from 'react-icons/md'
 import VegaLite from "components/Plot/VegaLite"
 import "./styles.css"
 

@@ -5,7 +5,7 @@ import UserActions from "actions/user"
 import Modal from "react-modal"
 import VegaLite from "components/Plot/VegaLite"
 import DiffEditor from './DiffEditor'
-import {MdClose, } from 'react-icons/lib/md'
+import {MdClose, } from 'react-icons/md'
 import SplitPane from 'react-split-pane';
 import Mousetrap from 'mousetrap'
 import config from 'config'

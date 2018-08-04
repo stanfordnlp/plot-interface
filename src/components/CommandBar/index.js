@@ -4,7 +4,7 @@ import Actions from "actions/world"
 import Autosuggest from 'react-autosuggest'
 import {VEGALITE_ENUMS} from './VegaConstants/vegalite-enums'
 import {VEGALITE_PATHS} from './VegaConstants/vegalite-paths'
-import {MdSearch} from 'react-icons/lib/md'
+import {MdSearch} from 'react-icons/md'
 import Mousetrap from 'mousetrap'
 import "./styles.css"
 import './autocomplete.css'

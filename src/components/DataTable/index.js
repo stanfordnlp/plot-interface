@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import dl from 'datalib'
-import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/lib/md'
+import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/md'
 import Actions from "actions/world"
 
 import "./styles.css"

@@ -6,7 +6,7 @@ import hash from 'string-hash'
 
 // import ContextOverlay from './context-overlay'
 // eslint-disable-next-line
-import {MdClose, MdCheck,} from 'react-icons/lib/md'
+import {MdClose, MdCheck,} from 'react-icons/md'
 import './candidate.css'
 
 class Plot extends React.Component {
