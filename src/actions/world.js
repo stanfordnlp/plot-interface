@@ -3,7 +3,7 @@ import dsUtils from 'helpers/dataset-utils'
 // import { persistStore } from "redux-persist"
 // import { getStore } from "../"
 import { STATUS } from "constants/strings"
-import {responsesFromExamples, parseWithErrors} from '../helpers/vega-utils';
+import {responsesFromExamples} from '../helpers/vega-utils';
 import Constants from 'actions/constants'
 import config from 'config'
 
@@ -176,29 +176,6 @@ const Actions = {
     }
   },
 
-  updateSpec: () => {
-    return (dispatch, getState) => {
-      const { editorString } = getState().world
-      let spec = {};
-      try {
-        spec = JSON.parse(editorString)
-        const {logger} = parseWithErrors(spec)
-        if (logger.warns.length > 0 || logger.errors.length > 0) {
-          window.alert('current spec has errors and cannot be used')
-          console.log('validation errors', logger)
-          return
-        }
-      } catch (e) {
-        console.error('spec error', e);
-        return
-      }
-      dispatch({
-        type: Constants.ACCEPT,
-        target: spec
-      })
-    }
-  },
-
   clear: () => {
     return (dispatch, getState) => {
       dispatch({
@@ -208,81 +185,93 @@ const Actions = {
     }
   },
 
-  initData: (datasetURL) => {
-    return (dispatch, getState) => {
-      if (datasetURL === undefined) {
-        const routing = getState().routing
-        const location = routing.location || routing.locationBeforeTransitions
-        const datasetURL = location.query.dataset
-        if (datasetURL === undefined) return false
-      } else {
-        return dsUtils.loadURL(datasetURL)
-          .then(loaded => {
-            const parsed = dsUtils.parseRaw(loaded.data),
-            values = parsed.values,
-            schema = dsUtils.schema(values)
-            dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: datasetURL}))
-          })
-          .catch(function(err) {
-            console.log(err)
-          });
-      }
-    }
-  },
 
   labelInit: () => {
     return (dispatch, getState) => {
       dispatch({
         type: Constants.CLEAR
       })
-      Promise.resolve(dispatch(Actions.initData())).then(() => {
-        const {sessionId} = getState().user;
-        const { context, schema, datasetURL } = getState().world
-
-        let initQuery = () => {};
-        if (config.useServerInitial)
-          initQuery = () => SEMPREquery({q: ['random', {utterance: '', context, schema, datasetURL, random: false, amount: config.numCandidates}], sessionId: sessionId})
-        else {
-          initQuery = () => responsesFromExamples()
-        }
-        Promise.resolve(initQuery()).then(
-          initial => {
-          const target = config.useServerInitial? initial.candidates[0].value: initial[0].value
-          console.log(target)
-          dispatch({
-            type: Constants.ACCEPT,
-            target: target
-          })
-          if (target.data) {
-            // TODO: there is a bug here since initData is async, the rest of it will be wrong
-            if (target.data.url) dispatch(Actions.initData(target.data.url))
-            if (target.data.values) {
-              const values = target.data.values
-              const schema = dsUtils.schema(values)
-              dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: 'values'}))
-            }
-          }
-          const {context} = getState().world;
+      const {sessionId} = getState().user;
+      responsesFromExamples().then(
+        initial => {
+          const context = initial[0].value
+          dispatch(Actions.updateContext(context))
+          const {schema, datasetURL } = getState().world
           // send the actual sempre command
           SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
           .then((response) => {
-            // console.log('sempre returned', response)
+            console.log('sempre returned', response)
             if (response === undefined) {
               window.alert('no response from server')
               return
             }
             let candidates = response.candidates;
             if (candidates.length > config.numCandidates)
-              candidates = candidates.slice(0, config.numCandidates)
+            candidates = candidates.slice(0, config.numCandidates)
             dispatch({
               type: Constants.SET_RESPONSES,
               responses: candidates
             })
           });
         }).catch(e => console.log('labelInit', e))
+      }
+  },
+
+  updateContext: (target) => {
+    return (dispatch) => {
+      dispatch({
+        type: Constants.ACCEPT,
+        target: target,
       })
+      if (target.data) {
+        // TODO: there is a bug here since initData is async, the rest of it will be wrong
+        if (target.data.url) {
+          dsUtils.loadURL(target.data.url)
+          .then(loaded => {
+            const parsed = dsUtils.parseRaw(loaded.data),
+            values = parsed.values,
+            schema = dsUtils.schema(values)
+            dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: target.data.url}))
+          })
+          .catch(function(err) {
+            console.log(err)
+          });
+        }
+        if (target.data.values) {
+          const values = target.data.values
+          const schema = dsUtils.schema(values)
+          dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: 'values'}))
+        }
+      }
+    }
+  },
+
+  verifierInit: () => {
+    return (dispatch, getState) => {
+      const {sessionId} = getState().user;
+      dispatch({
+        type: Constants.CLEAR
+      })
+      SEMPREquery({q: ['example', {amount: 1}], sessionId})
+      .then((response) => {
+        const target = response.master.context
+        console.log(response)
+        dispatch(Actions.updateContext(target))
+        if (response === undefined) {
+          window.alert('no response from server')
+          return
+        }
+        let candidates = response.candidates;
+        if (candidates.length > config.numCandidates)
+          candidates = candidates.slice(0, config.numCandidates)
+        dispatch({
+          type: Constants.SET_RESPONSES,
+          responses: candidates
+        })
+      });
     }
   }
+
 }
 
 export default Actions

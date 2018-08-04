@@ -69,7 +69,12 @@ class LabelModal extends Component {
     }
 
     this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
-    this.props.dispatch(UserActions.increaseCount(1));
+
+    if (value !== 'no detectable change')
+      this.props.dispatch(UserActions.increaseCount(0.1));
+    else {
+      this.props.dispatch(UserActions.increaseCount(1));
+    }
     // this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
     // this.setState({headerText: `labeled this plot as "${value}"...` })
     setTimeout(() => {this.close()}, 0);
@@ -144,6 +149,7 @@ class LabelModal extends Component {
           placeholder={promptString}
         />
         <button className='headerButton' onClick={() => this.label(this.state.inputValue)}>Label</button>
+        <button className='headerButton' onClick={() => this.label('no change')}>No change</button>
         <button className='headerButton' onClick={() => this.close()}>Close</button>
       </div>
 
@@ -156,8 +162,8 @@ class LabelModal extends Component {
         <SplitPane split="vertical" minSize={100} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
           <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
             <div>
-                <span className="label">
-                Current plot  (
+                <div className="label">
+                  Current plot (
                   <input
                     name="overlay"
                     className="overlay-checkbox"
@@ -165,26 +171,27 @@ class LabelModal extends Component {
                     checked={this.state.overlay}
                     onChange={e => this.handleChangeOverlay(e)}/>
                   show "new plot")
-                </span>
-                {
-                  Object.keys(context).length === 0?
-                  'There is no current plot, in this case, the label should be how you would refer to the new plot'
-                    :
-                    this.state.overlay?
-                      <VegaLite spec={spec} dataValues={this.props.dataValues} bigSize={true}/> :
-                      <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
-                }
+                </div>
+
+                <div style={{top: '0px', position: "relative"}}>
+                  <div className={this.state.overlay? "overlay-top" : "overlay-bot"} >
+                    <VegaLite spec={spec} dataValues={this.props.dataValues} bigSize={true}/>
+                  </div>
+                  <div className={this.state.overlay? "overlay-bot" : "overlay-top"} >
+                    <VegaLite spec={context} className="overlay-vegalite" dataValues={this.props.dataValues} bigSize={true}/>
+                  </div>
+                </div>
             </div>
             {!config.showDiffEditor? null : <DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}
           </SplitPane>
           <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
               <div>
                 <div className="label">New plot</div>
-                {
-                  !spec || Object.keys(spec).length === 0?
-                  'The new plot is empty. You should probably pick something before editing directly.'
-                    : <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})} bigSize={true}/>
-                }
+                <div style={{top: '0px', position: "relative"}}>
+                  <div className={"overlay-top"} >
+                    <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})} bigSize={true}/>
+                  </div>
+                </div>
               </div>
               {!config.showDiffEditor? null : <DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}
           </SplitPane>

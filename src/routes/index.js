@@ -5,7 +5,7 @@ import { Router, Route, IndexRedirect } from "react-router"
 import Build from './Build';
 import LabelBuild from './Build/label'
 import Help from "./Help"
-import Label from "./Label"
+// import Label from "./Label"
 import LabelHelp from "./Help/LabelHelp"
 
 import Candidate from "components/Plot/Candidate.js"
@@ -13,7 +13,7 @@ import LabelCandidate from "components/Plot/LabelCandidate.js"
 import Viewer from "./Viewer"
 import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
-import Verifier from "./Viewer/verifier"
+import Verifier from "./Build/verifier"
 
 import "normalize.css"
 import "./styles.css"
@@ -32,7 +32,7 @@ const Routes = ({ history }) => (
     </Route>
 
     <Route path="viewer" component={Viewer} />
-    <Route path="oldlabel" component={Label} />
+    {/* <Route path="oldlabel" component={Label} /> */}
     <Route path="label" component={(props) => (
       <div className="container">
         <LabelHeader query={props.location.query} />
@@ -42,7 +42,7 @@ const Routes = ({ history }) => (
       <IndexRedirect to="build"/>
       <Route path="build"  component={() => <LabelBuild candidate={LabelCandidate}/>} />
       <Route path="help" component={LabelHelp} />
-      <Route path="verifier" component={Verifier} />
+      <Route path="verifier" component={() => <Verifier candidate={LabelCandidate}/>} />
     </Route>
   </Router>
 )

@@ -23,7 +23,7 @@ function getExamples(exjson) {
     ...exjson["Composite Mark"]["Error Bars & Error Bands"],
     ...exjson["Composite Mark"]["Box Plots"],
   ]
-  console.log(all)
+  console.log('number of examples', all.length)
   return all
 }
 
