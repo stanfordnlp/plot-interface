@@ -13,16 +13,30 @@ import config from 'config'
 import "./styles.css"
 
 const headerText = 'Editor';
-class LabelModal extends Component {
+const HorizontalSplit = (props) => {
+  return (
+    <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
+      {props.top}
+      {props.bot}
+    </SplitPane>
+  )
+}
 
+const initialStates = {
+  inputValue: "",
+  headerText: "",
+  hasError: false,
+  overlay: false,
+  showHint: false,
+}
+
+class LabelModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      ...initialStates,
       inputValue: props.issuedQuery,
       headerText: headerText,
-      hasError: false,
-      overlay: false,
-      status: 'In the text, describe the difference between "current" and "new", click label when you are done.',
     }
   }
 
@@ -45,7 +59,7 @@ class LabelModal extends Component {
     this.setState({isOpen: true, spec: spec, formula: formula, inputValue: this.props.issuedQuery,})
   }
 
-  close() {this.setState({headerText: headerText, inputValue: '', isOpen: false, overlay: false})}
+  close() {this.setState({isOpen: false, ...initialStates})}
 
   label(value) {
     if (this.state.hasError) {
@@ -92,6 +106,9 @@ class LabelModal extends Component {
   handleChangeOverlay(evt) {
     this.setState({overlay: evt.target.checked})
   }
+  handleShowHint(evt) {
+    this.setState({showHint: evt.target.checked})
+  }
 
   handleKeyDown(e) {
     if (e.keyCode === 13) {
@@ -128,7 +145,37 @@ class LabelModal extends Component {
     const {spec} = this.state
 
     const isInitial = Object.keys(context).length === 0
-    const promptString = isInitial? 'Provide a label to get this plot' : 'Describe the change from "Current plot" to "New plot"'
+    const promptString = 'What is the command that transforms "current plot" to "new plot"?'
+
+    const currentPlot = (
+      <div className="half-panel">
+        <div className="label">
+          Current plot
+        </div>
+
+        <div style={{top: '0px', paddingLeft: '100px', position: "relative"}}>
+          <div className={this.state.overlay? "overlay-top" : "overlay-bot"} >
+            <VegaLite spec={spec} dataValues={this.props.dataValues} bigSize={true}/>
+          </div>
+          <div className={this.state.overlay? "overlay-bot" : "overlay-top"} >
+            <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
+          </div>
+        </div>
+    </div>
+    )
+
+    const newPlot = (
+      <div className="half-panel">
+        <div className="label">
+          New plot
+        </div>
+        <div style={{top: '0px', position: "relative", width: "100%"}}>
+          <div className={"overlay-top"} >
+            <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})} bigSize={true}/>
+          </div>
+        </div>
+      </div>
+    )
 
     return (
       <Modal
@@ -137,8 +184,10 @@ class LabelModal extends Component {
         style={style}
         contentLabel="label-modal"
         onKeyDown={e => this.handleKeyDown(e)}
+        ariaHideApp={false}
         // style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
+
       <div className="header">
         <MdClose className="md-button" size={'2em'} onClick={() => this.close()}/>
         <input autoFocus className="labelInput" ref={(input) => { this.textInput = input; }}
@@ -153,57 +202,30 @@ class LabelModal extends Component {
         <button className='headerButton' onClick={() => this.close()}>Close</button>
       </div>
 
-      <div className="status">
-        {this.state.status}
+
+      <div className="label">
+        <input
+          name="overlay"
+          className="overlay-checkbox"
+          type="checkbox"
+          checked={this.state.overlay}
+          onChange={e => this.handleChangeOverlay(e)}/> show "new plot" in place of "current plot"
+      </div>
+      <div className="label status">
+        <input
+          name="overlay"
+          className="overlay-checkbox"
+          type="checkbox"
+          checked={this.state.showHint}
+          onChange={e => this.handleShowHint(e)}/> show a hint {this.state.showHint? ': ' + this.state.formula : null}
       </div>
 
-
       <div style={{position: 'relative', height: `calc(100vh - ${100}px)`}}>
-        <SplitPane split="vertical" minSize={100} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
-          <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
-            <div>
-                <div className="label">
-                  Current plot (
-                  <input
-                    name="overlay"
-                    className="overlay-checkbox"
-                    type="checkbox"
-                    checked={this.state.overlay}
-                    onChange={e => this.handleChangeOverlay(e)}/>
-                  show "new plot")
-                </div>
-
-                <div style={{top: '0px', position: "relative"}}>
-                  <div className={this.state.overlay? "overlay-top" : "overlay-bot"} >
-                    <VegaLite spec={spec} dataValues={this.props.dataValues} bigSize={true}/>
-                  </div>
-                  <div className={this.state.overlay? "overlay-bot" : "overlay-top"} >
-                    <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
-                  </div>
-                </div>
-            </div>
-            {!config.showDiffEditor? null : <DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}
-          </SplitPane>
-          <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
-              <div>
-                <div className="label">
-                  Current plot (
-                  <input
-                    name="overlay"
-                    className="overlay-checkbox"
-                    type="checkbox"
-                    checked={this.state.overlay}
-                    onChange={e => this.handleChangeOverlay(e)}/>
-                  show "new plot")
-                </div>
-                <div style={{top: '0px', position: "relative"}}>
-                  <div className={"overlay-top"} >
-                    <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})} bigSize={true}/>
-                  </div>
-                </div>
-              </div>
-              {!config.showDiffEditor? null : <DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}
-          </SplitPane>
+        <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
+          {!config.showDiffEditor? currentPlot :
+            <HorizontalSplit top={currentPlot} bot={<DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}/>}
+          {!config.showDiffEditor? newPlot :
+            <HorizontalSplit top={newPlot} bot={<DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}/>}
         </SplitPane>
       </div>
     </Modal>
@@ -216,7 +238,6 @@ const mapStateToProps = (state) => ({
   context: state.world.context,
   dataValues: state.world.dataValues,
   schema: state.world.schema,
-  status: state.world.status,
 })
 
 export default connect(mapStateToProps)(LabelModal)

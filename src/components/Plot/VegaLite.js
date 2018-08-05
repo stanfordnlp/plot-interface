@@ -4,6 +4,7 @@ import hash from 'string-hash'
 import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
 import "./vegalite.css"
 import config from 'config'
+import InnerChart from './InnerChart'
 // renders vegalite plot and display errors
 class VegaLite extends React.Component {
   static propTypes = {
@@ -79,13 +80,8 @@ class VegaLite extends React.Component {
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
     return (
-      <div className='VegaLite'>
-        <div className='chart'>
-          <div ref='chart' onClick={e => {this.test(e)}}>
-             {config.renderer === 'png'? <img ref='chartImg' className={this.props.bigSize? 'big-chart-img':'chart-img'} alt='rendering...' src={this.state.dataURL}/>
-              : <div className="content" dangerouslySetInnerHTML={{__html: this.state.dataURL}}></div>}
-          </div>
-        </div>
+      <div className='VegaLite' className={this.props.bigSize? 'big-chart':'chart'} onClick={e => this.test(e)}>
+        <InnerChart dataURL={this.state.dataURL}/>
         <div >
         {this.state.hasError?  <ul> {errors.concat(warns)} </ul> : null }
         </div>

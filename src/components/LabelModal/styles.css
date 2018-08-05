@@ -6,7 +6,6 @@
 .header {
   /*font-size: 1em;*/
   padding: 10px;
-
   display: flex;
 }
 
@@ -17,7 +16,7 @@
 
 .headerButton {
   align-self: center;
-  font-size: 1em;
+  font-size: 1.2em;
   margin-left: 20px;
 }
 
@@ -31,28 +30,19 @@
 
 .labelInput {
   /*font-size: 1em;*/
-  margin-left: 1em;
+  margin-left: 1.2em;
   padding-left: 0.5em;
   width: 50%;
   max-width: 30em;
   background-color: rgba(200, 200, 200, 0.5);
 }
 
-.before-after {
-  display: flex;
-  justify-content: center;
-  width: auto;
-  height: auto;
+.half-panel {
+  display: block;
+  width: 100%;
+  height: 100%;
   padding: 10px;
   float: center;
-}
-
-.before {
-  width: 400px;
-  height: auto;
-  padding: 10px;
-  margin: 5px;
-  border: 1px solid rgba(0, 0, 0, 1);
 }
 
 .info {
@@ -63,6 +53,7 @@
 .label {
   font-size: 1.2em;
   font-weight: bold;
+  height: 30px;
 }
 
 .control-bar button {
@@ -92,16 +83,7 @@
 }
 
 .overlay-bot{
-  position:absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 1;
   display: none;
 }
 .overlay-top {
-  position:absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 2;
-
 }

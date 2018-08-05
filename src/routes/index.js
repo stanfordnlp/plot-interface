@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Route, Switch } from "react-router"
-import {BrowserRouter as Router} from "react-router-dom"
+import {HashRouter as Router} from "react-router-dom"
 
 
 import Build from './Build';
@@ -17,16 +17,11 @@ import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
 import Verifier from "./Build/verifier"
 
-import UserActions from "actions/user"
-import {getParameterByName} from "helpers/util"
+
 import "normalize.css"
 import "./styles.css"
 
 class Routes extends React.Component {
-  componentDidMount() {
-    this.props.dispatch(UserActions.setSessionId(getParameterByName('uid')))
-  }
-
   render() {
   return (
     <Router>

@@ -96,6 +96,7 @@ export function vegaToDataURL(vegaSpec, values) {
       dataView = dataView.insert('source', values)
 
     dataView.logLevel(config.logLevel)
+    .width(500)
     .initialize()
 
     let dataURL

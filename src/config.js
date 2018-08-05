@@ -7,7 +7,7 @@ const config = {
   numCandidates: 60,
   showFormula: false,
   useServerInitial: false,
-  showDiffEditor: true,
+  showDiffEditor: false,
   getExamples: getExamples,
 }
 

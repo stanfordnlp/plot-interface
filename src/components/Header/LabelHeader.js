@@ -15,7 +15,7 @@ const Header = ({ search, sessionId, count }) => (
        {count >= config.numLabels? `You are done! copy this code and submit: ${btoa(JSON.stringify({sessionId, count}))} ` : 'Code will appear here after you are done'}
     </div>
     <div className="Header-info">
-      {'make sure your id is correct: ' + JSON.stringify(sessionId)}
+      {'your id: ' + JSON.stringify(sessionId)}
     </div>
     <div className="Header-nav">
       <Link to={{ pathname: "/label", search}} activeClassName="active"><div>Label</div></Link>
