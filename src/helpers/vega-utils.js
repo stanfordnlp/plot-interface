@@ -102,7 +102,7 @@ export function vegaToDataURL(vegaSpec, values) {
     if (config.renderer === 'png')
       dataURL = dataView.toImageURL('png')
     else
-      dataURL = dataView.toSVG('svg').then(svgStr => 'data:image/svg+xml;utf8,' + svgStr.replace(/#/gi, '%23') );
+      dataURL = dataView.toSVG('svg');
 
     // console.log('vegaToDataURL success', vegaSpec, dataURL);
     return dataURL

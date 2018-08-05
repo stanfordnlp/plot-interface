@@ -1,5 +1,5 @@
 const config = {
-  renderer: 'png', // png or svg
+  renderer: 'svg', // png or svg
   // https://github.com/vega/vega-view/blob/master/readme.md#view_loglevel
   // the valid level values are vega.none (the default), vega.warn, vega.info, vega.debug
   loglevel: 'error',
@@ -10,6 +10,7 @@ const config = {
   showDiffEditor: true,
   getExamples: getExamples,
 }
+
 
 function getExamples(exjson) {
 // https://raw.githubusercontent.com/vega/vega-lite/master/_data/examples.json

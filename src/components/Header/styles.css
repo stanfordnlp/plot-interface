@@ -73,6 +73,6 @@
   left: 0;
 }
 
-.Header-login img {
-  height: 30px;
+.Header-info {
+    font-size: 1.1rem;
 }

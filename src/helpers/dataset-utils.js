@@ -1,5 +1,5 @@
 var dl = require('datalib'),
-    promisify = require('es6-promisify'),
+    {promisify} = require('es6-promisify'),
     MTYPES = require('vega-lite').data.types,
     NAME_REGEX = /([\w\d_-]*)\.?[^\\/]*$/i;
 
@@ -163,7 +163,6 @@ function aggregateSchema(src, aggregate) {
       }
     }
   }
-
   return aggSchema;
 }
 

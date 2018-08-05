@@ -1,7 +1,5 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import { autoRehydrate } from 'redux-persist'
-// import {persistStore} from 'redux-persist'
 import makeRootReducer from '.'
 
 export default (initialState = {}) => {
@@ -9,7 +7,7 @@ export default (initialState = {}) => {
   const middleware = [thunk]
 
   /* Enhance the store with the autoRehydrate enhancer to support redux-persist */
-  const enhancers = [autoRehydrate()]
+  const enhancers = []
 
   /* If we are in developer mode, let's load the dev tools enhancement */
   if (process.env.NODE_ENV === 'development') {

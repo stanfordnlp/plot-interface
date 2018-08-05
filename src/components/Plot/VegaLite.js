@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import hash from 'string-hash'
 import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
 import "./vegalite.css"
-
+import config from 'config'
 // renders vegalite plot and display errors
 class VegaLite extends React.Component {
   static propTypes = {
@@ -82,7 +82,8 @@ class VegaLite extends React.Component {
       <div className='VegaLite'>
         <div className='chart'>
           <div ref='chart' onClick={e => {this.test(e)}}>
-             <img ref='chartImg' className={this.props.bigSize? 'big-chart-img':'chart-img'} alt='rendering...' src={this.state.dataURL}/>
+             {config.renderer === 'png'? <img ref='chartImg' className={this.props.bigSize? 'big-chart-img':'chart-img'} alt='rendering...' src={this.state.dataURL}/>
+              : <div className="content" dangerouslySetInnerHTML={{__html: this.state.dataURL}}></div>}
           </div>
         </div>
         <div >

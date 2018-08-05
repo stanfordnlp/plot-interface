@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import hash from 'string-hash'
-
 import config from 'config'
 // import ContextOverlay from './context-overlay'
 import './candidate.css'
@@ -67,6 +66,10 @@ class Plot extends React.Component {
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>
             <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>
+          </div>
+          <div className='chart'>
+            {config.renderer === 'png'? <img ref='chartImg' className={this.props.bigSize? 'big-chart-img':'chart-img'} alt='rendering...' src={this.state.dataURL}/>
+            : <div className="content" dangerouslySetInnerHTML={{__html: this.state.dataURL}}></div>}
           </div>
           <div>
           <ul> {[equalMsg, ...errors.concat(warns)]} </ul>

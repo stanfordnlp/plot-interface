@@ -1,12 +1,14 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Link } from "react-router"
+import { NavLink as Link } from "react-router-dom"
 import { connect } from "react-redux"
 import CommandBar from "../CommandBar"
 
 import "./styles.css"
 
-const Header = ({ query, signedIn, sessionId, email, dispatch}) => (
+const Header = ({ search }) => {
+  // console.log(search)
+  return (
   <div className="Header">
      <CommandBar/>
     {/* <div className="Header-logo">
@@ -14,24 +16,17 @@ const Header = ({ query, signedIn, sessionId, email, dispatch}) => (
       <span className="Header-sublogo">catch phrase</span>
     </div> */}
     <div className="Header-nav">
-      <Link to={{ pathname: "/build", query: query }} activeClassName="active"><div>Plot</div></Link>
-      <Link to={{ pathname: "/help", query: query }} activeClassName="active"><div>Help</div></Link>
+      <Link to={{ pathname: "/build", search: search}} activeClassName="active"><div>Plot</div></Link>
+      <Link to={{ pathname: "/help", search: search}} activeClassName="active"><div>Help</div></Link>
     </div>
   </div>
-)
+  )
+}
 
 Header.propTypes = {
   /* URL parameters in order to persist the query (e.g ?turkid=AMT_123) across
    * route changes */
   query: PropTypes.object,
-  dispatch: PropTypes.func
 }
 
-const mapStateToProps = (state) => ({
-  query: state.routing.location? state.routing.location.query: {},
-  sessionId: state.user.sessionId,
-  email: state.user.email,
-  signedIn: state.user.signedIn,
-})
-
-export default connect(mapStateToProps)(Header)
+export default Header

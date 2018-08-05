@@ -2,19 +2,11 @@ import { getStore, setStore, genUid } from "helpers/util"
 import Constants from 'actions/constants'
 
 const Actions = {
-  setSessionId: () => {
+  setSessionId: (uidParam) => {
     return (dispatch, getState) => {
-      const routing = getState().routing
 
-      /* Session ID is either (in order of priority) the provided uid query
-       * parameter in the URL, the UID stored in localStorage, or a newly
-       * generated UID stored in localStorage. */
       let sessionId = ""
-
       /* We get the UID param from the routing reducer */
-      const location = routing.location || routing.locationBeforeTransitions
-      const uidParam = location.query.uid
-
       if (uidParam) {
         sessionId = uidParam
       } else {
@@ -25,12 +17,11 @@ const Actions = {
         }
         sessionId = uid
       }
-
+      console.log('setSessionId', sessionId)
       dispatch({
         type: Constants.SET_SESSION_ID,
         sessionId: sessionId
       })
-      // console.log('UserActions.setSessionId set: ', getState().user)
     }
   },
 

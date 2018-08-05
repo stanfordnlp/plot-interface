@@ -9,8 +9,9 @@ import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
 
-import UserActions from "actions/user"
 import Actions from "actions/world"
+import UserActions from "actions/user"
+import {getParameterByName} from "helpers/util"
 
 import "./styles.css"
 
@@ -24,8 +25,7 @@ class Build extends Component {
 
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
-    this.props.dispatch(UserActions.setSessionId())
-
+    this.props.dispatch(UserActions.setSessionId(getParameterByName('uid')))
     this.props.dispatch(Actions.labelInit(true))
   }
 

@@ -1,7 +1,9 @@
 import React from "react"
-import PropTypes from 'prop-types';
 import { connect } from "react-redux"
-import { Router, Route, IndexRedirect } from "react-router"
+import { Route, Switch } from "react-router"
+import {BrowserRouter as Router} from "react-router-dom"
+
+
 import Build from './Build';
 import LabelBuild from './Build/label'
 import Help from "./Help"
@@ -15,41 +17,46 @@ import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
 import Verifier from "./Build/verifier"
 
+import UserActions from "actions/user"
+import {getParameterByName} from "helpers/util"
 import "normalize.css"
 import "./styles.css"
 
-const Routes = ({ history }) => (
-  <Router history={history}>
-    <Route path="/" component={(props) => (
-      <div className="container">
-        <Header query={props.location.query} />
-        {props.children}
-      </div>
-    )}>
-      <IndexRedirect to="build"/>
-      <Route path="build" component={() => <Build candidate={Candidate}/>} />
-      <Route path="help" component={Help} />
-    </Route>
+class Routes extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(UserActions.setSessionId(getParameterByName('uid')))
+  }
 
-    <Route path="viewer" component={Viewer} />
-    {/* <Route path="oldlabel" component={Label} /> */}
-    <Route path="label" component={(props) => (
-      <div className="container">
-        <LabelHeader query={props.location.query} />
-        {props.children}
-      </div>
-    )}>
-      <IndexRedirect to="build"/>
-      <Route path="build"  component={() => <LabelBuild candidate={LabelCandidate}/>} />
-      <Route path="help" component={LabelHelp} />
-      <Route path="verifier" component={() => <Verifier candidate={LabelCandidate}/>} />
-    </Route>
-  </Router>
-)
+  render() {
+  return (
+    <Router>
+      <div>
+        <Route path="/viewer" component={Viewer} />
+        <Route path="/build" component={(props) => (
+          <div className="container">
+            <Header search={props.location.search}/>
+            <Switch>
+              <Route exact path="/build" component={() => <Build candidate={Candidate}/>}/>
+              <Route exact path="/build/help" component={Help} />
+            </Switch>
+          </div>
+        )}/>
 
-Routes.propTypes = {
-  /* History object for the router to interact with (e.g. hashHistory) */
-  history: PropTypes.object
+        <Route path="/label" component={(props) => (
+          <div className="container">
+            <LabelHeader search={props.location.search}/>
+            <Switch>
+              <Route exact path="/label" component={() => <LabelBuild candidate={LabelCandidate}/>}/>
+              <Route exact path="/label/help" component={Help} />
+            </Switch>
+
+          </div>
+        )} />
+        {/* <Route path="/label/help" component={LabelHelp} /> */}
+        <Route path="verifier" component={() => <Verifier candidate={LabelCandidate}/>} />
+      </div>
+    </Router>
+  )}
 }
 
 export default connect()(Routes)

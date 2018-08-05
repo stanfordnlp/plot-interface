@@ -178,7 +178,7 @@ class LabelModal extends Component {
                     <VegaLite spec={spec} dataValues={this.props.dataValues} bigSize={true}/>
                   </div>
                   <div className={this.state.overlay? "overlay-bot" : "overlay-top"} >
-                    <VegaLite spec={context} className="overlay-vegalite" dataValues={this.props.dataValues} bigSize={true}/>
+                    <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
                   </div>
                 </div>
             </div>
@@ -186,7 +186,16 @@ class LabelModal extends Component {
           </SplitPane>
           <SplitPane split="horizontal" minSize={100} defaultSize={'50%'} pane1Style={{display: 'flex', height: "100%", overflow: 'auto'}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
               <div>
-                <div className="label">New plot</div>
+                <div className="label">
+                  Current plot (
+                  <input
+                    name="overlay"
+                    className="overlay-checkbox"
+                    type="checkbox"
+                    checked={this.state.overlay}
+                    onChange={e => this.handleChangeOverlay(e)}/>
+                  show "new plot")
+                </div>
                 <div style={{top: '0px', position: "relative"}}>
                   <div className={"overlay-top"} >
                     <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})} bigSize={true}/>
