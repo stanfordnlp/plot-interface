@@ -62,31 +62,31 @@ class LabelModal extends Component {
   close() {this.setState({isOpen: false, ...initialStates})}
 
   label(value) {
+    let filter = {msg: undefined}
+
     if (this.state.hasError) {
-      window.alert('there are errors in the spec, you have to fix them before you can accept')
-      return
+      filter.msg = 'there are errors in the spec, you have to fix them before you can accept'
     } else if (/[[\]{}\t":.,']/.test(value)) {
-      window.alert('should not contain special characters from JSON')
-      return;
+      filter.msg = 'should not contain special characters from JSON'
     } else if (value.trim().length < 5) {
-      this.props.dispatch(Actions.log({msg: 'spam_label_too_short', value}));
-      window.alert('too short to be valid')
-      return;
-    }  else if (value.trim().indexOf(' ') === -1) {
-      this.props.dispatch(Actions.log({msg: 'spam_JSON_chars', value}));
-      window.alert('should not only contain a single word')
-      return;
+      filter.msg = 'too short to be valid'
     } else if (value.trim().indexOf(' ') === -1) {
-      this.props.dispatch(Actions.log({msg: 'spam_single_word', value}));
-      window.alert('should not be a single word')
-      return;
+      filter.msg = 'should not only contain a single word'
+    } else if (/new plot|the new|the current|current plot/.test(value.toLowerCase())) {
+      filter.msg = 'do not explicitly reference current and new plot'
     }
 
-    this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
+    if (filter.msg !== undefined) {
+      window.alert(filter.msg)
+      this.props.dispatch(Actions.log({type: 'spam', ...filter, value}));
+      return
+    }
 
-    if (value === 'no change')
+    if (value === 'no change') {
       this.props.dispatch(UserActions.increaseCount(0.1));
-    else {
+      this.props.dispatch(Actions.log({type: 'no change', value}));
+    } else {
+      this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
       this.props.dispatch(UserActions.increaseCount(1));
     }
     // this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})

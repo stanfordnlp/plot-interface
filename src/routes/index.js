@@ -42,7 +42,7 @@ class Routes extends React.Component {
             <LabelHeader search={props.location.search}/>
             <Switch>
               <Route exact path="/label" component={() => <LabelBuild candidate={LabelCandidate}/>}/>
-              <Route exact path="/label/help" component={Help} />
+              <Route exact path="/label/help" component={LabelHelp} />
             </Switch>
 
           </div>

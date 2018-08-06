@@ -14,6 +14,7 @@ class Plot extends React.Component {
     dataURL: PropTypes.string,
     logger: PropTypes.object,
     formula: PropTypes.string,
+    canonical: PropTypes.string,
     showTools: PropTypes.bool,
     onLabel: PropTypes.func,
     clickedLabel: PropTypes.bool,
@@ -41,7 +42,7 @@ class Plot extends React.Component {
 
   onLabel() {
     this.setState({clickedLabel: true})
-    this.props.onLabel(this.state.spec, this.state.formula)
+    this.props.onLabel(this.state.spec, this.props.canonical)
   }
 
   onClick(e) {
