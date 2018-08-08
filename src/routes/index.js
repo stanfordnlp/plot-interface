@@ -12,11 +12,12 @@ import LabelHelp from "./Help/LabelHelp"
 
 import Candidate from "components/Plot/Candidate.js"
 import LabelCandidate from "components/Plot/LabelCandidate.js"
+import VerifierCandidate from "components/Plot/VerifierCandidate.js"
 import Viewer from "./Viewer"
 import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
+import VerifierHeader from "components/Header/VerifierHeader"
 import Verifier from "./Build/verifier"
-
 
 import "normalize.css"
 import "./styles.css"
@@ -48,7 +49,12 @@ class Routes extends React.Component {
           </div>
         )} />
         {/* <Route path="/label/help" component={LabelHelp} /> */}
-        <Route path="verifier" component={() => <Verifier candidate={LabelCandidate}/>} />
+        <Route path="/verifier" component={(props) => (
+          <div className="container">
+            <VerifierHeader search={props.location.search}/>
+            <Verifier candidate={VerifierCandidate}/>
+          </div>
+        )} />
       </div>
     </Router>
   )}

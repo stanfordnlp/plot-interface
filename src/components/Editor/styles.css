@@ -1,5 +1,7 @@
 .editor-container {
   height: 100%; width: 100%; display: -webkit-flex; display: flex; -webkit-flex-flow: column;  flex-flow: column;
+  margin-left: 10px;
+  margin-top: 10px;
 }
 
 .relative-container {

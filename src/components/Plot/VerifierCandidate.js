@@ -15,9 +15,7 @@ class Plot extends React.Component {
     logger: PropTypes.object,
     formula: PropTypes.string,
     canonical: PropTypes.string,
-    showTools: PropTypes.bool,
     onLabel: PropTypes.func,
-    clickedLabel: PropTypes.bool,
   }
 
   constructor(props) {
@@ -33,17 +31,8 @@ class Plot extends React.Component {
     this.props.dispatch(Actions.accept(this.props.spec, this.props.formula));
   }
 
-  onLabel() {
-    this.setState({clickedLabel: true})
-    this.props.onLabel(this.state.spec, this.props.canonical)
-  }
-
-  onClick(e) {
-    console.log('plotHash', hash(this.state.dataURL))
-    // let newWindow = window.open(this.state.dataURL, '')
-    // const img = new Image()
-    // img.src = this.state.dataURL
-    // newWindow.document.write(img.outerHTML)
+  onPick() {
+    this.props.onLabel(this.state.spec, this.props.issuedQuery)
   }
 
   renderChart() {
@@ -54,12 +43,12 @@ class Plot extends React.Component {
     return (
       <div className='chart-container'>
         <div className='chart-header'>
-          <button onClick={() => this.onLabel()}>Label {this.state.clickedLabel? '(clicked)': ''}</button>
+          <button onClick={() => this.onPick()}>Check</button>
           {this.props.header}
         </div>
         {config.showFormula? <div className='canonical'>{this.props.canonical}</div> : null}
         <div>
-          <div className='chart' onClick={e => this.onClick(e)}>
+          <div className='chart'>
             <InnerChart dataURL={this.state.dataURL}/>
           </div>
           <div>
@@ -81,5 +70,6 @@ class Plot extends React.Component {
 const mapStateToProps = (state) => ({
   // context: state.world.context,
   showErrors: state.world.showErrors,
+  issuedQuery: state.world.issuedQuery,
 })
 export default connect(mapStateToProps)(Plot);

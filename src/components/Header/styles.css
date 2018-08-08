@@ -15,6 +15,10 @@
   z-index: 100;
 }
 
+.Header .Bigger {
+  height: 100px;
+}
+
 .Header-logo {
   font-weight: 900;
 }

@@ -91,7 +91,7 @@ class LabelModal extends Component {
     }
     // this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
     // this.setState({headerText: `labeled this plot as "${value}"...` })
-    setTimeout(() => {this.close()}, 0);
+    this.close();
   }
 
   accept() {

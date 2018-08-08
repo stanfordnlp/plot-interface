@@ -11,6 +11,7 @@ import VegaLite from "components/Plot/VegaLite"
 
 import Actions from "actions/world"
 
+import config from "config"
 import "./styles.css"
 
 class Build extends Component {
@@ -35,7 +36,13 @@ class Build extends Component {
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
           <div className='editor-container'>
-            <CurrentDataTable/>
+            <div>
+              Choose the plot that you would produce if you are given the command below.
+            </div>
+            <div>
+              <b>Command</b>: {this.props.utterance}
+            </div>
+            {config.showDataTable? <CurrentDataTable/> : null}
             <div className='chart-container' key='current'>
               {
                 this.props.isInitial?
@@ -60,6 +67,8 @@ class Build extends Component {
 const mapStateToProps = (state) => ({
   isInitial: Object.keys(state.world.context).length === 0,
   context: state.world.context,
+  world: state.world.context,
+  utterance: state.world.issuedQuery,
 })
 
 export default connect(mapStateToProps)(Build)

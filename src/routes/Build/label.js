@@ -12,7 +12,7 @@ import VegaLite from "components/Plot/VegaLite"
 import Actions from "actions/world"
 import UserActions from "actions/user"
 import {getParameterByName} from "helpers/util"
-
+import config from "config"
 import "./styles.css"
 
 class Build extends Component {
@@ -38,7 +38,7 @@ class Build extends Component {
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
           <div className='editor-container'>
-            <CurrentDataTable/>
+            {config.showDataTable? <CurrentDataTable/> : null}
             <div className='chart-container' key='current'>
               {
                 this.props.isInitial?

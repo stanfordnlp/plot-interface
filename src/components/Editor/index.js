@@ -7,6 +7,7 @@ import {parseWithErrors} from 'helpers/vega-utils'
 import PropTypes from 'prop-types';
 import {MdCheck} from 'react-icons/md'
 import VegaLite from "components/Plot/VegaLite"
+import config from "config"
 import "./styles.css"
 
 class Editor extends React.Component {
@@ -57,7 +58,7 @@ class Editor extends React.Component {
     return (
       <div className='editor-container'>
         <div>
-          <CurrentDataTable/>
+          {config.showDataTable? <CurrentDataTable/> : null}
           <button className="active" onClick={() => this.openDataModal()}>Import Data</button>
           <button className="active" onClick={() => this.props.onLabel(this.props.context, '')}>Edit</button>
           <button className="active" onClick={() => this.clearAll()}>Reset</button>

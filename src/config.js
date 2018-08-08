@@ -8,6 +8,7 @@ const config = {
   showFormula: false,
   useServerInitial: false,
   showDiffEditor: false,
+  showDataTable: false,
   getExamples: getExamples,
 }
 

@@ -17,6 +17,9 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
   min-width: 100%;
   min-height: 100%;
   background-color: #fafbfc;
+  position: absolute;
+  top: 0;
+  padding-top: 50px; /* Mirrored by .Header height */
 }
 
 html {
@@ -30,12 +33,6 @@ body {
 
 * {
   box-sizing: border-box;
-}
-
-.container {
-  position: absolute;
-  top: 0;
-  padding-top: 50px; /* Mirrored by .Header height */
 }
 
 input {

@@ -252,26 +252,29 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
-      SEMPREquery({q: ['example', {amount: 1}], sessionId})
-      .then((response) => {
-        const target = response.master.context
-        console.log(response)
-        dispatch(Actions.updateContext(target))
-        if (response === undefined) {
-          window.alert('no response from server')
-          return
-        }
-        let candidates = response.candidates;
-        if (candidates.length > config.numCandidates)
+      SEMPREquery({q: ['example', {amount: 20}], sessionId})
+      .then((exampleResponse) => {
+        const {context, targetValue, utterance} = exampleResponse.master
+        const {schema, datasetURL } = getState().world
+        dispatch(Actions.updateContext(context))
+        SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: 20}], sessionId: sessionId}).then((response) => {
+          const target = {value: targetValue, score: 0, prob: 1, formula: '', canonical: utterance}
+          dispatch(Actions.setState({'issuedQuery': utterance, 'targetValue': targetValue}))
+          if (response === undefined) {
+            window.alert('no response from server')
+            return
+          }
+          let candidates = [target, ...response.candidates];
+          if (candidates.length > config.numCandidates)
           candidates = candidates.slice(0, config.numCandidates)
-        dispatch({
-          type: Constants.SET_RESPONSES,
-          responses: candidates
-        })
-      });
-    }
+          dispatch({
+            type: Constants.SET_RESPONSES,
+            responses: candidates
+          })
+        });
+    });
   }
-
+}
 }
 
 export default Actions
