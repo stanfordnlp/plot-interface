@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import Actions from 'actions/world'
 import classnames from 'classnames'
 import {parseWithErrors} from 'helpers/vega-utils'
+import config from 'config'
 import './index.css'
 class Toolbar extends React.Component {
   // clearAll() {
@@ -45,9 +46,10 @@ class Toolbar extends React.Component {
         </button> */}
 
         {/* <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button> */}
-        <button className={classnames({active: true})} onClick={() => this.toggleShowFormulas()}>
-          {this.props.showFormulas? 'hide errors' : 'show all'}
-        </button>
+        {config.showDebugTool?
+          <button className={classnames({active: true})} onClick={() => this.toggleShowFormulas()}>
+            this.props.showFormulas? 'hide errors' : 'show all'}
+          </button> : null}
       </div>
     )
   }

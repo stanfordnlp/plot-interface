@@ -34,6 +34,11 @@ class Plot extends React.Component {
   }
 
   onLabel() {
+    if (this.state.clickedLabel) {
+        window.alert("you have already labeled this instance")
+        return
+    }
+
     this.setState({clickedLabel: true})
     this.props.onLabel(this.state.spec, this.props.canonical)
   }

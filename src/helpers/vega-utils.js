@@ -96,7 +96,6 @@ export function vegaToDataURL(vegaSpec, values) {
       dataView = dataView.insert('source', values)
 
     dataView.logLevel(config.logLevel)
-    .width(500)
     .initialize()
 
     let dataURL
@@ -118,13 +117,16 @@ export function prettyStringify(obj) {
 }
 
 const VegaLiteSpecs = require('../examples.json');
-export function responsesFromExamples() {
-  const filenames =   config.getExamples(VegaLiteSpecs).map(ex => ex.name + '.vl.json')// has name and title
-  const urls = filenames.map(s => `spec/vega-lite/${s}`)
-  const urlselect = [urls[Math.floor(Math.random()*urls.length)]]
-  return Promise.all(urlselect.map(url => {
-    return fetch(url).then(res => {
-      return res.json().then(json => [url, json])
+export function responsesFromExamples(name) {
+  let names = [name]
+  if (name === undefined || name === null) {
+    const examples = config.getExamples(VegaLiteSpecs) // has name and title
+    const name = examples[Math.floor(Math.random()*examples.length)].name
+    names = [name]
+  }
+  return Promise.all(names.map(name => {
+    return fetch(`spec/vega-lite/${name}.vl.json`).then(res => {
+      return res.json().then(json => [name, json])
     })
   }))
   .then(specs =>

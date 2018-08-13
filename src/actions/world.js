@@ -186,19 +186,19 @@ const Actions = {
   },
 
 
-  labelInit: () => {
+  labelInit: (name) => {
     return (dispatch, getState) => {
       dispatch({
         type: Constants.CLEAR
       })
       const {sessionId} = getState().user;
-      responsesFromExamples().then(
+      responsesFromExamples(name).then(
         initial => {
           const context = initial[0].value
           dispatch(Actions.updateContext(context))
           const {schema, datasetURL } = getState().world
           // send the actual sempre command
-          SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
+          SEMPREquery({ q: ['q', {utterance: '', context, schema: {}, datasetURL: '', random: true, amount: config.numCandidates}], sessionId: sessionId})
           .then((response) => {
             console.log('sempre returned', response)
             if (response === undefined) {
@@ -252,12 +252,12 @@ const Actions = {
       dispatch({
         type: Constants.CLEAR
       })
-      SEMPREquery({q: ['example', {amount: 20}], sessionId})
+      SEMPREquery({q: ['example', {amount: 1}], sessionId})
       .then((exampleResponse) => {
         const {context, targetValue, utterance} = exampleResponse.master
         const {schema, datasetURL } = getState().world
         dispatch(Actions.updateContext(context))
-        SEMPREquery({q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: 20}], sessionId: sessionId}).then((response) => {
+        SEMPREquery({q: ['q', {utterance: '', context, datasetURL, random: false, amount: config.numCandidates}], sessionId: sessionId}).then((response) => {
           const target = {value: targetValue, score: 0, prob: 1, formula: '', canonical: utterance}
           dispatch(Actions.setState({'issuedQuery': utterance, 'targetValue': targetValue}))
           if (response === undefined) {

@@ -44,11 +44,11 @@ class LabelModal extends Component {
     this.props.onRef(this)
 
     Mousetrap.prototype.stopCallback = () => false;
-    // Mousetrap.bind("enter", (e) => { e.preventDefault(); this.accept() })
+    Mousetrap.bind("enter", (e) => { e.preventDefault(); this.label(this.state.inputValue) })
     Mousetrap.bind("esc", (e) => { this.close() })
   }
   componentWillUnmount() {
-    // Mousetrap.unbind("enter")
+    Mousetrap.unbind("enter")
     Mousetrap.unbind("esc")
     this.props.onRef(null)
   }
@@ -62,28 +62,32 @@ class LabelModal extends Component {
   close() {this.setState({isOpen: false, ...initialStates})}
 
   label(value) {
-    let filter = {msg: undefined}
+    let filter = {msg: undefined, type: "spam"}
 
     if (this.state.hasError) {
-      filter.msg = 'there are errors in the spec, you have to fix them before you can accept'
+      filter.msg = 'there are errors in the spec, you have to fix them'
+      filter.type = 'alert'
     } else if (/[[\]{}\t":.,']/.test(value)) {
-      filter.msg = 'should not contain special characters from JSON'
-    } else if (value.trim().length < 5) {
+      filter.msg = 'do not use special characters such as .,:[]{}"'
+      filter.type = 'alert'
+    } else if (value.trim().length < 3) {
       filter.msg = 'too short to be valid'
     } else if (value.trim().indexOf(' ') === -1) {
       filter.msg = 'should not only contain a single word'
     } else if (/new plot|the new|the current|current plot/.test(value.toLowerCase())) {
       filter.msg = 'do not explicitly reference current and new plot'
+      filter.type = 'alert'
     }
 
-    if (filter.msg !== undefined) {
+
+    this.props.dispatch(Actions.log({...filter, value}));
+
+    if (filter.type === 'alert') {
       window.alert(filter.msg)
-      this.props.dispatch(Actions.log({type: 'spam', ...filter, value}));
-      return
     }
 
     if (value === 'no change') {
-      this.props.dispatch(UserActions.increaseCount(0.1));
+      this.props.dispatch(UserActions.increaseCount(0.05));
       this.props.dispatch(Actions.log({type: 'no change', value}));
     } else {
       this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
@@ -94,18 +98,10 @@ class LabelModal extends Component {
     this.close();
   }
 
-  accept() {
-    if (this.state.hasError) {
-      window.alert('there are errors in the spec, you have to fix them before you can accept')
-      return
-    }
-    this.props.dispatch(Actions.accept(this.state.spec, this.state.formula ));
-    this.close()
-  }
-
   handleChangeOverlay(evt) {
     this.setState({overlay: evt.target.checked})
   }
+
   handleShowHint(evt) {
     this.setState({showHint: evt.target.checked})
   }
@@ -203,7 +199,7 @@ class LabelModal extends Component {
       </div>
 
 
-      <div className="label">
+      <div className="label statuss">
         <input
           name="overlay"
           className="overlay-checkbox"
@@ -211,6 +207,8 @@ class LabelModal extends Component {
           checked={this.state.overlay}
           onChange={e => this.handleChangeOverlay(e)}/> show "new plot" in place of "current plot"
       </div>
+
+      {config.showHint?
       <div className="label status">
         <input
           name="overlay"
@@ -219,6 +217,7 @@ class LabelModal extends Component {
           checked={this.state.showHint}
           onChange={e => this.handleShowHint(e)}/> show a hint {this.state.showHint? ': ' + this.state.formula : null}
       </div>
+      : null}
 
       <div style={{position: 'relative', height: `calc(100vh - ${100}px)`}}>
         <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>

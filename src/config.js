@@ -4,11 +4,14 @@ const config = {
   // the valid level values are vega.none (the default), vega.warn, vega.info, vega.debug
   loglevel: 'error',
   numLabels: 5,
-  numCandidates: 60,
+  numCandidates: 30,
+  numCandidatesVerifier: 30,
   showFormula: false,
   useServerInitial: false,
   showDiffEditor: false,
   showDataTable: false,
+  showDebugTool: false,
+  showHint: false,
   getExamples: getExamples,
 }
 
@@ -21,10 +24,11 @@ function getExamples(exjson) {
     ...exjson["Single-View Plots"]["Scatter & Strip Plots"],
     ...exjson["Single-View Plots"]["Line Charts"],
     ...exjson["Single-View Plots"]["Area Charts & Streamgraphs"],
-    ...exjson["Single-View Plots"]["Table-based Plots"],
-    ...exjson["Composite Mark"]["Error Bars & Error Bands"],
-    ...exjson["Composite Mark"]["Box Plots"],
+    // ...exjson["Single-View Plots"]["Table-based Plots"],
+    // ...exjson["Composite Mark"]["Error Bars & Error Bands"],
+    // ...exjson["Composite Mark"]["Box Plots"],
   ]
+  // exlucdes = ['layer_line_co2_concentration', 'rect_mosaic_labelled_with_offset', 'area_horizon']
   console.log('number of examples', all.length)
   return all
 }

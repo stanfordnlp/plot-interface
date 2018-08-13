@@ -3,20 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import LabelModal from 'components/LabelModal'
 import Actions from "actions/world"
+import {getParameterByName} from "helpers/util"
 import './styles.css'
 // eslint-disable-next-line
 const turk2018url = 'https://raw.githubusercontent.com/stanfordnlp/plot-data/master/20180118_turk_all.jsonl'
 const remotelogs = 'http://jonsson.stanford.edu:8405/query.jsonl'
 
 class Viewer extends Component {
-  static propTypes = {
-    /* Injected by Redux */
-    context: PropTypes.object,
-    candidate: PropTypes.func,
-    dispatch: PropTypes.func,
-  }
   constructor(props) {
-  super(props);
+    super(props);
     this.state = {
       examples: [],
       url: remotelogs,
@@ -25,17 +20,21 @@ class Viewer extends Component {
   }
 
   componentDidMount() {
-    this.fetchFromURL()
+    const url = getParameterByName('url')
+    console.log(url)
+    if (url != null) {
+      this.fetchFromURL(url)
+      this.setState({url})
+    } else {
+      this.fetchFromURL(this.state.url)
+    }
   }
 
-  fetchFromURL() {
-    console.log(this.state.url)
-    fetch(this.state.url)
+  fetchFromURL(url) {
+    console.log(url)
+    fetch(url)
       .then(response => {response.text().then(t => this.loadJSONL(t))})
   }
-
-  onLabel = (spec, formula) => {
-  };
 
   loadJSONL(contents) {
     // console.log(contents)
@@ -50,6 +49,7 @@ class Viewer extends Component {
 
     let examples = raw;
     if (this.state.isQuerylog) {
+      console.log(raw)
       examples = raw.filter(r => r.q[0]==="accept")
     }
 
@@ -91,7 +91,7 @@ class Viewer extends Component {
         <input type="file" id="input" onChange={e => this.handleFiles(e.target.files)}/>
         ULR: <input type="text" style={ {width:'500px'} } id="exampleURL" value={this.state.url} onChange={e => {this.setState({url: e.target.value})}}/>
         {/* {examples} */}
-        <button onClick={e => this.fetchFromURL()}>load</button>
+        <button onClick={e => this.fetchFromURL(this.state.url)}>load</button>
         <table>
           <tbody>
             {

@@ -26,7 +26,12 @@ class Build extends Component {
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
     this.props.dispatch(UserActions.setSessionId(getParameterByName('uid')))
-    this.props.dispatch(Actions.labelInit(true))
+    this.init()
+  }
+
+  init() {
+    const name = getParameterByName('example')
+    this.props.dispatch(Actions.labelInit(name))
   }
 
   onLabel = (spec, formula) => {
@@ -38,6 +43,7 @@ class Build extends Component {
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
           <div className='editor-container'>
+            <button onClick={() => {this.init()}}>Load more</button>
             {config.showDataTable? <CurrentDataTable/> : null}
             <div className='chart-container' key='current'>
               {
