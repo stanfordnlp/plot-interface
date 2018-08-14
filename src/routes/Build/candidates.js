@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import hash from 'string-hash'
@@ -6,10 +6,11 @@ import hash from 'string-hash'
 import Actions from 'actions/world'
 import { STATUS } from "constants/strings"
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
+import config from 'config'
 
 import "./styles.css"
 
-class Candidates extends Component {
+class Candidates extends PureComponent {
   static propTypes = {
     /* Injected by Redux */
     context: PropTypes.object,
@@ -18,40 +19,47 @@ class Candidates extends Component {
     dispatch: PropTypes.func,
   }
 
-  componentDidMount() {
-    this.processPlotData()
+  constructor(props) {
+    super(props)
+    this.state = {
+      plotData: []
+    }
+    this.numProcessed = 0
+    this.numDistinct = 0
+    this.indProcessing = 0
+    this.hashes = new Set()
+    const {context, dataValues} = this.props
+    this.contextPromise = vegaLiteToDataURLWithErrors(context, dataValues)
   }
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.responses === this.props.responses)
-      return
-    this.processPlotData()
+    if (prevProps.responses !== this.props.responses) {
+      this.numProcessed = 0
+      this.numDistinct = 0
+      this.indProcessing = 0
+    }
+
+    if (this.props.responses.length > 0 && this.indProcessing < this.props.responses.length && this.numDistinct < config.maxDisplay) {
+      const endInd = Math.min(this.props.responses.length, this.indProcessing + config.processingInterval)
+      this.processPlotData(this.indProcessing, endInd)
+    }
   }
 
   // set state plotData
-  processPlotData() {
+  processPlotData(start: Integer, end: Integer) {
     const {responses, context, dataValues } = this.props
-    const contextPromise = vegaLiteToDataURLWithErrors(context, dataValues)
-    this.setState({plotData: []})
-    // console.log('processing %d responses', responses.length);
+    const {plotData} = this.state
+    const {hashes} = this
+    console.log(`processing responses ${start} to ${end} out of ${responses.length}`);
 
     // if (responses.length === 0) return
-    contextPromise.then(contextVega => {
+    this.contextPromise.then(contextVega => {
       const contextHash = hash(contextVega.dataURL)
-
-      let plots = []
-      let hashes = new Set()
       hashes.add(contextHash)
 
-      for (let i = 0; i<responses.length; i++) {
+      for (let i = start; i < end; i++) {
         const r = responses[i]
-        const delay = 0
-        setTimeout( () => {
-          if (i === responses.length - 1)
-            this.props.dispatch(Actions.setStatus(STATUS.TRY))
-          else
-            this.props.dispatch(Actions.setStatus(`Rendering ${i+1} of ${responses.length}`))
-
-          vegaLiteToDataURLWithErrors(r.value, dataValues)
+        vegaLiteToDataURLWithErrors(r.value, dataValues)
           .then(vega => {
             const dataHash = hash(vega.dataURL);
             const p = {
@@ -66,14 +74,18 @@ class Candidates extends Component {
               noDup:  contextHash!==dataHash && !hashes.has(dataHash),
               noError: vega.logger.errors.length + vega.logger.warns.length === 0,
             }
-
             hashes.add(p.dataHash)
-            plots[i] = p
-            this.setState({plotData: plots})
-            // console.log(i, r.canonical, isIdentical)
+            console.log('processing', i)
+            plotData[i] = p
+            if (i == end - 1) {
+                this.numProcessed = plotData.filter(p => p.rank).length
+                this.numDistinct = plotData.filter(p => p.noDup && p.noError).length
+                console.log('num distinct', this.numDistinct)
+                this.indProcessing += config.processingInterval
+                this.forceUpdate()
+            }
           })
           .catch(e => console.log('processing vega error', e))
-        }, delay)
       }
     })
   }
@@ -84,7 +96,7 @@ class Candidates extends Component {
     if (this.state && this.state.plotData) {
       plots = this.state.plotData.filter(r => (showFormulas || (r.noError && r.noDup))).map((r, ind) => (
         <this.props.candidate
-          key={ind+'_'+r.formula}
+          key={r.rank}
           header={`${showFormulas? r.rank : ''} ${r.noError? '': '(hasError)'} ${r.noDup? '': '(isSame)'}`}
           dataURL={r.dataURL}
           spec={r.spec}

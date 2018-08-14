@@ -100,9 +100,9 @@ export function vegaToDataURL(vegaSpec, values) {
 
     let dataURL
     if (config.renderer === 'png')
-      dataURL = dataView.toImageURL('png')
+      dataURL = dataView.toImageURL('png', config.vegaScaleFactor)
     else
-      dataURL = dataView.toSVG('svg');
+      dataURL = dataView.toSVG(config.vegaScaleFactor);
 
     // console.log('vegaToDataURL success', vegaSpec, dataURL);
     return dataURL

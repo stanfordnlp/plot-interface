@@ -13,6 +13,9 @@ const config = {
   showDebugTool: false,
   showHint: false,
   getExamples: getExamples,
+  vegaScaleFactor: 1.5,
+  maxDisplay: 5,
+  processingInterval: 1,
 }
 
 

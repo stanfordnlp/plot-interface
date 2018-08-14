@@ -4,6 +4,8 @@ import { connect } from "react-redux"
 import LabelModal from 'components/LabelModal'
 import Actions from "actions/world"
 import {getParameterByName} from "helpers/util"
+// import {applyPatch, createPatch, createTests} from 'rfc6902';
+import jsonpatch from "fast-json-patch"
 import './styles.css'
 // eslint-disable-next-line
 const turk2018url = 'https://raw.githubusercontent.com/stanfordnlp/plot-data/master/20180118_turk_all.jsonl'
@@ -107,6 +109,7 @@ class Viewer extends Component {
                     <td>{c.utterance}</td>
                     <td>{typeof c.targetFormula === 'string'? c.targetFormula: JSON.stringify(c.targetFormula)}</td>
                     <td>{q.sessionId}</td>
+                    <td>{c.context && c.targetValue? JSON.stringify(jsonpatch.compare(c.context, c.targetValue)) : null}</td>
                   </tr>
                 );
               })

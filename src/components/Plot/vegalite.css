@@ -1,24 +1,30 @@
 .chart {
   padding: 0px;
-  max-width: 500px;
-  max-height: 500px;
-  width: 400px;
-  height: auto;
+  max-height: 600px;
+  max-width: 600px;
   object-fit: scale-down;
 }
+
 .big-chart {
   padding: 0px;
   width: 600px;
-  max-width: 800px;
   max-height: 800px;
-  height: auto;
   object-fit: scale-down;
 }
 
 .vega-plot {
-  width: inherit;
-  height: inherit;
+  /* width: inherit;
+  height: inherit; */
+  display: block;
+  max-width: inherit;
+  max-height: inherit;
   object-fit: scale-down;
+}
+
+svg {
+  display: block;
+  max-width: inherit;
+  max-height: inherit;
 }
 
 .display-errors {
@@ -26,6 +32,7 @@
   margin: 0;
   color: red;
 }
+
 .display-warns {
   font-size: 0.8em;
   margin: 0;

@@ -257,7 +257,7 @@ const Actions = {
         const {context, targetValue, utterance} = exampleResponse.master
         const {schema, datasetURL } = getState().world
         dispatch(Actions.updateContext(context))
-        SEMPREquery({q: ['q', {utterance: '', context, datasetURL, random: false, amount: config.numCandidates}], sessionId: sessionId}).then((response) => {
+        SEMPREquery({q: ['q', {utterance: '', context, datasetURL, random: true, amount: 100}], sessionId: sessionId}).then((response) => {
           const target = {value: targetValue, score: 0, prob: 1, formula: '', canonical: utterance}
           dispatch(Actions.setState({'issuedQuery': utterance, 'targetValue': targetValue}))
           if (response === undefined) {
@@ -265,8 +265,6 @@ const Actions = {
             return
           }
           let candidates = [target, ...response.candidates];
-          if (candidates.length > config.numCandidates)
-          candidates = candidates.slice(0, config.numCandidates)
           dispatch({
             type: Constants.SET_RESPONSES,
             responses: candidates
