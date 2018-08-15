@@ -1,4 +1,5 @@
 import Hashids from "hashids"
+import jsonpatch from 'fast-json-patch'
 
 export function setStore(name, value) {
   const jsonValue = JSON.stringify(value);
@@ -71,4 +72,36 @@ export function resizePNG(dataImg, width, height) {
       resolve(drawImage(canvas, ctx, img, width, height))
     }
   })
+}
+
+function stripValue(value) {
+  let keys = Object.keys(value)
+  let path = ''
+  while (keys.length === 1) {
+    const key = keys[0]
+    path += '/' + key
+    value = value[key]
+    keys = Object.keys(value)
+  }
+  return {path, value}
+}
+
+// some hacks for getting an easy json path
+export function canonicalJsonDiff(context, targetValue) {
+  if (!context || !targetValue)
+    return "canonicalJsonDiff:ERROR"
+  const diffs = jsonpatch.compare(context, targetValue)
+  console.log(diffs)
+  if (diffs.length > 1) {
+    return JSON.stringify(diffs)
+  }
+
+  const {path, value, op} = diffs[0]
+  if (op === 'replace' || op === 'add') {
+    const s = stripValue(value)
+    let fullPath = path + s.path
+    return fullPath.replace(/\//g, ' ') + ': ' + s.value
+  } else {
+    return JSON.stringify(diffs)
+  }
 }

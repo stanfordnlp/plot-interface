@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { NavLink as Link } from "react-router-dom"
+// import { NavLink as Link } from "react-router-dom"
 import { connect } from "react-redux"
 // import hash from 'string-hash'
 import config from "config"

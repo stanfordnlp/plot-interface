@@ -14,12 +14,6 @@
   padding-bottom: 10px;
 }
 
-.headerButton {
-  align-self: center;
-  font-size: 1.2em;
-  margin-left: 20px;
-}
-
 .absolute-wrapper {
   position: absolute;
   top: 0;
@@ -54,12 +48,6 @@
   font-size: 1.2em;
   font-weight: bold;
   height: 30px;
-}
-
-.control-bar button {
-  margin: 5px;
-  margin-top: 5px;
-  font-weight: normal;
 }
 
 .diffEditor {

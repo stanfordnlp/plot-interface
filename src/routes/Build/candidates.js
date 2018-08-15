@@ -1,10 +1,7 @@
-import React, {Component, PureComponent} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import hash from 'string-hash'
-
-import Actions from 'actions/world'
-import { STATUS } from "constants/strings"
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import config from 'config'
 
@@ -17,6 +14,7 @@ class Candidates extends PureComponent {
     candidate: PropTypes.func,
     responses: PropTypes.array,
     dispatch: PropTypes.func,
+    verifierMode: PropTypes.bool,
   }
 
   constructor(props) {
@@ -32,27 +30,37 @@ class Candidates extends PureComponent {
     this.contextPromise = vegaLiteToDataURLWithErrors(context, dataValues)
   }
 
+  clear() {
+    this.numProcessed = 0
+    this.numDistinct = 0
+    this.indProcessing = 0
+    this.setState({plotData: []})
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.responses !== this.props.responses) {
-      this.numProcessed = 0
-      this.numDistinct = 0
-      this.indProcessing = 0
+    const {responses} = this.props
+    if (prevProps.responses !== responses) {
+      this.clear()
+      return
     }
 
-    if (this.props.responses.length > 0 && this.indProcessing < this.props.responses.length && this.numDistinct < config.maxDisplay) {
-      const endInd = Math.min(this.props.responses.length, this.indProcessing + config.processingInterval)
+    if (responses.length > 0 && this.indProcessing < responses.length && this.numDistinct < config.maxDisplay) {
+      const endInd = Math.min(responses.length, this.indProcessing + config.processingInterval)
       this.processPlotData(this.indProcessing, endInd)
     }
   }
 
+  componentWillUnmount() {
+    this.clear()
+  }
+
   // set state plotData
   processPlotData(start: Integer, end: Integer) {
-    const {responses, context, dataValues } = this.props
+    const {responses, dataValues} = this.props
     const {plotData} = this.state
     const {hashes} = this
     console.log(`processing responses ${start} to ${end} out of ${responses.length}`);
 
-    // if (responses.length === 0) return
     this.contextPromise.then(contextVega => {
       const contextHash = hash(contextVega.dataURL)
       hashes.add(contextHash)
@@ -70,17 +78,18 @@ class Candidates extends PureComponent {
               canonical: r.canonical,
               spec :r.value,
               rank: i,
+              isExample: r.isExample,
               // changed, no dup, and no error
-              noDup:  contextHash!==dataHash && !hashes.has(dataHash),
+              noDup:  contextHash !== dataHash && !hashes.has(dataHash),
               noError: vega.logger.errors.length + vega.logger.warns.length === 0,
             }
             hashes.add(p.dataHash)
-            console.log('processing', i)
+            // console.log('processing', i, p.noDup, p.formula)
             plotData[i] = p
-            if (i == end - 1) {
-                this.numProcessed = plotData.filter(p => p.rank).length
-                this.numDistinct = plotData.filter(p => p.noDup && p.noError).length
-                console.log('num distinct', this.numDistinct)
+            this.numProcessed = plotData.filter(p => p.rank).length
+            this.numDistinct = plotData.filter(p => p.noDup && p.noError).length
+            if (i === end - 1 || this.numDistinct === config.maxDisplay) {
+                // console.log('num distinct', this.numDistinct)
                 this.indProcessing += config.processingInterval
                 this.forceUpdate()
             }
@@ -91,10 +100,11 @@ class Candidates extends PureComponent {
   }
 
   render() {
-    const {showFormulas, responses} = this.props
+    const {showFormulas, responses, onLabel, verifierMode} = this.props
+    const {plotData} = this.state
     let plots = [<div key='loading'>loading...</div>]
-    if (this.state && this.state.plotData) {
-      plots = this.state.plotData.filter(r => (showFormulas || (r.noError && r.noDup))).map((r, ind) => (
+    if (this.state && plotData) {
+      plots = plotData.filter(r => (showFormulas || (r.noError && r.noDup))).map((r, ind) => (
         <this.props.candidate
           key={r.rank}
           header={`${showFormulas? r.rank : ''} ${r.noError? '': '(hasError)'} ${r.noDup? '': '(isSame)'}`}
@@ -104,7 +114,8 @@ class Candidates extends PureComponent {
           formula={r.formula}
           canonical={r.canonical}
           errorLogger={r.logger}
-          onLabel={this.props.onLabel}
+          plotData={r}
+          onLabel={onLabel}
         />
         )
       )
@@ -134,10 +145,21 @@ class Candidates extends PureComponent {
       );
     }
 
-    plotsPlus = plotsPlus.concat(plots);
+    console.log(plots.length, config.maxDisplay, verifierMode)
+    if (verifierMode === true && config.maxDisplay <= plots.length) {
+      const example = plots[0]
+      const rand = Math.floor(Math.random() * plots.length)
+      plots[0] = plots[rand]
+      plots[rand] = example
+      plotsPlus = plotsPlus.concat(plots);
+    } else if (verifierMode === undefined || verifierMode === false) {
+      plotsPlus = plotsPlus.concat(plots);
+    }
+
     return (
       <div className="Candidates" ref={c => this.candidates = c}>
         {plotsPlus}
+        {this.numDistinct < config.maxDisplay? <div>{`${this.numDistinct} out of ${config.maxDisplay} (testing ${this.numProcessed} out of ${responses.length})`}</div> : <div>{`Finished loading`}</div>}
       </div>
     );
   }

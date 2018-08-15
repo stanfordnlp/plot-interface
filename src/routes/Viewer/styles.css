@@ -8,9 +8,14 @@
   max-width: 350px;
   padding: 5px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
+  overflow: scroll;
+  /* text-overflow: ellipsis; */
   vertical-align: top;
+}
+
+.exampleTable td:hover{
+  overflow: visible;
+  white-space: pre;
 }
 
 .exampleTable tr.even {

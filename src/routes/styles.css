@@ -51,36 +51,42 @@ input {
   font-weight: 400;
 }
 
-button {
-  font-size: 1em;
-  /*line-height: 1.5em;*/
-  height: 2em;
-  width: auto;
-  padding: 0.5em 0.5em;
-  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
-  font-weight: 900;
+.button-row > * {
+  margin: 0.25em;
+}
 
-  border: 0;
-  /*text-transform: uppercase;*/
-  color: #111;
-  background-color: rgba(200,200,200,0.5);
-  border-radius: 1px;
-  transition: 0.2s ease background-color;
-  outline: none;
+button {
+  color: #fff;
+  background-color: #444;
+  border-color: #444;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   cursor: pointer;
+  -webkit-appearance: button;
 }
 
 button:hover {
-  background-color: rgba(200,200,200,1);
+  background-color: #444;
 }
 
 button.active {
-  color: #111;
-  cursor: pointer;
 }
 
 button.active:hover {
-  background-color: rgba(200,200,200,1);
+  /* background-color: rgba(200,200,200,1); */
 }
 
 .Resizer {

@@ -44,7 +44,9 @@ class LabelModal extends Component {
     this.props.onRef(this)
 
     Mousetrap.prototype.stopCallback = () => false;
-    Mousetrap.bind("enter", (e) => { e.preventDefault(); this.label(this.state.inputValue) })
+    if (!this.props.readOnly)
+      Mousetrap.bind("enter", (e) => { e.preventDefault(); this.label(this.state.inputValue)})
+
     Mousetrap.bind("esc", (e) => { this.close() })
   }
   componentWillUnmount() {
@@ -67,9 +69,12 @@ class LabelModal extends Component {
     if (this.state.hasError) {
       filter.msg = 'there are errors in the spec, you have to fix them'
       filter.type = 'alert'
-    } else if (/[[\]{}\t":.,']/.test(value)) {
-      filter.msg = 'do not use special characters such as .,:[]{}"'
+    } else if (/[[\]{}\t":']/.test(value)) {
+      filter.msg = 'do not use special characters such as []{}"\''
       filter.type = 'alert'
+    } else if (value.trim().length === 0) {
+      filter.type = 'alert'
+      filter.msg = 'you tried to submit nothing'
     } else if (value.trim().length < 3) {
       filter.msg = 'too short to be valid'
     } else if (value.trim().indexOf(' ') === -1) {
@@ -79,19 +84,19 @@ class LabelModal extends Component {
       filter.type = 'alert'
     }
 
-
-    this.props.dispatch(Actions.log({...filter, value}));
+    this.props.dispatch(Actions.log({...filter, value}))
 
     if (filter.type === 'alert') {
       window.alert(filter.msg)
+      return
     }
 
     if (value === 'no change') {
-      this.props.dispatch(UserActions.increaseCount(0.05));
-      this.props.dispatch(Actions.log({type: 'no change', value}));
+      this.props.dispatch(UserActions.increaseCount(0.05))
+      this.props.dispatch(Actions.log({type: 'no change', value}))
     } else {
-      this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula));
-      this.props.dispatch(UserActions.increaseCount(1));
+      this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula))
+      this.props.dispatch(UserActions.increaseCount(1))
     }
     // this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
     // this.setState({headerText: `labeled this plot as "${value}"...` })
@@ -104,14 +109,6 @@ class LabelModal extends Component {
 
   handleShowHint(evt) {
     this.setState({showHint: evt.target.checked})
-  }
-
-  handleKeyDown(e) {
-    if (e.keyCode === 13) {
-      this.label(this.state.inputValue)
-    } else if (e.keyCode === 27) {
-      this.close()
-    }
   }
 
   updateInputValue(evt) {
@@ -137,7 +134,7 @@ class LabelModal extends Component {
         // margin: '20px',
       }
     };
-    const {context} = this.props
+    const {context, readOnly} = this.props
     const {spec} = this.state
 
     const isInitial = Object.keys(context).length === 0
@@ -179,22 +176,20 @@ class LabelModal extends Component {
         // onRequestClose={() => this.close()}
         style={style}
         contentLabel="label-modal"
-        onKeyDown={e => this.handleKeyDown(e)}
         ariaHideApp={false}
         // style={{content : {left:`${this.state.x}px`, top:`${this.state.y}px`}}}
       >
 
-      <div className="header">
+      <div className="header button-row">
         <MdClose className="md-button" size={'2em'} onClick={() => this.close()}/>
         <input autoFocus className="labelInput" ref={(input) => { this.textInput = input; }}
           type="text"
           value={this.state.inputValue}
-          onKeyDown={e => this.handleKeyDown(e)}
           onChange={e => this.updateInputValue(e)}
           placeholder={promptString}
         />
-        <button className='headerButton' onClick={() => this.label(this.state.inputValue)}>Label</button>
-        <button className='headerButton' onClick={() => this.label('no change')}>No change</button>
+        {readOnly? null: <button className='headerButton' onClick={() => this.label(this.state.inputValue)}>Label</button>}
+        {readOnly? null: <button className='headerButton' onClick={() => this.label('no change')}>No change</button>}
         <button className='headerButton' onClick={() => this.close()}>Close</button>
       </div>
 

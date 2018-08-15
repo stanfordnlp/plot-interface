@@ -36,6 +36,10 @@ class Build extends Component {
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
           <div className='editor-container'>
+            <div className='button-row'>
+              {config.showDataTable? <CurrentDataTable/> : null}
+              <button className="active" onClick={() => {}}>Mark as spam</button>
+            </div>
             <div>
               Choose the plot that you would produce if you are given the command below.
             </div>
@@ -55,9 +59,9 @@ class Build extends Component {
               }
             </div>
         </div>
-        <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+        <Candidates onLabel={this.onLabel} candidate={this.props.candidate} verifierMode={true}/>
         </SplitPane>
-        <LabelModal onRef={ref => (this.labelModal = ref)}/>
+        <LabelModal onRef={ref => (this.labelModal = ref)} readOnly={true}/>
         <Toolbar onLabel={this.onLabel}/>
       </div>
     );

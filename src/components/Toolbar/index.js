@@ -11,11 +11,11 @@ class Toolbar extends React.Component {
   // }
 
   toggleShowErrors() {
-    this.props.dispatch(Actions.setShowErrors(!this.props.showErrors));
+    this.props.dispatch(Actions.setState({showErrors: !this.props.showErrors}));
   }
 
   toggleShowFormulas() {
-    this.props.dispatch(Actions.setShowFormulas(!this.props.showFormulas));
+    this.props.dispatch(Actions.setState({showFormulas: !this.props.showFormulas}));
   }
 
   updateSpec() {
@@ -48,7 +48,7 @@ class Toolbar extends React.Component {
         {/* <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button> */}
         {config.showDebugTool?
           <button className={classnames({active: true})} onClick={() => this.toggleShowFormulas()}>
-            this.props.showFormulas? 'hide errors' : 'show all'}
+            {this.props.showFormulas? 'hide errors' : 'show all'}
           </button> : null}
       </div>
     )

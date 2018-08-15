@@ -5,7 +5,7 @@ import {parseWithErrors, vegaToDataURL} from 'helpers/vega-utils'
 import "./vegalite.css"
 import InnerChart from './InnerChart'
 // renders vegalite plot and display errors
-class VegaLite extends React.Component {
+class VegaLite extends React.PureComponent {
   static propTypes = {
     spec: PropTypes.object,
     onDoneRendering: PropTypes.func,
@@ -48,7 +48,7 @@ class VegaLite extends React.Component {
   updateVegaWrap() {
     //if (this.props.onDoneRendering !== undefined)
     //setTimeout(() => this.updateVega(), 1000)
-    this.updateVega()
+    setTimeout(this.updateVega(), 0)
   }
   // without the timeout, promise is sync...
   updateVega() {

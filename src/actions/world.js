@@ -8,6 +8,7 @@ import Constants from 'actions/constants'
 import config from 'config'
 
 const Actions = {
+
   setState: (state) => {
     return (dispatch) => {
       dispatch({
@@ -22,33 +23,6 @@ const Actions = {
       dispatch({
         type: Constants.SET_QUERY,
         query
-      })
-    }
-  },
-
-  setStatus: (status) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.SET_STATUS,
-        status
-      })
-    }
-  },
-
-  setShowErrors: (showErrors) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.SET_SHOW_ERRORS,
-        showErrors: showErrors
-      })
-    }
-  },
-
-  setShowFormulas: (showFormulas) => {
-    return (dispatch) => {
-      dispatch({
-        type: Constants.SET_SHOW_FORMULAS,
-        showFormulas: showFormulas
       })
     }
   },
@@ -128,8 +102,8 @@ const Actions = {
       const { sessionId } = getState().user
       const { issuedQuery, context, schema, datasetURL } = getState().world
 
-      const q = ['accept', {utterance: issuedQuery, targetFormula: formula,
-        context, schema, targetValue:spec, datasetURL, type: "accept"}]
+      const q = ['accept', {utterance: issuedQuery, taergetFormula: formula,
+        context, schema, targetValue: spec, datasetURL}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
@@ -141,28 +115,16 @@ const Actions = {
     }
   },
 
-  label: (utterance, spec, formula) => {
+  label: (utterance, spec, formula, type='label') => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { issuedQuery, context, schema, datasetURL } = getState().world
+      const { context, schema, datasetURL } = getState().world
       const sempreExample = {
         utterance, targetFormula: formula,
-        context, schema, targetValue: spec, issuedQuery: issuedQuery, datasetURL, type: "label"};
+        context, targetValue: spec, schema, datasetURL, type};
       console.log(JSON.stringify(sempreExample))
       const q = ['accept', sempreExample]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
-      return true
-    }
-  },
-
-  reject: (spec, isBad) => {
-    return (dispatch, getState) => {
-      const { sessionId } = getState().user
-      const { query, context, schema, datasetURL} = getState().world
-
-      const q = ['reject', {unreject: isBad, utterance: query, context, schema, targetValue:spec, datasetURL }]
-      SEMPREquery({ q: q, sessionId: sessionId }, () => { })
-
       return true
     }
   },
@@ -198,7 +160,7 @@ const Actions = {
           dispatch(Actions.updateContext(context))
           const {schema, datasetURL } = getState().world
           // send the actual sempre command
-          SEMPREquery({ q: ['q', {utterance: '', context, schema: {}, datasetURL: '', random: true, amount: config.numCandidates}], sessionId: sessionId})
+          SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
           .then((response) => {
             console.log('sempre returned', response)
             if (response === undefined) {
@@ -254,11 +216,10 @@ const Actions = {
       })
       SEMPREquery({q: ['example', {amount: 1}], sessionId})
       .then((exampleResponse) => {
-        const {context, targetValue, utterance} = exampleResponse.master
-        const {schema, datasetURL } = getState().world
+        const {context, targetValue, utterance, formula} = exampleResponse.master
         dispatch(Actions.updateContext(context))
-        SEMPREquery({q: ['q', {utterance: '', context, datasetURL, random: true, amount: 100}], sessionId: sessionId}).then((response) => {
-          const target = {value: targetValue, score: 0, prob: 1, formula: '', canonical: utterance}
+        SEMPREquery({q: ['q', {utterance: '', context, random: true, amount: config.numCandidatesVerifier}], sessionId: sessionId}).then((response) => {
+          const target = {value: targetValue, score: 0, prob: 1, formula: formula, canonical: formula, isExample: true}
           dispatch(Actions.setState({'issuedQuery': utterance, 'targetValue': targetValue}))
           if (response === undefined) {
             window.alert('no response from server')

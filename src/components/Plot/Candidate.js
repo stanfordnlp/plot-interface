@@ -9,7 +9,7 @@ import hash from 'string-hash'
 import {MdClose, MdCheck,} from 'react-icons/md'
 import './candidate.css'
 
-class Plot extends React.Component {
+class Plot extends React.PureComponent {
   static propTypes = {
     spec: PropTypes.object,
     dataURL: PropTypes.string,

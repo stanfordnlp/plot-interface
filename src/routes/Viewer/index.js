@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import LabelModal from 'components/LabelModal'
 import Actions from "actions/world"
-import {getParameterByName} from "helpers/util"
+import {getParameterByName, canonicalJsonDiff} from "helpers/util"
 // import {applyPatch, createPatch, createTests} from 'rfc6902';
-import jsonpatch from "fast-json-patch"
+// import jsonpatch from "fast-json-patch"
 import './styles.css'
 // eslint-disable-next-line
 const turk2018url = 'https://raw.githubusercontent.com/stanfordnlp/plot-data/master/20180118_turk_all.jsonl'
@@ -107,9 +106,8 @@ class Viewer extends Component {
                     {/* <td> <span onClick={e => this.openineditor(c.context)}> context </span> </td> */}
                     {/* <td> <span onClick={e => this.openineditor(c.spec)}> spec </span> </td> */}
                     <td>{c.utterance}</td>
-                    <td>{typeof c.targetFormula === 'string'? c.targetFormula: JSON.stringify(c.targetFormula)}</td>
+                    <td>{c.context && c.targetValue? canonicalJsonDiff(c.context, c.targetValue) : null}</td>
                     <td>{q.sessionId}</td>
-                    <td>{c.context && c.targetValue? JSON.stringify(jsonpatch.compare(c.context, c.targetValue)) : null}</td>
                   </tr>
                 );
               })

@@ -7,7 +7,7 @@
 
 .big-chart {
   padding: 0px;
-  width: 600px;
+  max-width: 800px;
   max-height: 800px;
   object-fit: scale-down;
 }

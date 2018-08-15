@@ -28,16 +28,3 @@ div.Candidates {
   justify-content: space-between;
   height: 30px;
 }
-
-.Build-actions {
-  font-size: 1.4rem;
-}
-
-.Build-actions button {
-  height: 32px;
-  width: 32px;
-  font-size: 1.2rem;
-  margin-left: 10px;
-  float: right;
-  margin-top: 10px;
-}

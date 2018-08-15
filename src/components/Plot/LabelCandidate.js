@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import Actions from 'actions/world'
 import hash from 'string-hash'
 import config from 'config'
 import InnerChart from './InnerChart'
@@ -27,10 +26,6 @@ class Plot extends React.Component {
     this.config = { showTools: true, iconSize: 20}
     this.state = {
       hasError, ...props}
-  }
-
-  accept() {
-    this.props.dispatch(Actions.accept(this.props.spec, this.props.formula));
   }
 
   onLabel() {

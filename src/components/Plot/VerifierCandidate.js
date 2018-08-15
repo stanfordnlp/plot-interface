@@ -2,9 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Actions from 'actions/world'
-import hash from 'string-hash'
-import config from 'config'
+// import config from 'config'
 import InnerChart from './InnerChart'
+import {canonicalJsonDiff} from "helpers/util"
+
 // import ContextOverlay from './context-overlay'
 import './candidate.css'
 
@@ -27,26 +28,28 @@ class Plot extends React.Component {
       hasError, ...props}
   }
 
-  accept() {
-    this.props.dispatch(Actions.accept(this.props.spec, this.props.formula));
+  onPick() {
+    const {spec, issuedQuery, plotData} = this.props
+    this.props.dispatch(Actions.label(issuedQuery, spec, plotData.isExample? 'correct': 'wrong', 'pick'))
   }
 
-  onPick() {
+  onLook() {
     this.props.onLabel(this.state.spec, this.props.issuedQuery)
   }
 
-  renderChart() {
+  render() {
     const equalMsg = this.state.isEqual? <li className='display-errors' key={'equalmsg'}>no change</li>: null
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
-
+    const {context, spec} = this.props
     return (
       <div className='chart-container'>
-        <div className='chart-header'>
-          <button onClick={() => this.onPick()}>Check</button>
+        <div className='chart-header button-row'>
+          <button onClick={() => this.onLook()}>Look</button>
+          <button onClick={() => this.onPick()}>Pick</button>
           {this.props.header}
         </div>
-        {config.showFormula? <div className='canonical'>{this.props.canonical}</div> : null}
+        <div className='canonical'>{canonicalJsonDiff(context, spec)}</div>
         <div>
           <div className='chart'>
             <InnerChart dataURL={this.state.dataURL}/>
@@ -59,16 +62,10 @@ class Plot extends React.Component {
       </div>
     );
   }
-
-  render() {
-    return (
-      this.renderChart()
-    );
-  }
 }
 
 const mapStateToProps = (state) => ({
-  // context: state.world.context,
+  context: state.world.context,
   showErrors: state.world.showErrors,
   issuedQuery: state.world.issuedQuery,
 })

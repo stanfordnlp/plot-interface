@@ -1,9 +1,3 @@
-.Toolbar button {
-  margin: 5px;
-  margin-top: 5px;
-  font-weight: normal;
-}
-
 .Toolbar {
   position: absolute;
   bottom: 10px;

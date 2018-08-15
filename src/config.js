@@ -4,18 +4,18 @@ const config = {
   // the valid level values are vega.none (the default), vega.warn, vega.info, vega.debug
   loglevel: 'error',
   numLabels: 5,
-  numCandidates: 30,
-  numCandidatesVerifier: 30,
-  showFormula: false,
+  numCandidates: 100,
+  numCandidatesVerifier: 100,
+  showFormula: true,
   useServerInitial: false,
   showDiffEditor: false,
   showDataTable: false,
-  showDebugTool: false,
+  showDebugTool: true,
   showHint: false,
   getExamples: getExamples,
   vegaScaleFactor: 1.5,
   maxDisplay: 5,
-  processingInterval: 1,
+  processingInterval: 3,
 }
 
 
