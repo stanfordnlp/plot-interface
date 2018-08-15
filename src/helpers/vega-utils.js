@@ -79,7 +79,11 @@ export function vegaLiteToDataURLWithErrors(vegaLiteSpec, values) {
   if (vegaLiteSpec.data !== undefined) values = null
 
   return vegaToDataURL(vegaWithErrors.vegaSpec, values)
-    .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}}).catch(e => {console.log('vegaLiteToDataURLWithErrors error', e)})
+    .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}})
+    .catch(e => {
+      console.log('vegaLiteToDataURLWithErrors error', e, vegaLiteSpec)
+      return {dataURL: 'data:,'+encodeURIComponent('empty spec'), logger: vegaWithErrors.logger}
+    })
 }
 
 export function vegaToDataURL(vegaSpec, values) {

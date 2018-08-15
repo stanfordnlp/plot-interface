@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Actions from 'actions/world'
+import UserActions from 'actions/user'
 // import config from 'config'
 import InnerChart from './InnerChart'
 import {canonicalJsonDiff} from "helpers/util"
@@ -21,16 +22,27 @@ class Plot extends React.Component {
 
   constructor(props) {
     super(props)
-    const {logger} = this.props;
+    const {logger, context, spec} = this.props;
     const hasError = logger.warns.length > 0 || logger.errors.length > 0;
     this.config = { showTools: true, iconSize: 20}
     this.state = {
+      diff: canonicalJsonDiff(context, spec),
       hasError, ...props}
   }
 
   onPick() {
-    const {spec, issuedQuery, plotData} = this.props
+    const {dispatch, spec, issuedQuery, plotData} = this.props
     this.props.dispatch(Actions.label(issuedQuery, spec, plotData.isExample? 'correct': 'wrong', 'pick'))
+    const template = `Command: ${issuedQuery}\nAction: ${this.state.diff}`
+    if (plotData.isExample) {
+      dispatch(UserActions.increaseCount(1))
+      window.alert("You picked correctly, got 1 point. \nClick ok to proceed to the next example. \n\n" + template)
+      dispatch(Actions.verifierInit())
+    } else {
+      dispatch(UserActions.increaseCount(-0.5))
+      window.alert("You disagreed with the original, and got -0.5 point. \nClick ok to proceed to the next example.\n\n" + template)
+      dispatch(Actions.verifierInit())
+    }
   }
 
   onLook() {
@@ -38,21 +50,22 @@ class Plot extends React.Component {
   }
 
   render() {
-    const equalMsg = this.state.isEqual? <li className='display-errors' key={'equalmsg'}>no change</li>: null
-    const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
-    const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
+    const {isEqual, logger, dataURL} = this.state
+    const equalMsg = isEqual? <li className='display-errors' key={'equalmsg'}>no change</li>: null
+    const errors = logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
+    const warns = logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
     const {context, spec} = this.props
     return (
       <div className='chart-container'>
         <div className='chart-header button-row'>
-          <button onClick={() => this.onLook()}>Look</button>
+          <button onClick={() => this.onLook()}>Compare</button>
           <button onClick={() => this.onPick()}>Pick</button>
           {this.props.header}
         </div>
         <div className='canonical'>{canonicalJsonDiff(context, spec)}</div>
         <div>
           <div className='chart'>
-            <InnerChart dataURL={this.state.dataURL}/>
+            <InnerChart dataURL={dataURL}/>
           </div>
           <div>
           <ul> {[equalMsg, ...errors.concat(warns)]} </ul>

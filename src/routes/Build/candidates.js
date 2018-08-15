@@ -94,7 +94,7 @@ class Candidates extends PureComponent {
                 this.forceUpdate()
             }
           })
-          .catch(e => console.log('processing vega error', e))
+          .catch(e => console.log('error in vega', e))
       }
     })
   }
@@ -102,7 +102,7 @@ class Candidates extends PureComponent {
   render() {
     const {showFormulas, responses, onLabel, verifierMode} = this.props
     const {plotData} = this.state
-    let plots = [<div key='loading'>loading...</div>]
+    let plots = []
     if (this.state && plotData) {
       plots = plotData.filter(r => (showFormulas || (r.noError && r.noDup))).map((r, ind) => (
         <this.props.candidate
@@ -145,9 +145,14 @@ class Candidates extends PureComponent {
       );
     }
 
-    console.log(plots.length, config.maxDisplay, verifierMode)
+    if (plots.length > config.maxDisplay) {
+      plots = plots.slice(0, config.maxDisplay)
+    }
+
+    // console.log(plots.length, config.maxDisplay, verifierMode)
     if (verifierMode === true && config.maxDisplay <= plots.length) {
       const example = plots[0]
+
       const rand = Math.floor(Math.random() * plots.length)
       plots[0] = plots[rand]
       plots[rand] = example

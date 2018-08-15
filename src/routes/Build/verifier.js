@@ -9,6 +9,7 @@ import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
 
+import UserActions from "actions/user"
 import Actions from "actions/world"
 
 import config from "config"
@@ -31,21 +32,29 @@ class Build extends Component {
     this.labelModal.onLabel(spec, formula)
   };
 
+  skip() {
+    this.props.dispatch(UserActions.increaseCount(-0.2))
+    this.props.dispatch(Actions.verifierInit())
+  }
+
   render() {
+    if (this.props.count > config.numLabels)
+      return 'You are done! Submit the code above and get another job. Thank you!'
+
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
           <div className='editor-container'>
-            <div className='button-row'>
-              {config.showDataTable? <CurrentDataTable/> : null}
-              <button className="active" onClick={() => {}}>Mark as spam</button>
-            </div>
             <div>
               Choose the plot that you would produce if you are given the command below.
             </div>
             <div>
               <b>Command</b>: {this.props.utterance}
             </div>
+            <div className='button-row'>
+              <button className="active" onClick={() => {this.skip()}}>Skip (-0.2pts)</button>
+            </div>
+
             {config.showDataTable? <CurrentDataTable/> : null}
             <div className='chart-container' key='current'>
               {
@@ -69,10 +78,10 @@ class Build extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isInitial: Object.keys(state.world.context).length === 0,
   context: state.world.context,
   world: state.world.context,
   utterance: state.world.issuedQuery,
+  count: state.user.count,
 })
 
 export default connect(mapStateToProps)(Build)

@@ -54,7 +54,7 @@ class Plot extends React.Component {
     return (
       <div className='chart-container'>
         <div className='chart-header'>
-          <button onClick={() => this.onLabel()}>Label {this.state.clickedLabel? '(clicked)': ''}</button>
+          <button onClick={() => this.onLabel()}>Compare and label {this.state.clickedLabel? '(clicked)': ''}</button>
           {this.props.header}
         </div>
         {config.showFormula? <div className='canonical'>{this.props.canonical}</div> : null}

@@ -39,6 +39,9 @@ class Build extends Component {
   };
 
   render() {
+    if (this.props.count > config.numLabels)
+      return 'You are done! Submit the code above and get another job. Thank you!'
+
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
@@ -70,6 +73,7 @@ const mapStateToProps = (state) => ({
   isInitial: Object.keys(state.world.context).length === 0,
   context: state.world.context,
   dataValues: state.world.dataValues,
+  count: state.user.count,
 })
 
 export default connect(mapStateToProps)(Build)

@@ -91,7 +91,7 @@ export function canonicalJsonDiff(context, targetValue) {
   if (!context || !targetValue)
     return "canonicalJsonDiff:ERROR"
   const diffs = jsonpatch.compare(context, targetValue)
-  console.log(diffs)
+  // console.log(diffs)
   if (diffs.length > 1) {
     return JSON.stringify(diffs)
   }

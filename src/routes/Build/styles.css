@@ -1,18 +1,3 @@
-.Build {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.Build > div {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
 div.Candidates {
   top: 0px;
   position: absolute;
@@ -22,9 +7,6 @@ div.Candidates {
   flex-wrap: wrap;
 }
 
-.Build-status {
-  display: flex;
-  margin-top: 20px;
-  justify-content: space-between;
-  height: 30px;
+.editor-container > div {
+  margin: 5px;
 }
