@@ -6,13 +6,16 @@ import { connect } from "react-redux"
 import config from "config"
 import "./styles.css"
 
-const Header = ({ search, sessionId, targetValue, issuedQuery, count }) => (
+const Header = ({ search, sessionId, count }) => (
   <div className="Header Bigger">
     <div className="Header-info">
-      Number verified : {count} / {config.numLabels}
+      Number verified : {count.toFixed(2)} / {config.numLabels}
     </div>
     <div className="Header-info">
        {count >= config.numLabels? `You are done! copy this code and submit: ${btoa(JSON.stringify({sessionId, count}))} ` : 'Code will appear here after you are done'}
+    </div>
+    <div className="Header-info">
+      {'your id: ' + JSON.stringify(sessionId)}
     </div>
   </div>
 )

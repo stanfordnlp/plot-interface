@@ -8,10 +8,9 @@ import LabelModal from 'components/LabelModal'
 import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
-
 import UserActions from "actions/user"
 import Actions from "actions/world"
-
+import {getParameterByName} from "helpers/util"
 import config from "config"
 import "./styles.css"
 
@@ -25,6 +24,7 @@ class Build extends Component {
 
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
+    this.props.dispatch(UserActions.setSessionId(getParameterByName('uid')))
     this.props.dispatch(Actions.verifierInit())
   }
 
@@ -33,6 +33,7 @@ class Build extends Component {
   };
 
   skip() {
+    this.props.dispatch(Actions.log({type: 'skip',  utterance: this.props.utterance}))
     this.props.dispatch(UserActions.increaseCount(-0.2))
     this.props.dispatch(Actions.verifierInit())
   }
@@ -78,6 +79,7 @@ class Build extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  isInitial: Object.keys(state.world.context).length === 0,
   context: state.world.context,
   world: state.world.context,
   utterance: state.world.issuedQuery,
