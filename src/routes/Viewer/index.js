@@ -26,8 +26,6 @@ class Viewer extends Component {
     if (url != null) {
       this.fetchFromURL(url)
       this.setState({url})
-    } else {
-      this.fetchFromURL(this.state.url)
     }
   }
 
@@ -108,6 +106,7 @@ class Viewer extends Component {
                     <td>{c.utterance}</td>
                     <td>{c.context && c.targetValue? canonicalJsonDiff(c.context, c.targetValue) : null}</td>
                     <td>{q.sessionId}</td>
+                    <td>{q.num_verify_attempted? `${q.num_verified} / ${q.num_verify_attempted}`: null}</td>
                   </tr>
                 );
               })
