@@ -118,8 +118,9 @@ const Actions = {
   label: (utterance, spec, formula, type='label') => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { context, schema, datasetURL } = getState().world
+      const { context, schema, datasetURL, exampleId } = getState().world
       const sempreExample = {
+        id: exampleId,
         utterance, targetFormula: formula,
         context, targetValue: spec, schema, datasetURL, type};
       console.log(JSON.stringify(sempreExample))
@@ -216,11 +217,11 @@ const Actions = {
       })
       SEMPREquery({q: ['example', {amount: 1}], sessionId})
       .then((exampleResponse) => {
-        const {context, targetValue, utterance, formula} = exampleResponse.master
+        const {context, targetValue, utterance, formula, id} = exampleResponse.master
         dispatch(Actions.updateContext(context))
         SEMPREquery({q: ['q', {utterance: '', context, random: true, amount: config.numCandidatesVerifier}], sessionId: sessionId}).then((response) => {
           const target = {value: targetValue, score: 0, prob: 1, formula: formula, canonical: formula, isExample: true}
-          dispatch(Actions.setState({'issuedQuery': utterance, 'targetValue': targetValue}))
+          dispatch(Actions.setState({'issuedQuery': utterance, 'exampleId': id}))
           if (response === undefined) {
             window.alert('no response from server')
             return

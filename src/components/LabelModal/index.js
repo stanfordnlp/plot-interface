@@ -27,7 +27,7 @@ const initialStates = {
   inputValue: "",
   headerText: "",
   hasError: false,
-  overlay: false,
+  overlay: true,
   showHint: false,
 }
 
@@ -65,7 +65,7 @@ class LabelModal extends Component {
   close() {this.setState({isOpen: false, ...initialStates})}
 
   label(value) {
-    let filter = {msg: undefined, type: "spam"}
+    let filter = {msg: undefined}
 
     if (this.state.hasError) {
       filter.msg = 'there are errors in the spec, you have to fix them'
@@ -75,17 +75,14 @@ class LabelModal extends Component {
       filter.type = 'alert'
     } else if (value.trim().length === 0) {
       filter.type = 'alert'
-      filter.msg = 'you tried to submit nothing'
-    } else if (value.trim().length < 3) {
-      filter.msg = 'too short to be valid'
-    } else if (value.trim().indexOf(' ') === -1) {
-      filter.msg = 'should not only contain a single word'
+      filter.msg = 'you tried to submit the empty string, which cannot be right'
     } else if (/new plot|the new|the current|current plot/.test(value.toLowerCase())) {
-      filter.msg = 'do not explicitly reference current and new plot'
+      filter.msg = 'do not use the words "old plot" and "new plot", just say how you make the new plot'
       filter.type = 'alert'
     }
 
-    this.props.dispatch(Actions.log({...filter, value}))
+    if (filter.msg !== undefined)
+      this.props.dispatch(Actions.log({...filter, value}))
 
     if (filter.type === 'alert') {
       window.alert(filter.msg)
@@ -144,7 +141,7 @@ class LabelModal extends Component {
     const currentPlot = (
       <div className="half-panel">
         <div className="label">
-          Current plot
+          {this.state.overlay? 'new plot:' : 'old plot:'}
         </div>
 
         <div style={{top: '0px', paddingLeft: '100px', position: "relative"}}>
@@ -206,25 +203,14 @@ class LabelModal extends Component {
         show new
       </div>
 
-
-      {config.showHint?
-      <div className="label status">
-        <input
-          name="overlay"
-          className="overlay-checkbox"
-          type="checkbox"
-          checked={this.state.showHint}
-          onChange={e => this.handleShowHint(e)}/> show a hint {this.state.showHint? ': ' + this.state.formula : null}
-      </div>
-      : null}
-
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
+        {currentPlot}
+        {/* <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
           {!config.showDiffEditor? currentPlot :
             <HorizontalSplit top={currentPlot} bot={<DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}/>}
           {!config.showDiffEditor? newPlot :
             <HorizontalSplit top={newPlot} bot={<DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}/>}
-        </SplitPane>
+        </SplitPane> */}
       </div>
     </Modal>
     )

@@ -27,6 +27,7 @@ const initialState = {
   schema: dsUtils.schema(initialData),
 
   issuedQuery: "",
+  exampleId: "",
   showErrors: false,
   showFormulas: false
 }

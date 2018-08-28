@@ -33,7 +33,7 @@ class Build extends Component {
   };
 
   skip() {
-    this.props.dispatch(Actions.log({type: 'skip',  utterance: this.props.utterance}))
+    this.props.dispatch(Actions.log({type: 'skip',  utterance: this.props.utterance, exampleId: this.props.exampleId}))
     this.props.dispatch(UserActions.increaseCount(-0.2))
     this.props.dispatch(Actions.verifierInit())
   }
@@ -83,6 +83,7 @@ const mapStateToProps = (state) => ({
   context: state.world.context,
   world: state.world.context,
   utterance: state.world.issuedQuery,
+  exampleId: state.world.exampleId,
   count: state.user.count,
 })
 

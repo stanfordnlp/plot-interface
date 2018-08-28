@@ -25,7 +25,7 @@ class Build extends Component {
 
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
-    this.props.dispatch(UserActions.setSessionId(getParameterByName('uid')))
+    this.props.dispatch(UserActions.setSessionId())
     this.init()
   }
 

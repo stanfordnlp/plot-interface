@@ -6,7 +6,7 @@ const config = {
   numLabels: 5,
   numCandidates: 100,
   numCandidatesVerifier: 100,
-  showFormula: true,
+  showFormula: false,
   useServerInitial: false,
   showDiffEditor: false,
   showDataTable: false,
