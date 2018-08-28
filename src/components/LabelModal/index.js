@@ -11,6 +11,7 @@ import Mousetrap from 'mousetrap'
 import config from 'config'
 // import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import "./styles.css"
+import "./switch.css"
 
 const headerText = 'Editor';
 const HorizontalSplit = (props) => {
@@ -194,14 +195,17 @@ class LabelModal extends Component {
       </div>
 
 
-      <div className="label statuss">
-        <input
-          name="overlay"
-          className="overlay-checkbox"
-          type="checkbox"
-          checked={this.state.overlay}
-          onChange={e => this.handleChangeOverlay(e)}/> show "new plot" in place of "current plot"
+      <div className="label">
+        show old
+        <div className="onoffswitch">
+          <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch"
+            checked={this.state.overlay}
+            onChange={e => this.handleChangeOverlay(e)}/>
+          <label className="onoffswitch-label" htmlFor="myonoffswitch"></label>
+        </div>
+        show new
       </div>
+
 
       {config.showHint?
       <div className="label status">
@@ -214,7 +218,7 @@ class LabelModal extends Component {
       </div>
       : null}
 
-      <div style={{position: 'relative', height: `calc(100vh - ${100}px)`}}>
+      <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
           {!config.showDiffEditor? currentPlot :
             <HorizontalSplit top={currentPlot} bot={<DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}/>}

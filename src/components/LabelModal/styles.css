@@ -48,6 +48,7 @@
   font-size: 1.2em;
   font-weight: bold;
   height: 30px;
+  display: inline-block;
 }
 
 .diffEditor {
