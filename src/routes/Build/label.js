@@ -32,6 +32,7 @@ class Build extends Component {
   init() {
     const name = getParameterByName('example')
     this.props.dispatch(Actions.labelInit(name))
+    this.props.dispatch(Actions.log({'type': 'init'}))
   }
 
   onLabel = (spec, formula) => {

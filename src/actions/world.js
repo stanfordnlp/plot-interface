@@ -170,7 +170,7 @@ const Actions = {
             }
             let candidates = response.candidates;
             if (candidates.length > config.numCandidates)
-            candidates = candidates.slice(0, config.numCandidates)
+              candidates = candidates.slice(0, config.numCandidates)
             dispatch({
               type: Constants.SET_RESPONSES,
               responses: candidates

@@ -136,7 +136,7 @@ class LabelModal extends Component {
     const {spec} = this.state
 
     const isInitial = Object.keys(context).length === 0
-    const promptString = 'What is the command that transforms "current plot" to "new plot"?'
+    const promptString = 'What is the command that transforms "old plot" to "new plot"?'
 
     const currentPlot = (
       <div className="half-panel">
@@ -166,6 +166,16 @@ class LabelModal extends Component {
           </div>
         </div>
       </div>
+    )
+
+    // eslint-disable-next-line
+    const sideBySide = (
+      <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
+        {!config.showDiffEditor? currentPlot :
+          <HorizontalSplit top={currentPlot} bot={<DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}/>}
+        {!config.showDiffEditor? newPlot :
+          <HorizontalSplit top={newPlot} bot={<DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}/>}
+      </SplitPane>
     )
 
     return (
@@ -205,12 +215,7 @@ class LabelModal extends Component {
 
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         {currentPlot}
-        {/* <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
-          {!config.showDiffEditor? currentPlot :
-            <HorizontalSplit top={currentPlot} bot={<DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}/>}
-          {!config.showDiffEditor? newPlot :
-            <HorizontalSplit top={newPlot} bot={<DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}/>}
-        </SplitPane> */}
+        {/* */}
       </div>
     </Modal>
     )
