@@ -27,7 +27,7 @@ function getExamples(exjson) {
     ...exjson["Single-View Plots"]["Scatter & Strip Plots"],
     ...exjson["Single-View Plots"]["Line Charts"],
     ...exjson["Single-View Plots"]["Area Charts & Streamgraphs"],
-    // ...exjson["Single-View Plots"]["Table-based Plots"],
+    ...exjson["Single-View Plots"]["Table-based Plots"],
     // ...exjson["Composite Mark"]["Error Bars & Error Bands"],
     // ...exjson["Composite Mark"]["Box Plots"],
   ]
