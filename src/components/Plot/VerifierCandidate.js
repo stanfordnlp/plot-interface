@@ -39,8 +39,8 @@ class Plot extends React.Component {
       window.alert("You picked correctly, got 1 point. \nClick ok to proceed to the next example. \n\n" + template)
       dispatch(Actions.verifierInit())
     } else {
-      dispatch(UserActions.increaseCount(-0.5))
-      window.alert("You disagreed with the original, and got -0.5 point. \nClick ok to proceed to the next example.\n\n" + template)
+      dispatch(UserActions.increaseCount(-1))
+      window.alert("You disagreed with the original, and got -1 point. \nClick ok to proceed to the next example.\n\n" + template)
       dispatch(Actions.verifierInit())
     }
   }

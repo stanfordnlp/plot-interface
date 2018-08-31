@@ -40,7 +40,7 @@ class Build extends Component {
   };
 
   render() {
-    if (this.props.count > config.numLabels)
+    if (this.props.count >= config.numLabels)
       return 'You are done! Submit the code above and get another job. Thank you!'
 
     return (
@@ -64,7 +64,7 @@ class Build extends Component {
         <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
-        <Toolbar onLabel={this.onLabel}/>
+        {/* <Toolbar onLabel={this.onLabel}/> */}
       </div>
     );
   }

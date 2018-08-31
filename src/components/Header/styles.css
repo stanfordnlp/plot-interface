@@ -77,6 +77,11 @@
   left: 0;
 }
 
+.Header-code {
+    font-size: 0.7em;
+}
+
+
 .Header-info {
-    font-size: 1em;
+    font-size: 0.8em;
 }

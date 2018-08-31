@@ -11,7 +11,7 @@ const Header = ({ search, sessionId, count }) => (
     <div className="Header-info">
       Number verified : {count.toFixed(2)} / {config.numLabels}
     </div>
-    <div className="Header-info">
+    <div className="Header-code">
        {count >= config.numLabels? `You are done! copy this code and submit: ${btoa(JSON.stringify({sessionId, count}))} ` : 'Code will appear here after you are done'}
     </div>
     <div className="Header-info">

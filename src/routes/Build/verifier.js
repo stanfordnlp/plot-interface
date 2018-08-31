@@ -10,9 +10,10 @@ import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
 import UserActions from "actions/user"
 import Actions from "actions/world"
-import {getParameterByName} from "helpers/util"
 import config from "config"
 import "./styles.css"
+
+const SKIP_DEDUCTION = -0.2
 
 class Build extends Component {
   static propTypes = {
@@ -24,7 +25,7 @@ class Build extends Component {
 
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
-    this.props.dispatch(UserActions.setSessionId(getParameterByName('uid')))
+    this.props.dispatch(UserActions.setSessionId())
     this.props.dispatch(Actions.verifierInit())
   }
 
@@ -34,12 +35,12 @@ class Build extends Component {
 
   skip() {
     this.props.dispatch(Actions.log({type: 'skip',  utterance: this.props.utterance, exampleId: this.props.exampleId}))
-    this.props.dispatch(UserActions.increaseCount(-0.2))
+    this.props.dispatch(UserActions.increaseCount(SKIP_DEDUCTION))
     this.props.dispatch(Actions.verifierInit())
   }
 
   render() {
-    if (this.props.count > config.numLabels)
+    if (this.props.count >= config.numLabels)
       return 'You are done! Submit the code above and get another job. Thank you!'
 
     return (
@@ -53,7 +54,7 @@ class Build extends Component {
               <b>Command</b>: {this.props.utterance}
             </div>
             <div className='button-row'>
-              <button className="active" onClick={() => {this.skip()}}>Skip (-0.2pts)</button>
+              <button className="active" onClick={() => {this.skip()}}>Skip ({SKIP_DEDUCTION}pts)</button>
             </div>
 
             {config.showDataTable? <CurrentDataTable/> : null}
@@ -72,7 +73,7 @@ class Build extends Component {
         <Candidates onLabel={this.onLabel} candidate={this.props.candidate} verifierMode={true}/>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)} readOnly={true}/>
-        <Toolbar onLabel={this.onLabel}/>
+        {/* <Toolbar onLabel={this.onLabel}/> */}
       </div>
     );
   }
