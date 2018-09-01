@@ -26,3 +26,9 @@
   background: #fff;
   border-bottom: 1px dotted #eee;
 }
+
+.exampleTable th {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #ed490a;
+}

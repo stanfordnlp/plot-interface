@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
 import SplitPane from 'react-split-pane';
-import Toolbar from 'components/Toolbar'
+// import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
 import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'

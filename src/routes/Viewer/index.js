@@ -1,5 +1,6 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import { connect } from "react-redux"
+
 import LabelModal from 'components/LabelModal'
 import Actions from "actions/world"
 import {getParameterByName, canonicalJsonDiff} from "helpers/util"
@@ -9,14 +10,15 @@ import './styles.css'
 // eslint-disable-next-line
 const turk2018url = 'https://raw.githubusercontent.com/stanfordnlp/plot-data/master/20180118_turk_all.jsonl'
 const remotelogs = 'http://jonsson.stanford.edu:8405/query.jsonl'
+const getInner = q => q.q[1]
 
-class Viewer extends Component {
+class Viewer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       examples: [],
       url: remotelogs,
-      isQuerylog: true,
+      shown: [],
     };
   }
 
@@ -35,6 +37,20 @@ class Viewer extends Component {
       .then(response => {response.text().then(t => this.loadJSONL(t))})
   }
 
+  sortAndShow(examples, key) {
+    examples.sort((q1, q2) => {
+      const [v1, v2] = [q1[key], q2[key]]
+      if (v1 > v2) return 1
+      if (v1 < v2) return -1
+      else return 0
+    })
+
+    console.log(examples.slice(0,10))
+
+    this.setState({examples: examples, shown: []})
+    this.showMore()
+  }
+
   loadJSONL(contents) {
     // console.log(contents)
     const raw = contents.trim().split('\n').map((c, i) => {
@@ -47,12 +63,14 @@ class Viewer extends Component {
     })
 
     let examples = raw;
-    if (this.state.isQuerylog) {
-      console.log(raw)
-      examples = raw.filter(r => r.q[0]==="accept")
-    }
+    examples = raw.filter(r => r.q[0]==="accept")
 
-    this.setState({examples: examples})
+    examples.forEach(q => {
+      q.diff = canonicalJsonDiff(getInner(q).context, getInner(q).targetValue)
+      q.acc = (q.stats.correct + 0.2) / (q.stats.correct + q.stats.wrong + q.stats.skip*0.2 + 1)
+    })
+
+    this.sortAndShow(examples, 'count')
   }
 
   handleFiles(f: FileList) {
@@ -82,8 +100,18 @@ class Viewer extends Component {
     return false
   };
 
+  showMore = () => {
+    setTimeout(() => {
+      let hasMore = this.state.shown.length < this.state.examples.length;
+      this.setState( (prev) => ({
+        shown: this.state.examples.slice(0, prev.shown.length + 100)
+      }));
+      if (hasMore) this.showMore();
+    }, 0);
+  }
+
   render() {
-    const {examples} = this.state
+    const {examples, shown} = this.state
     // eslint-disable-next-line
     return (
       <div className="exampleTable">
@@ -93,24 +121,30 @@ class Viewer extends Component {
         <button onClick={e => this.fetchFromURL(this.state.url)}>load</button>
         <table>
           <tbody>
-            {
-              examples.map((q, r) => {
-                const c = q.q[1]
-                return (
-                  <tr key={r} className={r % 2 ? 'even' : 'odd'}>
-                    <td> <a
-                      // eslint-disable-next-line
-                      href="javascript:void(0);" onClick={e => this.onInspect(c)}> {r} </a> </td>
-                    {/* <td> <span onClick={e => this.openineditor(c.context)}> context </span> </td> */}
-                    {/* <td> <span onClick={e => this.openineditor(c.spec)}> spec </span> </td> */}
-                    <td>{c.utterance}</td>
-                    <td>{c.context && c.targetValue? canonicalJsonDiff(c.context, c.targetValue) : null}</td>
-                    <td>{q.sessionId}</td>
-                    <td>{q.num_verify_attempted? `${q.num_verified} / ${q.num_verify_attempted}`: null}</td>
-                  </tr>
-                );
-              })
-            }
+              <tr>
+                <th>id</th>
+                <th onClick={() => this.sortAndShow(examples, 'count')}>count</th>
+                <th>utt</th>
+                <th onClick={() => this.sortAndShow(examples, 'diff')}>diff</th>
+                <th onClick={() => this.sortAndShow(examples, 'sessionId')}>worker</th>
+                <th onClick={() => this.sortAndShow(examples, 'acc')}>acc</th>
+              </tr>
+              {
+                shown.map((q, index) => {
+                  if (q === undefined) return <tr> Loading </tr>
+                  const ex = getInner(q)
+                  return (
+                    <tr key={index} className={index % 2 ? 'even' : 'odd'}>
+                      <td onClick={e => this.onInspect(ex)}>{index}</td>
+                      <td>{q.count}</td>
+                      <td>{ex.utterance}</td>
+                      <td>{q.diff}</td>
+                      <td>{q.sessionId.substring(0,10)}</td>
+                      <td>{(q.acc).toFixed(3)}</td>
+                    </tr>
+                  )
+                })
+              }
           </tbody>
         </table>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
