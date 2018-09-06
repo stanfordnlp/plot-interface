@@ -151,59 +151,52 @@ const Actions = {
 
   labelInit: (name) => {
     return (dispatch, getState) => {
-      dispatch({
-        type: Constants.CLEAR
-      })
+      dispatch(Actions.clear())
+
       const {sessionId} = getState().user;
       responsesFromExamples(name).then(
         initial => {
           const context = initial[0].value
-          dispatch(Actions.updateContext(context))
           const {schema, datasetURL } = getState().world
           // send the actual sempre command
-          SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
-          .then((response) => {
-            console.log('sempre returned', response)
-            if (response === undefined) {
-              window.alert('no response from server')
-              return
-            }
-            let candidates = response.candidates;
-            if (candidates.length > config.numCandidates)
+          dispatch(Actions.updateContext(context)).then(() => {
+            SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
+            .then((response) => {
+              console.log('sempre returned', response)
+              if (response === undefined) {
+                window.alert('no response from server')
+                return
+              }
+              let candidates = response.candidates;
+              if (candidates.length > config.numCandidates)
               candidates = candidates.slice(0, config.numCandidates)
-            dispatch({
-              type: Constants.SET_RESPONSES,
-              responses: candidates
-            })
-          });
+              dispatch(Actions.setState({context, responses: candidates}))
+            });
+          })
         }).catch(e => console.log('labelInit', e))
       }
   },
 
   updateContext: (target) => {
     return (dispatch) => {
-      dispatch({
-        type: Constants.ACCEPT,
-        target: target,
-      })
       if (target.data) {
-        // TODO: there is a bug here since initData is async, the rest of it will be wrong
         if (target.data.url) {
-          dsUtils.loadURL(target.data.url)
+          return dsUtils.loadURL(target.data.url)
           .then(loaded => {
             const parsed = dsUtils.parseRaw(loaded.data),
             values = parsed.values,
             schema = dsUtils.schema(values)
-            dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: target.data.url}))
+            dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: target.data.url, context: target}))
           })
           .catch(function(err) {
-            console.log(err)
+            console.log('updateContext error', err)
           });
         }
         if (target.data.values) {
           const values = target.data.values
           const schema = dsUtils.schema(values)
-          dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: 'values'}))
+          dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: 'values', context: target}))
+          return Promise.resolve()
         }
       }
     }
@@ -211,27 +204,23 @@ const Actions = {
 
   verifierInit: () => {
     return (dispatch, getState) => {
+      dispatch(Actions.clear())
       const {sessionId} = getState().user;
-      dispatch({
-        type: Constants.CLEAR
-      })
       SEMPREquery({q: ['example', {amount: 1}], sessionId})
       .then((exampleResponse) => {
         const {context, targetValue, utterance, formula, id} = exampleResponse.master
-        dispatch(Actions.updateContext(context))
-        SEMPREquery({q: ['q', {utterance: '', context, random: true, amount: config.numCandidatesVerifier}], sessionId: sessionId}).then((response) => {
-          const target = {value: targetValue, score: 0, prob: 1, formula: formula, canonical: formula, isExample: true}
-          dispatch(Actions.setState({'issuedQuery': utterance, 'exampleId': id}))
-          if (response === undefined) {
-            window.alert('no response from server')
-            return
-          }
-          let candidates = [target, ...response.candidates];
-          dispatch({
-            type: Constants.SET_RESPONSES,
-            responses: candidates
+        dispatch(Actions.updateContext(context)).then(() => {
+          SEMPREquery({q: ['q', {utterance: '', context, random: true, amount: config.numCandidatesVerifier}], sessionId: sessionId}).then((response) => {
+            // dispatch(Actions.updateContext(context))
+            const target = {value: targetValue, score: 0, prob: 1, formula: formula, canonical: formula, isExample: true}
+            if (response === undefined) {
+              window.alert('no response from server')
+              return
+            }
+            let candidates = [target, ...response.candidates];
+            dispatch(Actions.setState({'issuedQuery': utterance, 'exampleId': id, responses: candidates, context}))
           })
-        });
+        }).catch(err => console.log('verifierInit error', err))
     });
   }
 }

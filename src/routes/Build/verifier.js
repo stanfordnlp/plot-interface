@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
@@ -15,7 +15,7 @@ import "./styles.css"
 
 const SKIP_DEDUCTION = -0.2
 
-class Build extends Component {
+class Build extends PureComponent {
   static propTypes = {
     /* Injected by Redux */
     context: PropTypes.object,
@@ -26,6 +26,7 @@ class Build extends Component {
   componentDidMount() {
     /* Set the appropriate sessionId (either turker id or generated) */
     this.props.dispatch(UserActions.setSessionId())
+    // for (let i =0; i < 3; i++)
     this.props.dispatch(Actions.verifierInit())
   }
 

@@ -8,60 +8,34 @@ import InnerChart from './InnerChart'
 class VegaLite extends React.PureComponent {
   static propTypes = {
     spec: PropTypes.object,
-    onDoneRendering: PropTypes.func,
-    onError:  PropTypes.func,
     bigSize: PropTypes.bool,
   }
-
-  constructor(props) {
-    super(props)
-    let spec = props.spec
-
-    const {vegaSpec, logger} = parseWithErrors(spec)
-    const hasError = logger.warns.length > 0 || logger.errors.length > 0
-    this.state = {spec: spec, vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null}
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // console.log('vegalite received props', nextProps, this.props)
-    if (JSON.stringify(this.state.spec) !== JSON.stringify(nextProps.spec))
-    {
-      // console.log('passed will receive props')
-      let spec = nextProps.spec
-
-      const {vegaSpec, logger} = parseWithErrors(spec)
-      const hasError = logger.warns.length > 0 || logger.errors.length > 0
-      this.setState({spec: spec, vegaSpec: vegaSpec, logger: logger, hasError: hasError, dataURL: null})
-    }
-  }
+  state = {logger: {}, dataURL: null}
 
   componentDidMount() {
-    this.updateVegaWrap(this.props.spec)
+    this.updateVegaWrap()
   }
 
   componentDidUpdate(prevProps, prevStates) {
-    if (JSON.stringify(this.state.spec)!==JSON.stringify(prevStates.spec)) {
-      this.updateVegaWrap(this.props.spec)
+    if (JSON.stringify(this.props.spec) !== JSON.stringify(prevProps.spec)) {
+      this.updateVegaWrap()
     }
   }
 
   updateVegaWrap() {
-    //if (this.props.onDoneRendering !== undefined)
-    //setTimeout(() => this.updateVega(), 1000)
-    setTimeout(this.updateVega(), 0)
+    // setTimeout(this.updateVega(), 0)
+    this.updateVega()
   }
   // without the timeout, promise is sync...
   updateVega() {
+    const {vegaSpec, logger} = parseWithErrors(this.props.spec)
     const dataValues = this.props.spec.data === undefined? this.props.dataValues : null
-    vegaToDataURL(this.state.vegaSpec, dataValues).then(dataURL => {
-      this.setState({dataURL: dataURL})
-      // this.refs.chartImg.src = dataURL;
+    vegaToDataURL(vegaSpec, dataValues).then(dataURL => {
+      this.setState({logger: logger, dataURL: dataURL})
       if (this.props.onError) {
         // console.log('hmm, errors');
         this.props.onError(this.state.hasError)
       }
-      if (this.props.onDoneRendering !== undefined)
-        this.props.onDoneRendering(dataURL)
       console.log('done rendering')
     }).catch(err => {
         console.log('updateVega error', err)
@@ -71,18 +45,29 @@ class VegaLite extends React.PureComponent {
   }
 
   test(e) {
+    console.log('spec', this.props.spec)
     console.log('hash', hash(this.state.dataURL))
     console.log('info', {dataurl: this.state.dataURL})
   }
 
+  errorDisplay() {
+    const {logger} = this.state
+    if (logger === undefined || logger.warns === undefined || logger.error === undefined)
+      return null;
+
+    const hasError = logger.warns.length > 0 || logger.errors.length > 0
+    const errors = logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
+    const warns = logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
+    return hasError?  <ul> {errors.concat(warns)} </ul> : null
+  }
+
   render() {
-    const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
-    const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
+
     return (
       <div className={this.props.bigSize? 'big-chart':'chart'} onClick={e => this.test(e)}>
         <InnerChart dataURL={this.state.dataURL}/>
         <div >
-        {this.state.hasError?  <ul> {errors.concat(warns)} </ul> : null }
+          {this.errorDisplay()}
         </div>
       </div>
     )

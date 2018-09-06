@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
@@ -15,7 +15,7 @@ import {getParameterByName} from "helpers/util"
 import config from "config"
 import "./styles.css"
 
-class Build extends Component {
+class Build extends PureComponent {
   static propTypes = {
     /* Injected by Redux */
     context: PropTypes.object,
