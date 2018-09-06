@@ -46,7 +46,7 @@ class Plot extends React.Component {
   }
 
   onLook() {
-    this.props.onLabel(this.state.spec, this.props.issuedQuery)
+    this.props.onLabel(this.props.spec, this.props.issuedQuery)
   }
 
   render() {
@@ -71,7 +71,7 @@ class Plot extends React.Component {
           <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
         </div>
-        {/* <LabelModal isOpen={this.state.labeling} spec={this.state.spec} onClose={() => this.closeModal()}/> */}
+        {/* <LabelModal isOpen={this.state.labeling} spec={this.props.spec} onClose={() => this.closeModal()}/> */}
       </div>
     );
   }

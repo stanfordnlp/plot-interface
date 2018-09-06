@@ -152,7 +152,6 @@ const Actions = {
   labelInit: (name) => {
     return (dispatch, getState) => {
       dispatch(Actions.clear())
-
       const {sessionId} = getState().user;
       responsesFromExamples(name).then(
         initial => {
@@ -186,7 +185,7 @@ const Actions = {
             const parsed = dsUtils.parseRaw(loaded.data),
             values = parsed.values,
             schema = dsUtils.schema(values)
-            dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: target.data.url, context: target}))
+            dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: target.data.url, }))
           })
           .catch(function(err) {
             console.log('updateContext error', err)
@@ -195,14 +194,14 @@ const Actions = {
         if (target.data.values) {
           const values = target.data.values
           const schema = dsUtils.schema(values)
-          dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: 'values', context: target}))
+          dispatch(Actions.setState({schema: schema, dataValues: values, datasetURL: 'values',}))
           return Promise.resolve()
         }
       }
     }
   },
 
-  verifierInit: () => {
+  verifierInit: (callBack) => {
     return (dispatch, getState) => {
       dispatch(Actions.clear())
       const {sessionId} = getState().user;

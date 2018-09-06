@@ -29,6 +29,9 @@ class Viewer extends PureComponent {
       this.fetchFromURL(url)
       this.setState({url})
     }
+    // for (let i = 0; i < 200; i++){
+    //   setTimeout(this.props.dispatch(Actions.verifierInit()), 0)
+    // }
   }
 
   fetchFromURL(url) {

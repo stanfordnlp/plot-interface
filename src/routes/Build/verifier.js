@@ -16,6 +16,7 @@ import "./styles.css"
 const SKIP_DEDUCTION = -0.2
 
 class Build extends PureComponent {
+  state = {working: false}
   static propTypes = {
     /* Injected by Redux */
     context: PropTypes.object,
@@ -37,12 +38,18 @@ class Build extends PureComponent {
   skip() {
     this.props.dispatch(Actions.log({type: 'skip',  utterance: this.props.utterance, exampleId: this.props.exampleId}))
     this.props.dispatch(UserActions.increaseCount(SKIP_DEDUCTION))
+    this.setState({'working': true})
+    setTimeout(() => this.setState({'working': false}), 2000)
     this.props.dispatch(Actions.verifierInit())
+
   }
 
   render() {
     if (this.props.count >= config.numLabels)
       return 'You are done! Submit the code above and get another job. Thank you!'
+
+    const skipButton = this.state.working? <button className="disabled">Loading...</button> :
+      <button className="active" onClick={() => {this.skip()}}>Skip ({SKIP_DEDUCTION}pts)</button>
 
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
@@ -55,7 +62,7 @@ class Build extends PureComponent {
               <b>Command</b>: {this.props.utterance}
             </div>
             <div className='button-row'>
-              <button className="active" onClick={() => {this.skip()}}>Skip ({SKIP_DEDUCTION}pts)</button>
+              {skipButton}
             </div>
 
             {config.showDataTable? <CurrentDataTable/> : null}
