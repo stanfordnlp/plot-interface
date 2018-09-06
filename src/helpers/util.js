@@ -74,13 +74,23 @@ export function resizePNG(dataImg, width, height) {
   })
 }
 
+function isJSONObject(value) {
+  return JSON.stringify(value).startsWith('{"')
+}
+
 function stripValue(value) {
-  let keys = Object.keys(value)
   let path = ''
+  if (!isJSONObject(value)) {
+    return {path, value}
+  }
+  let keys = Object.keys(value)
   while (keys.length === 1) {
     const key = keys[0]
     path += '/' + key
     value = value[key]
+    if (!isJSONObject(value)) {
+      return {path, value}
+    }
     keys = Object.keys(value)
   }
   return {path, value}

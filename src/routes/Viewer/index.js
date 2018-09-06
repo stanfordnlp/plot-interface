@@ -67,7 +67,12 @@ class Viewer extends PureComponent {
 
     examples.forEach(q => {
       q.diff = canonicalJsonDiff(getInner(q).context, getInner(q).targetValue)
-      q.acc = (q.stats.correct + 0.2) / (q.stats.correct + q.stats.wrong + q.stats.skip*0.2 + 1)
+      if (q.stats) {
+        q.acc = (q.stats.correct + 0.2) / (q.stats.correct + q.stats.wrong + q.stats.skip*0.2 + 1)
+      } else {
+        q.acc = 0
+      }
+
     })
 
     this.sortAndShow(examples, 'count')
@@ -139,7 +144,7 @@ class Viewer extends PureComponent {
                       <td>{q.count}</td>
                       <td>{ex.utterance}</td>
                       <td>{q.diff}</td>
-                      <td>{q.sessionId.substring(0,10)}</td>
+                      <td>{q.sessionId.substring(0,15)}</td>
                       <td>{(q.acc).toFixed(3)}</td>
                     </tr>
                   )

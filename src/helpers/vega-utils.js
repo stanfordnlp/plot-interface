@@ -125,6 +125,7 @@ export function responsesFromExamples(name) {
   let names = [name]
   if (name === undefined || name === null) {
     const examples = config.getExamples(VegaLiteSpecs) // has name and title
+    console.log('number of examples', examples.length)
     const name = examples[Math.floor(Math.random()*examples.length)].name
     names = [name]
   }
