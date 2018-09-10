@@ -1,6 +1,6 @@
 import { SEMPRE_SERVER_URL } from "constants/strings"
 
-export function SEMPREquery(cmds, callback) {
+export function SEMPREquery(cmds) {
   const cmdstr = []
   for (const k in cmds) {
     if ({}.hasOwnProperty.call(cmds, k)) {
@@ -15,6 +15,7 @@ export function SEMPREquery(cmds, callback) {
       return response.json()
     })
     .catch((ex) => {
-      console.log(`Exception when querying`, SEMPRE_SERVER_URL, cmdstr, ex)
+      window.alert("ServerError: " + ex + "\nCheck the slack channel for updates.")
+      // throw new Error('ServerError')
     })
 }

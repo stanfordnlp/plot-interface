@@ -125,8 +125,7 @@ const Actions = {
         context, targetValue: spec, schema, datasetURL, type};
       console.log(JSON.stringify(sempreExample))
       const q = ['accept', sempreExample]
-      SEMPREquery({ q: q, sessionId: sessionId }, () => { })
-      return true
+      return SEMPREquery({ q: q, sessionId: sessionId })
     }
   },
 
@@ -163,7 +162,7 @@ const Actions = {
             .then((response) => {
               console.log('sempre returned', response)
               if (response === undefined) {
-                window.alert('no response from server')
+                window.alert('Cannot inititate, no response from server')
                 return
               }
               let candidates = response.candidates;
@@ -207,6 +206,10 @@ const Actions = {
       const {sessionId} = getState().user;
       SEMPREquery({q: ['example', {amount: 1}], sessionId})
       .then((exampleResponse) => {
+        if (!exampleResponse) {
+          window.alert('verifierInit: no response from server')
+          return
+        }
         const {context, targetValue, utterance, formula, id} = exampleResponse.master
         dispatch(Actions.updateContext(context)).then(() => {
           SEMPREquery({q: ['q', {utterance: '', context, random: true, amount: config.numCandidatesVerifier}], sessionId: sessionId}).then((response) => {

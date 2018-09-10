@@ -90,11 +90,16 @@ class LabelModal extends Component {
     }
 
     if (value === 'no change') {
-      this.props.dispatch(UserActions.increaseCount(0.05))
+      this.props.dispatch(UserActions.increaseCount(config.noChangeScore))
       this.props.dispatch(Actions.log({type: 'no change', value}))
     } else {
       this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula))
-      this.props.dispatch(UserActions.increaseCount(1))
+      .then((response) => {
+        if (response) {
+          this.props.dispatch(UserActions.increaseCount(1))
+        } else
+          window.alert('no response from server...')
+      })
     }
     // this.setState({inputValue: '', status: `You labeled the current example as "${value}". You can label again. `})
     // this.setState({headerText: `labeled this plot as "${value}"...` })

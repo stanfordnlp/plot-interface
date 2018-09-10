@@ -16,6 +16,7 @@ import config from "config"
 import "./styles.css"
 
 class Build extends PureComponent {
+  state = {working: false}
   static propTypes = {
     /* Injected by Redux */
     context: PropTypes.object,
@@ -33,6 +34,8 @@ class Build extends PureComponent {
     const name = getParameterByName('example')
     this.props.dispatch(Actions.labelInit(name))
     this.props.dispatch(Actions.log({'type': 'init'}))
+    this.setState({'working': true})
+    setTimeout(() => this.setState({'working': false}), 3000)
   }
 
   onLabel = (spec, formula) => {
@@ -43,11 +46,15 @@ class Build extends PureComponent {
     if (this.props.count >= config.numLabels)
       return 'You are done! Submit the code above and get another job. Thank you!'
 
+    const loadButton = this.state.working? <button className="disabled">Loading...</button> :
+        <button className="active" onClick={() => {this.init()}}>Load more</button>
+
+
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
           <div className='editor-container'>
-            <button onClick={() => {this.init()}}>Load more</button>
+            {loadButton}
             {config.showDataTable? <CurrentDataTable/> : null}
             <div className='chart-container' key='current'>
               {

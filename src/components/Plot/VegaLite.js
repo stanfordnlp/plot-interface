@@ -17,7 +17,8 @@ class VegaLite extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevStates) {
-    if (JSON.stringify(this.props.spec) !== JSON.stringify(prevProps.spec) || this.props.dataValues &&  this.props.dataValues.length !== prevProps.dataValues.length) {
+    if (JSON.stringify(this.props.spec) !== JSON.stringify(prevProps.spec) ||
+      (this.props.dataValues && this.props.dataValues.length !== prevProps.dataValues.length)) {
       this.updateVegaWrap()
     }
   }

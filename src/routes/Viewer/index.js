@@ -8,8 +8,7 @@ import {getParameterByName, canonicalJsonDiff} from "helpers/util"
 // import jsonpatch from "fast-json-patch"
 import './styles.css'
 // eslint-disable-next-line
-const turk2018url = 'https://raw.githubusercontent.com/stanfordnlp/plot-data/master/20180118_turk_all.jsonl'
-const remotelogs = 'http://jonsson.stanford.edu:8405/query.jsonl'
+const remotelogs = ''
 const getInner = q => q.q[1]
 
 class Viewer extends PureComponent {
@@ -29,9 +28,6 @@ class Viewer extends PureComponent {
       this.fetchFromURL(url)
       this.setState({url})
     }
-    // for (let i = 0; i < 200; i++){
-    //   setTimeout(this.props.dispatch(Actions.verifierInit()), 0)
-    // }
   }
 
   fetchFromURL(url) {

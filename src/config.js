@@ -16,6 +16,7 @@ const config = {
   vegaScaleFactor: 1.5,
   maxDisplay: 5,
   processingInterval: 3,
+  noChangeScore: 0.05,
 }
 
 

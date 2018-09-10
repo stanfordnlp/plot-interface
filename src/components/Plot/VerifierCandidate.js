@@ -33,16 +33,22 @@ class Plot extends React.Component {
   onPick() {
     const {dispatch, spec, issuedQuery, plotData} = this.props
     this.props.dispatch(Actions.label(issuedQuery, spec, plotData.isExample? 'correct': 'wrong', 'pick'))
-    const template = `Command: ${issuedQuery}\nAction: ${this.state.diff}`
-    if (plotData.isExample) {
-      dispatch(UserActions.increaseCount(1))
-      window.alert("You picked correctly, got 1 point. \nClick ok to proceed to the next example. \n\n" + template)
-      dispatch(Actions.verifierInit())
-    } else {
-      dispatch(UserActions.increaseCount(-1))
-      window.alert("You disagreed with the original, and got -1 point. \nClick ok to proceed to the next example.\n\n" + template)
-      dispatch(Actions.verifierInit())
-    }
+    .then((response) => {
+      if (!response) {
+        window.alert('no response from server...')
+      } else {
+        const template = `Command: ${issuedQuery}\nAction: ${this.state.diff}`
+        if (plotData.isExample) {
+          dispatch(UserActions.increaseCount(1))
+          window.alert("You picked correctly, got 1 point. \nClick ok to proceed to the next example. \n\n" + template)
+          dispatch(Actions.verifierInit())
+        } else {
+          dispatch(UserActions.increaseCount(-1))
+          window.alert("You disagreed with the original, and got -1 point. \nClick ok to proceed to the next example.\n\n" + template)
+          dispatch(Actions.verifierInit())
+        }
+      }
+    })
   }
 
   onLook() {
