@@ -6,19 +6,21 @@ import { connect } from "react-redux"
 import config from "config"
 import "./styles.css"
 
-const Header = ({ search, sessionId, count }) => (
-  <div className="Header Bigger">
-    <div className="Header-info">
-      Number verified : {count.toFixed(2)} / {config.numLabels}
+const Header = ({ search, sessionId, count }) =>
+{
+  const done = count >= config.numLabels
+  return (
+    <div className="Header">
+        <div className="Header-info">
+          {'your id is' + JSON.stringify(sessionId).substr(0, 10) +  `, labels provided: ${count.toFixed(2)} / ${config.numLabels}`}
+        </div>
+
+      <div className="Header-code">
+         {done? `Code: ${btoa(JSON.stringify({sessionId, count}))} ` : 'Code will appear here after you are done, copy it back to AMT to submit'}
+      </div>
     </div>
-    <div className="Header-code">
-       {count >= config.numLabels? `You are done! copy this code and submit: ${btoa(JSON.stringify({sessionId, count}))} ` : 'Code will appear here after you are done'}
-    </div>
-    <div className="Header-info">
-      {'your id: ' + JSON.stringify(sessionId)}
-    </div>
-  </div>
-)
+  )
+}
 
 Header.propTypes = {
   /* URL parameters in order to persist the query (e.g ?turkid=AMT_123) across

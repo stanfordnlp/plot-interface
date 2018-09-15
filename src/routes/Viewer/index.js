@@ -36,11 +36,11 @@ class Viewer extends PureComponent {
       .then(response => {response.text().then(t => this.loadJSONL(t))})
   }
 
-  sortAndShow(examples, key) {
+  sortAndShow(examples, key, reverse=1) {
     examples.sort((q1, q2) => {
       const [v1, v2] = [q1[key], q2[key]]
-      if (v1 > v2) return 1
-      if (v1 < v2) return -1
+      if (v1 > v2) return 1*reverse
+      if (v1 < v2) return -1*reverse
       else return 0
     })
 
@@ -66,8 +66,14 @@ class Viewer extends PureComponent {
 
     examples.forEach(q => {
       q.diff = canonicalJsonDiff(getInner(q).context, getInner(q).targetValue)
-      if (q.stats) {
-        q.acc = (q.stats.correct + 0.2) / (q.stats.correct + q.stats.wrong + q.stats.skip*0.2 + 1)
+      if (q.listeners) {
+        const stats = {'correct': 0, 'wrong': 0, 'skip': 0}
+        for (var i = 0; i < q.listeners.length; i++) {
+          const l = q.listeners[i]
+          // console.log(l)
+          stats[l['type']] += 1
+        }
+        q.acc = (stats.correct + 0.2) / (stats.correct + stats.wrong + stats.skip + 1)
       } else {
         q.acc = 0
       }
@@ -131,7 +137,7 @@ class Viewer extends PureComponent {
                 <th>utt</th>
                 <th onClick={() => this.sortAndShow(examples, 'diff')}>diff</th>
                 <th onClick={() => this.sortAndShow(examples, 'sessionId')}>worker</th>
-                <th onClick={() => this.sortAndShow(examples, 'acc')}>acc</th>
+                <th onClick={() => this.sortAndShow(examples, 'acc', -1)}>acc</th>
               </tr>
               {
                 shown.map((q, index) => {
