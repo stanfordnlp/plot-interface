@@ -112,7 +112,7 @@ class Viewer extends PureComponent {
 
   showMore = () => {
     setTimeout(() => {
-      let hasMore = this.state.shown.length < this.state.examples.length;
+      let hasMore = this.state.shown.length < this.state.examples.length && this.state.shown.length < 1000;
       this.setState( (prev) => ({
         shown: this.state.examples.slice(0, prev.shown.length + 100)
       }));
@@ -138,6 +138,8 @@ class Viewer extends PureComponent {
                 <th onClick={() => this.sortAndShow(examples, 'diff')}>diff</th>
                 <th onClick={() => this.sortAndShow(examples, 'sessionId')}>worker</th>
                 <th onClick={() => this.sortAndShow(examples, 'acc', -1)}>acc</th>
+                <th onClick={() => this.sortAndShow(examples, 'acc', -1)}>pz</th>
+                <th onClick={() => this.sortAndShow(examples, 'acc', -1)}>ps</th>
               </tr>
               {
                 shown.map((q, index) => {
@@ -151,6 +153,8 @@ class Viewer extends PureComponent {
                       <td>{q.diff}</td>
                       <td>{q.sessionId.substring(0,15)}</td>
                       <td>{(q.acc).toFixed(3)}</td>
+                      <td>{(q.stats.pz).toFixed(3)}</td>
+                      <td>{(q.stats.ps).toFixed(3)}</td>
                     </tr>
                   )
                 })
