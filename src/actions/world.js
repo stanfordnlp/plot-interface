@@ -155,10 +155,9 @@ const Actions = {
       responsesFromExamples(name).then(
         initial => {
           const context = initial[0].value
-          const {schema, datasetURL } = getState().world
           // send the actual sempre command
           dispatch(Actions.updateContext(context)).then(() => {
-            SEMPREquery({ q: ['q', {utterance: '', context, schema, datasetURL, random: true, amount: config.numCandidates}], sessionId: sessionId})
+            SEMPREquery({ q: ['q', {utterance: '', context, random: true, amount: config.numCandidates}], sessionId: sessionId})
             .then((response) => {
               console.log('sempre returned', response)
               if (response === undefined) {

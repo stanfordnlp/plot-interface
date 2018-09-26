@@ -43,26 +43,28 @@ class LabelModal extends Component {
 
   componentDidMount() {
     this.props.onRef(this)
-
-    Mousetrap.prototype.stopCallback = () => false;
-    if (!this.props.readOnly)
-      Mousetrap.bind("enter", (e) => { e.preventDefault(); this.label(this.state.inputValue)})
-
-    Mousetrap.bind("esc", (e) => { this.close() })
   }
+
   componentWillUnmount() {
-    Mousetrap.unbind("enter")
-    Mousetrap.unbind("esc")
     this.props.onRef(null)
   }
 
   // note that props.issuedQuery is the query used to retrieve the original results
   // vs. props.query, which tracks the live value in query box
   onLabel(spec, formula) {
+    Mousetrap.prototype.stopCallback = () => false;
+    if (!this.props.readOnly)
+      Mousetrap.bind("enter", (e) => { e.preventDefault(); this.label(this.state.inputValue)})
+
+    Mousetrap.bind("esc", (e) => { this.close() })
     this.setState({isOpen: true, spec: spec, formula: formula, inputValue: this.props.issuedQuery,})
   }
 
-  close() {this.setState({isOpen: false, ...initialStates})}
+  close() {
+    Mousetrap.unbind("enter")
+    Mousetrap.unbind("esc")
+    this.setState({isOpen: false, ...initialStates})
+  }
 
   label(value) {
     let filter = {msg: undefined}

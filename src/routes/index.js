@@ -30,12 +30,12 @@ class Routes extends React.Component {
       <div>
         <Route path="/viewer" component={Viewer} />
         <Route path="/tester" component={Tester} />
-        <Route path="/build" component={(props) => (
+        <Route path="/" component={(props) => (
           <div className="container">
             <Header search={props.location.search}/>
             <Switch>
-              <Route exact path="/build" component={() => <Build candidate={Candidate}/>}/>
-              <Route exact path="/build/help" component={Help} />
+              <Route exact path="/" component={() => <Build candidate={Candidate}/>}/>
+              <Route exact path="/help" component={Help} />
             </Switch>
           </div>
         )}/>

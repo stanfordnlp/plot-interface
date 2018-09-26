@@ -121,6 +121,11 @@ export function prettyStringify(obj) {
 }
 
 const VegaLiteSpecs = require('../examples.json');
+
+export function examplesList() {
+  return config.getExamples(VegaLiteSpecs)
+}
+
 export function responsesFromExamples(name) {
   let names = [name]
   if (name === undefined || name === null) {

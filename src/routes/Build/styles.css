@@ -10,3 +10,7 @@ div.Candidates {
 .editor-container > div {
   margin: 5px;
 }
+
+#example-selector {
+  /* min-width: 300px; */
+}

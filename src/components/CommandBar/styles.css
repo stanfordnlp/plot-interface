@@ -12,3 +12,7 @@
   display: inline;
   float: left;
 }
+
+.CommandBar input {
+  color: black;
+}

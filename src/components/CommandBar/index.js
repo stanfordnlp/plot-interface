@@ -45,6 +45,8 @@ class CommandBar extends React.Component {
   // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
   // const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   getSuggestions(value) {
+    return []
+    // eslint-disable-next-line
     let tokens = value.split(" ")
     const lastToken = tokens.pop().trim()
     //const partial = escapeRegexCharacters(lastToken.trim());

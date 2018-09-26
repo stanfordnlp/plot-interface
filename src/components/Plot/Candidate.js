@@ -3,10 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import hash from 'string-hash'
-
-// import ContextOverlay from './context-overlay'
-// eslint-disable-next-line
-import {MdClose, MdCheck,} from 'react-icons/md'
+import InnerChart from './InnerChart'
 import './candidate.css'
 
 class Plot extends React.PureComponent {
@@ -32,7 +29,6 @@ class Plot extends React.PureComponent {
   }
 
   remove() {
-    this.props.dispatch(Actions.reject(this.props.spec));
     this.setState({isClosed: true})
   }
 
@@ -53,50 +49,28 @@ class Plot extends React.PureComponent {
   }
 
   renderChart() {
-    const {iconSize, showTools} = this.config;
     const equalMsg = this.state.isEqual? <li className='display-errors' key={'equalmsg'}>no change</li>: null
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
 
     return (
       <div className='chart-container'>
-        {showTools===true?
-          <div className='chart-header'>
-             {/* <span className='header-button'>
-                <MdClose className='md-button' size={iconSize} onClick={(e) => {this.remove()}}/>
-                <div className="header-button-tooltip">
-                    {'Reject'}
-                </div>
-             </span> */}
-             <span className='header-button'>
-               <MdCheck className='md-button' size={iconSize} onClick={(e) => {this.accept()}}/>
-                <div className="header-button-tooltip">
-                    {'use this'}
-                </div>
-             </span>
-
-             {/* <span className='header-button'>
-               <MdCheck className='md-button' size={iconSize} onClick={(e) => {
-                  this.onLabel()}
-                } />
-                <div className="header-button-tooltip">
-                    {'edit and accept'}
-                </div>
-             </span> */}
-          </div>
-        : <div className='chart-header'>{this.state.header}</div> }
-        <div className='canonical'>{this.props.canonical}</div>
+        <div className='chart-header button-row'>
+          <button onClick={() => this.onLabel()}>Compare</button>
+          {/* <button onClick={(e) => this.remove()}>Close</button> */}
+          {/* <button onClick={(e) => {this.accept()}}>Accept</button> */}
+        </div>
+        <div className='canonical'>{this.props.formula}</div>
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>
-            <img ref='chartImg' className='chart-img' alt='rendering...' src={this.state.dataURL}/>
+            <InnerChart dataURL={this.state.dataURL}/>
           </div>
-          <div >
-          <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
+          <div>
+            <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
         </div>
-        {/* <LabelModal isOpen={this.state.labeling} spec={this.state.spec} onClose={() => this.closeModal()}/> */}
       </div>
-    );
+    )
   }
 
   render() {
@@ -111,7 +85,7 @@ class Plot extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  context: state.world.context,
+  // context: state.world.context,
   showErrors: state.world.showErrors,
 })
 export default connect(mapStateToProps)(Plot);
