@@ -34,6 +34,7 @@ class Candidates extends PureComponent {
     this.numProcessed = 0
     this.numDistinct = 0
     this.indProcessing = 0
+    this.hashes = new Set()
     this.setState({plotData: []})
   }
 

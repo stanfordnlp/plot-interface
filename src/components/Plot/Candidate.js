@@ -56,6 +56,7 @@ class Plot extends React.PureComponent {
     return (
       <div className='chart-container'>
         <div className='chart-header button-row'>
+          {this.props.header}
           <button onClick={() => this.onLabel()}>Compare</button>
           {/* <button onClick={(e) => this.remove()}>Close</button> */}
           {/* <button onClick={(e) => {this.accept()}}>Accept</button> */}

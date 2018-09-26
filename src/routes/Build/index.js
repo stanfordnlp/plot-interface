@@ -5,7 +5,7 @@ import { connect } from "react-redux"
 import SplitPane from 'react-split-pane';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-// import Toolbar from 'components/Toolbar'
+import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
 import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
@@ -72,7 +72,7 @@ class Build extends PureComponent {
         <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
-        {/* <Toolbar onLabel={this.onLabel}/> */}
+        <Toolbar onLabel={this.onLabel}/>
       </div>
     );
   }
