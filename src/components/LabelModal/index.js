@@ -139,7 +139,7 @@ class LabelModal extends Component {
         // margin: '20px',
       }
     };
-    const {context, readOnly} = this.props
+    const {context, readOnly, showDiffEditor} = this.props
     const {spec} = this.state
 
     const isInitial = Object.keys(context).length === 0
@@ -178,9 +178,9 @@ class LabelModal extends Component {
     // eslint-disable-next-line
     const sideBySide = (
       <SplitPane split="vertical" minSize={90} defaultSize={isInitial? '50%': '50%'} pane1Style={{display: 'flex', height: "100%"}} className='main-pane' pane2Style={{display: 'flex', height: "100%"}}>
-        {!config.showDiffEditor? currentPlot :
+        {!showDiffEditor? currentPlot :
           <HorizontalSplit top={currentPlot} bot={<DiffEditor readOnly={true} context={context} initial={context} update={() => {}}/>}/>}
-        {!config.showDiffEditor? newPlot :
+        {!showDiffEditor? newPlot :
           <HorizontalSplit top={newPlot} bot={<DiffEditor readOnly={false} context={context} initial={spec} update={(spec) => this.setState({spec})}/>}/>}
       </SplitPane>
     )
@@ -197,7 +197,7 @@ class LabelModal extends Component {
 
       <div className="header button-row">
         <MdClose className="md-button" size={'2em'} onClick={() => this.close()}/>
-        <input autoFocus className="labelInput" ref={(input) => { this.textInput = input; }}
+        <input className="labelInput" ref={(input) => { this.textInput = input; }}
           type="text"
           value={this.state.inputValue}
           onChange={e => this.updateInputValue(e)}
@@ -221,7 +221,7 @@ class LabelModal extends Component {
       </div>
 
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        {currentPlot}
+        {sideBySide}
         {/* */}
       </div>
     </Modal>

@@ -1,8 +1,9 @@
 .dataTable {
   margin: 10px;
-  margin-left: 95px;
+  /* margin-left: 95px; */
   font-size: 11px;
   overflow: auto;
+  max-width: 800px;
 }
 .dataTable td {
   max-width: 75px;

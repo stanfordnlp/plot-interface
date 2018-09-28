@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import hash from 'string-hash'
 import InnerChart from './InnerChart'
+import { Button } from 'semantic-ui-react'
+
 import './candidate.css'
 
 class Plot extends React.PureComponent {
@@ -55,12 +57,11 @@ class Plot extends React.PureComponent {
 
     return (
       <div className='chart-container'>
-        <div className='chart-header button-row'>
-          {this.props.header}
-          <button onClick={() => this.onLabel()}>Compare</button>
-          {/* <button onClick={(e) => this.remove()}>Close</button> */}
-          {/* <button onClick={(e) => {this.accept()}}>Accept</button> */}
-        </div>
+        <Button.Group basic>
+          <Button icon='magnify' content='Inspect' onClick={() => this.onLabel()} />
+          <Button icon='check' onClick={(e) => this.accept()} />
+          <Button icon='close' onClick={(e) => this.remove()} />
+        </Button.Group>
         <div className='canonical'>{this.props.formula}</div>
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>

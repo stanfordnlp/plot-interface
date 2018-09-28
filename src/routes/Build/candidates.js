@@ -134,7 +134,7 @@ class Candidates extends PureComponent {
                   <tr key={r} className={r % 2 ? 'even' : 'odd'}>
                     <td>{r}</td>
                     <td>{c.canonical}</td>
-                    <td>{c.prob.toPrecision(4)}</td>
+                    {/* <td>{c.prob.toPrecision(4)}</td> */}
                     <td>{c.score.toPrecision(4)}</td>
                   </tr>
                 );
@@ -146,7 +146,7 @@ class Candidates extends PureComponent {
       );
     }
 
-    if (plots.length > config.maxDisplay) {
+    if (!showFormulas && plots.length > config.maxDisplay) {
       plots = plots.slice(0, config.maxDisplay)
     }
 
@@ -163,10 +163,10 @@ class Candidates extends PureComponent {
     }
 
     return (
-      <div className="Candidates" ref={c => this.candidates = c}>
+      <React.Fragment>
         {plotsPlus}
         {this.numDistinct < config.maxDisplay? <div>{`${this.numDistinct} out of ${config.maxDisplay} (testing ${this.numProcessed} out of ${responses.length})`}</div> : <div>{`Finished loading`}</div>}
-      </div>
+      </React.Fragment>
     );
   }
 }

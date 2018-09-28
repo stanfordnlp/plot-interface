@@ -1,11 +1,10 @@
 .CommandBar {
-  top: 8px;
-  left: 8px;
-  display: flex;
-  height: 34px;
-  background-color: rgba(255,255,255,1);
-  border-radius: 3px;
-  justify-content: center;
+  margin-left: 10px;
+  margin: 6px;
+  height: calc( 50px - 12px );
+  /* display: flex; */
+  /* width: 600px; */
+  /* background-color: rgba(255,255,255,1); */
 }
 
 .CommandBar button {

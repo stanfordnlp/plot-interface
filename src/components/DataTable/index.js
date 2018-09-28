@@ -10,7 +10,7 @@ class DataTable extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      limit: 20,
+      limit: 10,
       page: 0,
       output: props.values,
       schema: props.schema,
@@ -78,11 +78,10 @@ class DataTable extends Component {
             </tbody>
           </table>
         </div>
-
-        <div className="paging">
+        {/* <div className="paging">
           <span>{fmt(start + 1)}–{stop > max ? fmt(max) : fmt(stop)} of {fmt(max)}</span>
           <span className="pager">{prev} {next}</span>
-        </div>
+        </div> */}
       </div>
     );
   }

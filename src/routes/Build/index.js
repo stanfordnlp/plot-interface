@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
 import SplitPane from 'react-split-pane';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { Card, Dropdown, Icon, Header} from 'semantic-ui-react'
 
 import Toolbar from 'components/Toolbar'
 import LabelModal from 'components/LabelModal'
@@ -36,42 +36,41 @@ class Build extends PureComponent {
     this.labelModal.onLabel(spec, formula)
   };
 
-  setExample(name, title) {
+  setExample(name) {
     const {dispatch} = this.props
     dispatch(Actions.labelInit(name))
   }
 
   render() {
-    const exampleMenuItems = examplesList().map((ex, i) =>
-      <MenuItem onClick={() => this.setExample(ex.name, ex.title)} eventKey={i} key={i}>{ex.title}</MenuItem>
+    const exampleOptions = examplesList().map((ex, i) =>
+        {return {key: ex.name, value: ex.name, text: ex.title}}
     );
     return (
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <SplitPane split="vertical" minSize={100} defaultSize={window.innerWidth * 0.35} pane1Style={{display: 'flex', height: "100%", backgroundColor: "white"}} className='main-pane' pane2Style={{overflow: 'scroll', backgroundColor: 'white'}}>
-          <div className='editor-container'>
-            <DropdownButton
-              bsStyle={'default'}
-              title={'Select a example'}
-              id="example-selector"
-            >
-              {exampleMenuItems}
-            </DropdownButton>
-            <CurrentDataTable/>
-            <div className='chart-container' key='current'>
-              {
-                this.props.isInitial?
-                'no current plot'
-                :
-                <VegaLite
-                  spec={this.props.context}
-                  dataValues={this.props.dataValues}
-                />
-              }
-            </div>
+        <div className='Candidates'>
+          <div className="chart-container">
+            <Card.Content>
+              <Header size='medium'>Current Example</Header>
+              <Dropdown id="example-selector" placeholder='select a example' fluid search selection
+                options={exampleOptions}
+                onChange={(e, data) => this.setExample(data.value)}
+              />
+            </Card.Content>
+            <Card.Content>
+            {
+              this.props.isInitial?
+              'no current plot'
+              :
+              <VegaLite
+                spec={this.props.context}
+                dataValues={this.props.dataValues}
+              />
+            }
+            </Card.Content>
+          </div>
+          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </div>
-        <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
-        </SplitPane>
-        <LabelModal onRef={ref => (this.labelModal = ref)}/>
+        <LabelModal onRef={ref => (this.labelModal = ref)} showDiffEditor={true}/>
         <Toolbar onLabel={this.onLabel}/>
       </div>
     );

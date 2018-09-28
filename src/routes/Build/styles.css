@@ -8,9 +8,10 @@ div.Candidates {
 }
 
 .editor-container > div {
-  margin: 5px;
+  margin: 10px;
 }
 
 #example-selector {
-  /* min-width: 300px; */
+  max-width: 400px;
+  /* margin: 10px; */
 }

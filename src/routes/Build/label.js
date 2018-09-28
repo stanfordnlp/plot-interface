@@ -68,7 +68,9 @@ class Build extends PureComponent {
               }
             </div>
         </div>
-        <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+        <div>
+          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+        </div>
         </SplitPane>
         <LabelModal onRef={ref => (this.labelModal = ref)}/>
         {/* <Toolbar onLabel={this.onLabel}/> */}

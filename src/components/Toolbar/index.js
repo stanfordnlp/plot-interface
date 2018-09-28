@@ -47,7 +47,7 @@ class Toolbar extends React.Component {
 
         {/* <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button> */}
         {config.showDebugTool?
-          <button className={classnames({active: true})} onClick={() => this.toggleShowFormulas()}>
+          <button className={classnames({active: true})} onClick={() => {this.toggleShowFormulas(); this.toggleShowErrors()}}>
             {this.props.showFormulas? 'hide errors' : 'show all'}
           </button> : null}
       </div>

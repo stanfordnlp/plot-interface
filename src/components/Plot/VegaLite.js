@@ -63,7 +63,6 @@ class VegaLite extends React.PureComponent {
   }
 
   render() {
-
     return (
       <div className={this.props.bigSize? 'big-chart':'chart'} onClick={e => this.test(e)}>
         <InnerChart dataURL={this.state.dataURL}/>
