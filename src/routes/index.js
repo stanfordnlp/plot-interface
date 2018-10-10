@@ -20,29 +20,31 @@ import VerifierHeader from "components/Header/VerifierHeader"
 import Verifier from "./Build/verifier"
 
 // import "normalize.css"
-import "./styles.css"
+// import "./styles.css"
 import 'semantic-ui-css/semantic.min.css';
+// contains overrides
+import "./styles.css"
 
 class Routes extends React.Component {
   render() {
   return (
     <Router>
       <div>
-        {/* <Redirect to="/build"/> */}
+        <Route exact path="/" component={() => <Redirect to="/build"/>} />
         <Switch>
           <Route path="/viewer" component={Viewer} />
-          <Redirect exact strict from="/" to="/build"/>
-          <Route path="/" component={(props) => ( <div className="container">
+          {/* <Redirect exact strict from="/" to="/build"/> */}
+          <Route path="/build" component={(props) => ( <div className="after-header">
               <Header search={props.location.search}/>
               <Switch>
                 <Route exact path="/build" component={() => <Build candidate={Candidate}/>}/>
-                <Route exact path="/help" component={Help} />
+                <Route exact path="/build/help" component={Help} />
               </Switch>
             </div>
           )}/>
 
           <Route path="/label" component={(props) => (
-            <div className="container">
+            <div className="after-header">
               <LabelHeader search={props.location.search}/>
               <Switch>
                 <Route exact path="/label" component={() => <LabelBuild candidate={LabelCandidate}/>}/>
@@ -51,7 +53,7 @@ class Routes extends React.Component {
             </div>
           )} />
           <Route path="/verifier" component={(props) => (
-            <div className="container">
+            <div className="after-header">
               <VerifierHeader search={props.location.search}/>
               <Verifier candidate={VerifierCandidate}/>
             </div>

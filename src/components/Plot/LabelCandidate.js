@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 import hash from 'string-hash'
 import config from 'config'
 import InnerChart from './InnerChart'
+import LabelModal from 'components/LabelModal/LabelModal'
+
 // import ContextOverlay from './context-overlay'
 import './candidate.css'
 
 class Plot extends React.Component {
   static propTypes = {
-    spec: PropTypes.object,
     dataURL: PropTypes.string,
     logger: PropTypes.object,
-    formula: PropTypes.string,
-    canonical: PropTypes.string,
+    candidate: PropTypes.object,
     showTools: PropTypes.bool,
     onLabel: PropTypes.func,
     clickedLabel: PropTypes.bool,
@@ -33,9 +33,7 @@ class Plot extends React.Component {
         window.alert("you have already labeled this instance")
         return
     }
-
-    this.setState({clickedLabel: true})
-    this.props.onLabel(this.state.spec, this.props.canonical)
+    this.setState({clickedLabel: true, openModal: true})
   }
 
   onClick(e) {
@@ -53,6 +51,8 @@ class Plot extends React.Component {
 
     return (
       <div className='chart-container'>
+        {this.state.openModal?
+          <LabelModal candidate={this.props.candidate} onClose={() => this.setState({openModal: false})}/>: null}
         <div className='chart-header'>
           <button onClick={() => this.onLabel()}>Compare and label {this.state.clickedLabel? '(clicked)': ''}</button>
           {this.props.header}
@@ -66,7 +66,6 @@ class Plot extends React.Component {
           <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
         </div>
-        {/* <LabelModal isOpen={this.state.labeling} spec={this.state.spec} onClose={() => this.closeModal()}/> */}
       </div>
     );
   }

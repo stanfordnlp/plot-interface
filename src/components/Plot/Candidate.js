@@ -5,15 +5,15 @@ import Actions from 'actions/world'
 import hash from 'string-hash'
 import InnerChart from './InnerChart'
 import { Button } from 'semantic-ui-react'
+import InspectModal from 'components/LabelModal/InspectModal'
 
 import './candidate.css'
 
 class Plot extends React.PureComponent {
   static propTypes = {
-    spec: PropTypes.object,
+    candidate: PropTypes.object,
     dataURL: PropTypes.string,
     logger: PropTypes.object,
-    formula: PropTypes.string,
     showTools: PropTypes.bool,
     onLabel: PropTypes.func,
   }
@@ -27,7 +27,8 @@ class Plot extends React.PureComponent {
   }
 
   accept() {
-    this.props.dispatch(Actions.accept(this.props.spec, this.props.formula));
+    const {value, formula} = this.props.candidate
+    this.props.dispatch(Actions.accept(value, formula));
   }
 
   remove() {
@@ -35,11 +36,7 @@ class Plot extends React.PureComponent {
   }
 
   onLabel() {
-    // if ("initialContext" in this.props.context) {
-    //   window.alert("No current plot, you need to pick one before you can label")
-    //   return
-    // }
-    this.props.onLabel(this.state.spec, this.state.formula)
+    this.setState({inspectModal: true})
   }
 
   onClick(e) {
@@ -54,15 +51,19 @@ class Plot extends React.PureComponent {
     const equalMsg = this.state.isEqual? <li className='display-errors' key={'equalmsg'}>no change</li>: null
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
+    const {candidate} = this.props
 
     return (
+
       <div className='chart-container'>
+        {this.state.inspectModal?
+          <InspectModal candidate={candidate} onClose={() => this.setState({inspectModal: false})}/>: null}
         <Button.Group basic>
           <Button icon='magnify' content='Inspect' onClick={() => this.onLabel()} />
           <Button icon='check' onClick={(e) => this.accept()} />
           <Button icon='close' onClick={(e) => this.remove()} />
         </Button.Group>
-        <div className='canonical'>{this.props.formula}</div>
+        <div className='canonical'>{candidate.formula}</div>
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>
             <InnerChart dataURL={this.state.dataURL}/>

@@ -1,21 +1,6 @@
-html, body, #root {
-  /*height: 100%;
-  width: 100%;*/
-}
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-}
-
-.container {
+.after-header {
   width: 100%;
   height: 100%;
-  min-width: 100%;
-  min-height: 100%;
   background-color: #fafbfc;
   position: absolute;
   top: 0;
@@ -23,154 +8,11 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
   padding-top: 50px; /* Mirrored by .Header height */
 }
 
-body {
-  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
-}
+.ui.fullscreen.modal {
+    width: 100%!important;
+    left: 0%!important;
+    margin: 0px auto;
+    height: 100%;
+    border-radius: 0px;
 
-* {
-  box-sizing: border-box;
-}
-
-input {
-  background-color: rgba(0,0,0,0);
-  font-family: "Helvetica Neue", "Helvetica", sans-serif;
-  border: 0;
-  outline: none;
-  font-weight: 700;
-}
-
-::placeholder {
-  font-weight: 400;
-}
-
-.button-row > * {
-  margin: 0.25em;
-}
-
-/* button {
-  color: #fff;
-  background-color: #444;
-  border-color: #444;
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: .375rem .75rem;
-  font-size: 1.2rem;
-  line-height: 1.5;
-  border-radius: .25rem;
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  cursor: pointer;
-  -webkit-appearance: button;
-}
-
-button:hover {
-  background-color: #444;
-}
-
-button.active {
-}
-
-button.active:hover {
-  background-color: rgba(200,200,200,1);
-}
-*/
-
-.Resizer {
-    background: #000;
-    opacity: .2;
-    z-index: 100;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding;
-    background-clip: padding-box;
-}
-
-.Resizer:hover {
-    -webkit-transition: all 2s ease;
-    transition: all 2s ease;
-}
-
-.Resizer.horizontal {
-    height: 11px;
-    margin: -5px 0;
-    border-top: 5px solid rgba(255, 255, 255, 0);
-    border-bottom: 5px solid rgba(255, 255, 255, 0);
-    cursor: row-resize;
-    width: 100%;
-}
-
-.Resizer.horizontal:hover {
-    border-top: 5px solid rgba(0, 0, 0, 0.5);
-    border-bottom: 5px solid rgba(0, 0, 0, 0.5);
-}
-
-.Resizer.vertical {
-    width: 11px;
-    margin: 0 -5px;
-    border-left: 5px solid rgba(255, 255, 255, 0);
-    border-right: 5px solid rgba(255, 255, 255, 0);
-    cursor: col-resize;
-}
-
-.Resizer.vertical:hover {
-    border-left: 5px solid rgba(0, 0, 0, 0.5);
-    border-right: 5px solid rgba(0, 0, 0, 0.5);
-}
-.Resizer.disabled {
-    cursor: not-allowed;
-}
-.Resizer.disabled:hover {
-    border-color: transparent;
-}
-
-.md-button {
-  color: rgb(100, 100, 100);
-  margin-left: 5px;
-  cursor: pointer;
-  align-self: center;
-}
-.md-button:hover {
-  cursor: pointer;
-  color: rgb(200, 200, 200);
-}
-
-.Overlay  {
-  position          : fixed;
-  top               : 0;
-  left              : 0;
-  right             : 0;
-  bottom            : 0;
-  background-color   : rgba(75, 75, 75, 0.4);
-  z-index: 1001;
-}
-
-.ReactModal__Overlay  {
-  top: '50%';
-  left: '50%';
-  right: 'auto';
-  bottom: 'auto';
-  transform: 'translate(-50%, -50%)';
-  background-color   : rgba(75, 75, 75, 0.4);
-  z-index: 9999;
-}
-.ReactModal__Overlay  .ReactModal__Content {
-  position: relative !important;
-}
-.ReactModal__Overlay .closeModal {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-}
-.ReactModal__Overlay .wrapper {
-  padding: 20px;
 }

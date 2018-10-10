@@ -3,6 +3,7 @@ import {LocalLogger} from '../helpers/logger'
 import * as vl from 'vega-lite';
 import * as vega from 'vega';
 import config from 'config.js'
+import LZString from 'lz-string'
 
 const ajv = new Ajv({
   jsonPointers: true,
@@ -130,7 +131,6 @@ export function responsesFromExamples(name) {
   let names = [name]
   if (name === undefined || name === null) {
     const examples = config.getExamples(VegaLiteSpecs) // has name and title
-    console.log('number of examples', examples.length)
     const name = examples[Math.floor(Math.random()*examples.length)].name
     names = [name]
   }
@@ -144,4 +144,10 @@ export function responsesFromExamples(name) {
        return {value: s[1], formula: s[0], canonical: s[0]}
      })
   )
+}
+
+export function editorURL(editorString) {
+  const fullscreen = false
+  const serializedSpec = LZString.compressToEncodedURIComponent(editorString) + (fullscreen ? '/view' : '');
+  return `https://vega.github.io/editor/#/url/vega-lite/${serializedSpec}`;
 }

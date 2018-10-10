@@ -16,7 +16,7 @@ const Header = ({ search }) => {
     </div> */}
     <div className="Header-nav">
       <Link exact to={{ pathname: "/build", search: search}} activeClassName="active"><div>Plot</div></Link>
-      <Link exact to={{ pathname: "/help", search: search}} activeClassName="active"><div>Help</div></Link>
+      <Link exact to={{ pathname: "/build/help", search: search}} activeClassName="active"><div>Help</div></Link>
     </div>
   </div>
   )

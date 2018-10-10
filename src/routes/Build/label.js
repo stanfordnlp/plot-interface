@@ -4,7 +4,6 @@ import { connect } from "react-redux"
 
 import SplitPane from 'react-split-pane';
 // import Toolbar from 'components/Toolbar'
-import LabelModal from 'components/LabelModal'
 import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
@@ -38,10 +37,6 @@ class Build extends PureComponent {
     setTimeout(() => this.setState({'working': false}), 3000)
   }
 
-  onLabel = (spec, formula) => {
-    this.labelModal.onLabel(spec, formula)
-  };
-
   render() {
     if (this.props.count >= config.numLabels)
       return 'You are done! Submit the code above and get another job. Thank you!'
@@ -69,10 +64,9 @@ class Build extends PureComponent {
             </div>
         </div>
         <div>
-          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+          <Candidates candidate={this.props.candidate}/>
         </div>
         </SplitPane>
-        <LabelModal onRef={ref => (this.labelModal = ref)}/>
         {/* <Toolbar onLabel={this.onLabel}/> */}
       </div>
     );

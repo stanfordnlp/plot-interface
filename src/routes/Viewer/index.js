@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
 import { connect } from "react-redux"
 
-import LabelModal from 'components/LabelModal'
+import LabelModal from 'components/LabelModal/InspectModal'
 import Actions from "actions/world"
 import {getParameterByName, canonicalJsonDiff} from "helpers/util"
 // import {applyPatch, createPatch, createTests} from 'rfc6902';

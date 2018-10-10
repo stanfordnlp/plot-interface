@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import SplitPane from 'react-split-pane';
 // import Toolbar from 'components/Toolbar'
-import LabelModal from 'components/LabelModal'
+import LabelModal from 'components/LabelModal/InspectModal'
 import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
@@ -31,8 +31,8 @@ class Build extends PureComponent {
     this.props.dispatch(Actions.verifierInit())
   }
 
-  onLabel = (spec, formula) => {
-    this.labelModal.onLabel(spec, formula)
+  onLabel = (candidate) => {
+    this.labelModal.onLabel(candidate)
   };
 
   skip() {

@@ -72,14 +72,11 @@ class Candidates extends PureComponent {
           .then(vega => {
             const dataHash = hash(vega.dataURL);
             const p = {
+              rank: i,
               dataURL:vega.dataURL,
               logger: vega.logger,
               dataHash: dataHash,
-              formula: r.formula,
-              canonical: r.canonical,
-              spec :r.value,
-              rank: i,
-              isExample: r.isExample,
+              candidate: r,
               // changed, no dup, and no error
               noDup:  contextHash !== dataHash && !hashes.has(dataHash),
               noError: vega.logger.errors.length + vega.logger.warns.length === 0,
@@ -108,13 +105,10 @@ class Candidates extends PureComponent {
       plots = plotData.filter(r => (showFormulas || (r.noError && r.noDup))).map((r, ind) => (
         <this.props.candidate
           key={r.rank}
+          candidate={r.candidate}
           header={`${showFormulas? r.rank : ''} ${r.noError? '': '(hasError)'} ${r.noDup? '': '(isSame)'}`}
           dataURL={r.dataURL}
-          spec={r.spec}
           logger={r.logger}
-          formula={r.formula}
-          canonical={r.canonical}
-          errorLogger={r.logger}
           plotData={r}
           onLabel={onLabel}
         />
@@ -165,7 +159,7 @@ class Candidates extends PureComponent {
     return (
       <React.Fragment>
         {plotsPlus}
-        {this.numDistinct < config.maxDisplay? <div>{`${this.numDistinct} out of ${config.maxDisplay} (testing ${this.numProcessed} out of ${responses.length})`}</div> : <div>{`Finished loading`}</div>}
+        {this.numDistinct < config.maxDisplay? <div>{`${this.numDistinct} out of ${config.maxDisplay} (testing ${this.numProcessed} out of ${responses.length})`}</div> : null}
       </React.Fragment>
     );
   }

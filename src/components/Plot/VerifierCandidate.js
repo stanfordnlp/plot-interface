@@ -77,7 +77,6 @@ class Plot extends React.Component {
           <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
         </div>
-        {/* <LabelModal isOpen={this.state.labeling} spec={this.props.spec} onClose={() => this.closeModal()}/> */}
       </div>
     );
   }

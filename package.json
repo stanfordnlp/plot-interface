@@ -21,6 +21,7 @@
     "es6-promisify": "^6.0.0",
     "fast-json-patch": "^2.0.6",
     "hashids": "^1.1.1",
+    "lz-string": "^1.4.4",
     "mousetrap": "^1.6.1",
     "react": "^16.4.2",
     "react-ace": "^6.1.4",

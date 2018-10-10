@@ -1,12 +1,10 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
-
-import SplitPane from 'react-split-pane';
 import { Card, Dropdown, Icon, Header} from 'semantic-ui-react'
 
 import Toolbar from 'components/Toolbar'
-import LabelModal from 'components/LabelModal'
+import InspectModal from 'components/LabelModal/InspectModal'
 import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
@@ -32,8 +30,8 @@ class Build extends PureComponent {
     this.setExample('bar', 'Simple Bar Chart')
   }
 
-  onLabel = (spec, formula) => {
-    this.labelModal.onLabel(spec, formula)
+  onLabel = (candidate) => {
+    this.labelModal.onLabel(candidate)
   };
 
   setExample(name) {
@@ -70,7 +68,7 @@ class Build extends PureComponent {
           </div>
           <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </div>
-        <LabelModal onRef={ref => (this.labelModal = ref)} showDiffEditor={true}/>
+        {/* <InspectModal onRef={ref => (this.labelModal = ref)}/> */}
         <Toolbar onLabel={this.onLabel}/>
       </div>
     );

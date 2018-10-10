@@ -1,12 +1,5 @@
-.control-bar {
-  float:right;
-}
-
-
-.header {
-  /*font-size: 1em;*/
-  padding: 10px;
-  display: flex;
+#modal-header {
+  max-width: 800px;
 }
 
 .status {
@@ -14,21 +7,13 @@
   padding-bottom: 10px;
 }
 
+
 .absolute-wrapper {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 100%;
   height: 100%;
-}
-
-.labelInput {
-  /*font-size: 1em;*/
-  margin-left: 1.2em;
-  padding-left: 0.5em;
-  width: 50%;
-  max-width: 30em;
-  background-color: rgba(200, 200, 200, 0.5);
 }
 
 .half-panel {
