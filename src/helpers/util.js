@@ -115,3 +115,7 @@ export function canonicalJsonDiff(context, targetValue) {
     return JSON.stringify(diffs)
   }
 }
+
+export function execute(context, patch) {
+  return jsonpatch.applyPatch(context, patch).newDocument;
+}

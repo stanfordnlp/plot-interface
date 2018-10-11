@@ -1,17 +1,14 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
-import { Card, Dropdown, Icon, Header} from 'semantic-ui-react'
+import { Card, Dropdown, Container, Header} from 'semantic-ui-react'
 
-import Toolbar from 'components/Toolbar'
-import InspectModal from 'components/LabelModal/InspectModal'
-import CurrentDataTable from 'components/DataTable/CurrentDataTable'
+// import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
-
+import Toolbar from "components/Toolbar"
 import Actions from "actions/world"
 import {examplesList} from '../../helpers/vega-utils';
-
 import "./styles.css"
 
 class Build extends PureComponent {
@@ -47,15 +44,12 @@ class Build extends PureComponent {
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <div className='Candidates'>
           <div className="chart-container">
-            <Card.Content>
-              <Header size='medium'>Current Example</Header>
-              <Dropdown id="example-selector" placeholder='select a example' fluid search selection
-                options={exampleOptions}
-                onChange={(e, data) => this.setExample(data.value)}
-              />
-            </Card.Content>
-            <Card.Content>
-            {
+            <Toolbar/>
+          </div>
+          <div className="chart-container">
+            <div>
+             <Header size='medium'>Current Example</Header>
+             {
               this.props.isInitial?
               'no current plot'
               :
@@ -64,12 +58,11 @@ class Build extends PureComponent {
                 dataValues={this.props.dataValues}
               />
             }
-            </Card.Content>
+          </div>
+
           </div>
           <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </div>
-        {/* <InspectModal onRef={ref => (this.labelModal = ref)}/> */}
-        <Toolbar onLabel={this.onLabel}/>
       </div>
     );
   }

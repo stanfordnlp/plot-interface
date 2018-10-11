@@ -1,15 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
-import classnames from 'classnames'
-import {parseWithErrors} from 'helpers/vega-utils'
+import { Dropdown, Icon, Checkbox, Segment, Button, Menu } from 'semantic-ui-react'
 import config from 'config'
-import './index.css'
-class Toolbar extends React.Component {
-  // clearAll() {
-  //   this.props.dispatch(Actions.clear());
-  // }
+import {prettyStringify, editorURL} from 'helpers/vega-utils'
+import {examplesList} from '../../helpers/vega-utils';
 
+class Toolbar extends React.Component {
   toggleShowErrors() {
     this.props.dispatch(Actions.setState({showErrors: !this.props.showErrors}));
   }
@@ -18,39 +15,33 @@ class Toolbar extends React.Component {
     this.props.dispatch(Actions.setState({showFormulas: !this.props.showFormulas}));
   }
 
-  updateSpec() {
-    try {
-      const spec = JSON.parse(this.props.editorString)
-      const {logger} = parseWithErrors(spec)
-      if (logger.warns.length > 0 || logger.errors.length > 0) {
-        window.alert('current spec has errors, cannot be parsed')
-        console.log('validation errors', logger)
-        return
-      }
-      this.props.onLabel(spec, '(none)')
-      // this.props.dispatch(Actions.updateSpec());
-    } catch (e) {
-      window.alert('error in spec (see console)')
-      console.error('spec error', e);
-    }
+  setExample(name) {
+    const {dispatch} = this.props
+    dispatch(Actions.labelInit(name))
   }
 
   render() {
+    const exampleOptions = examplesList().map((ex, i) =>
+        {return {key: ex.name, value: ex.name, text: ex.title}}
+    );
     return (
-      <div className='Toolbar'>
-        {/* <button>{this.props.status}</button> */}
-        <button># candidates: {this.props.numCandidates}</button>
-        {/* <button className={classnames({active: true})} onClick={() => this.updateSpec()}>Parse JSON Spec</button> */}
-        {/* <button className={classnames({active: true})} onClick={() => this.toggleShowErrors()}>
-          {this.props.showErrors? 'hide errors' : 'show errors'}
-        </button> */}
-
-        {/* <button className={classnames({active: true})} onClick={() => this.labelJSON()}>Label JSON Spec</button> */}
-        {config.showDebugTool?
-          <button className={classnames({active: true})} onClick={() => {this.toggleShowFormulas(); this.toggleShowErrors()}}>
-            {this.props.showFormulas? 'hide errors' : 'show all'}
-          </button> : null}
-      </div>
+      <Menu vertical>
+        <Menu.Item>
+          <Dropdown id="example-selector" placeholder='select a example' search selection fluid
+            options={exampleOptions}
+            onChange={(e, data) => this.setExample(data.value)}
+          />
+        </Menu.Item>
+        <Menu.Item>
+          <Checkbox
+            label="Show all"
+            onClick={() => {this.toggleShowFormulas()}}
+          />
+        </Menu.Item>
+        <Menu.Item>
+          <Button onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>Open in Editor</Button>
+        </Menu.Item>
+      </Menu>
     )
   }
 }
@@ -61,7 +52,9 @@ function mapStateToProps(state, ownProps) {
     showFormulas: state.world.showFormulas,
     numCandidates: state.world.responses.length,
     editorString: state.world.editorString,
+    context: state.world.context,
     status: state.world.status,
   };
 }
+
 export default connect(mapStateToProps)(Toolbar);

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import hash from 'string-hash'
 import InnerChart from './InnerChart'
-import { Button } from 'semantic-ui-react'
+import { Button, Label, Header } from 'semantic-ui-react'
 import InspectModal from 'components/LabelModal/InspectModal'
 
 import './candidate.css'
@@ -54,16 +54,15 @@ class Plot extends React.PureComponent {
     const {candidate} = this.props
 
     return (
-
       <div className='chart-container'>
-        {this.state.inspectModal?
-          <InspectModal candidate={candidate} onClose={() => this.setState({inspectModal: false})}/>: null}
         <Button.Group basic>
           <Button icon='magnify' content='Inspect' onClick={() => this.onLabel()} />
-          <Button icon='check' onClick={(e) => this.accept()} />
-          <Button icon='close' onClick={(e) => this.remove()} />
+          <Button icon='check' content='Use' onClick={(e) => this.accept()} />
+          {/* <Button icon='close' onClick={(e) => this.remove()} /> */}
         </Button.Group>
-        <div className='canonical'>{candidate.formula}</div>
+        <div>
+          <Label>{candidate.formula}</Label>
+        </div>
         <div>
           <div className='chart' onClick={e => this.onClick(e)}>
             <InnerChart dataURL={this.state.dataURL}/>
@@ -72,6 +71,9 @@ class Plot extends React.PureComponent {
             <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
         </div>
+
+        {this.state.inspectModal?
+          <InspectModal candidate={candidate} onClose={() => this.setState({inspectModal: false})}/>: null}
       </div>
     )
   }

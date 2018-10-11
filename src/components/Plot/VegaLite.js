@@ -7,7 +7,7 @@ import InnerChart from './InnerChart'
 // renders vegalite plot and display errors
 class VegaLite extends React.PureComponent {
   static propTypes = {
-    spec: PropTypes.object,
+    spec: PropTypes.object.isRequired,
     bigSize: PropTypes.bool,
   }
   state = {logger: {}, dataURL: null}

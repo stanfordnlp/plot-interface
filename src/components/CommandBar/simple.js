@@ -57,10 +57,9 @@ class CommandBar extends React.Component {
         onChange={(e, v) => this.onChange(e, v)}
         onKeyDown ={e => this.handleKeyDown(e)}
         autoFocus
-        fluid
         size="large"
         >
-          <input autoFocus/>
+          <input/>
           <Icon name='search' link={true} onClick={e => this.handleClick(e)}/>
         </Input>
     );

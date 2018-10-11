@@ -1,23 +1,19 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { NavLink as Link } from "react-router-dom"
+import { Icon, Menu, Button } from 'semantic-ui-react'
 import CommandBar from "../CommandBar/simple"
-
 import "./styles.css"
 
 const Header = ({ search }) => {
   // console.log(search)
+  const activeItem = 'bio'
   return (
   <div className="Header">
-    <CommandBar/>
-    {/* <div className="Header-logo">
-      <span>Plotting</span>
-      <span className="Header-sublogo">catch phrase</span>
-    </div> */}
-    <div className="Header-nav">
-      <Link exact to={{ pathname: "/build", search: search}} activeClassName="active"><div>Plot</div></Link>
-      <Link exact to={{ pathname: "/build/help", search: search}} activeClassName="active"><div>Help</div></Link>
-    </div>
+    <Menu inverted attached='top'>
+      {/* <Icon name="settings" size="large" link={true} styles={{margin: "10px"}}/> */}
+      <CommandBar/>
+    </Menu>
   </div>
   )
 }
