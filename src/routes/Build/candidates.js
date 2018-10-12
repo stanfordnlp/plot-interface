@@ -119,7 +119,7 @@ class Candidates extends PureComponent {
     let plotsPlus = [];
     if (showFormulas) {
       plotsPlus.push(
-        <div className="debug" key="debug-table" style={{height:'400px', overflow: 'scroll'}}>
+        <div className="chart-container" key="debug-table" style={{overflow: 'scroll'}}>
           <table>
             <tbody>
             {

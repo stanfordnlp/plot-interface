@@ -44,22 +44,21 @@ class Build extends PureComponent {
       <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
         <div className='Candidates'>
           <div className="chart-container">
-            <Toolbar/>
-          </div>
-          <div className="chart-container">
-            <div>
-             <Header size='medium'>Current Example</Header>
-             {
-              this.props.isInitial?
-              'no current plot'
-              :
-              <VegaLite
-                spec={this.props.context}
-                dataValues={this.props.dataValues}
-              />
-            }
-          </div>
-
+            <Header size='medium'>Current Example</Header>
+            <div style={{display: "flex"}}>
+              <Toolbar/>
+              <div>
+                {
+                  this.props.isInitial?
+                  'no current plot'
+                  :
+                  <VegaLite
+                    spec={this.props.context}
+                    dataValues={this.props.dataValues}
+                  />
+                }
+              </div>
+            </div>
           </div>
           <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
         </div>

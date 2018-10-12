@@ -1,11 +1,9 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from 'prop-types';
-
-// import Modal from "react-modal"
 import VegaLite from "components/Plot/VegaLite"
-import { Checkbox, Button, Modal, Input, Menu, Popup, Label} from 'semantic-ui-react'
-import {prettyStringify, editorURL} from 'helpers/vega-utils'
+import { Checkbox, Button, Modal, Input, Menu, Popup} from 'semantic-ui-react'
+// import {prettyStringify, editorURL} from 'helpers/vega-utils'
 import {execute} from 'helpers/util'
 
 const inputProps = (schema) => {
@@ -123,7 +121,7 @@ class LabelModal extends Component {
 
       <Modal.Actions>
         <Checkbox label="show new" onChange={() => this.toggleOverlay()} checked={this.state.overlay}/>
-        <Button onClick={() => window.open(editorURL(prettyStringify(patchedSpec)), '_blank')}>Open in Editor</Button>
+        {/* <Button onClick={() => window.open(editorURL(prettyStringify(patchedSpec)), '_blank')}>Open in Editor</Button> */}
         <Button negative onClick={() => this.props.onClose()}>Close</Button>
       </Modal.Actions>
     </Modal>

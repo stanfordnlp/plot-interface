@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
-import { Dropdown, Icon, Checkbox, Segment, Button, Menu } from 'semantic-ui-react'
-import config from 'config'
+import { Dropdown, Checkbox, Menu } from 'semantic-ui-react'
 import {prettyStringify, editorURL} from 'helpers/vega-utils'
 import {examplesList} from '../../helpers/vega-utils';
 
@@ -32,14 +31,22 @@ class Toolbar extends React.Component {
             onChange={(e, data) => this.setExample(data.value)}
           />
         </Menu.Item>
+
+        <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
+          Open in Editor
+        </Menu.Item>
         <Menu.Item>
           <Checkbox
             label="Show all"
-            onClick={() => {this.toggleShowFormulas()}}
+            onClick={() => {this.toggleShowErrors(); this.toggleShowFormulas()}}
           />
         </Menu.Item>
         <Menu.Item>
-          <Button onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>Open in Editor</Button>
+          <Menu>
+            <Menu.Item>
+              
+            </Menu.Item>
+          </Menu>
         </Menu.Item>
       </Menu>
     )
