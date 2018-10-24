@@ -7,21 +7,9 @@ import { Input, Icon, Segment } from 'semantic-ui-react'
 import "./styles.css"
 
 class CommandBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: props.query
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.state.value !== nextProps.query)
-      this.setState({'value': nextProps.query})
-  }
-
   componentDidMount() {
     Mousetrap.prototype.stopCallback = () => false;
-    // Mousetrap.bind("ctrl+m", (e) => { this.commandBar.focus() })
+    Mousetrap.bind("ctrl+m", (e) => { this.commandBar.focus() })
     // setTimeout(this.commandBar.focus(), 2000)
   }
   componentWillUnmount() {
@@ -30,9 +18,6 @@ class CommandBar extends React.Component {
   }
 
   onChange = (event, {value}) => {
-    this.setState({
-      value: value
-    });
     this.props.dispatch(Actions.setQuery(value))
   };
 
@@ -47,7 +32,7 @@ class CommandBar extends React.Component {
   }
 
   sendQuery() {
-    this.props.dispatch(Actions.tryQuery(this.props.query))
+    this.props.dispatch(Actions.tryQuery())
   }
 
   render() {
@@ -55,6 +40,7 @@ class CommandBar extends React.Component {
       <Input className="CommandBar" icon placeholder='type a command...'
         ref={(input) => { this.commandBar = input; }}
         onChange={(e, v) => this.onChange(e, v)}
+        value={this.props.query}
         onKeyDown ={e => this.handleKeyDown(e)}
         autoFocus
         size="large"

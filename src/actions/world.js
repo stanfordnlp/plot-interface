@@ -52,36 +52,23 @@ const Actions = {
     }
   },
 
-  tryQuery: (q) => {
+  // send the current query
+  tryQuery: () => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
-      const { context, query, schema, datasetURL } = getState().world
-      // if ('initialContext' in context) {
-      //   window.alert('you need a starting plot before issuing a command');
-      //   return
-      // }
+      const { context, query, schema, datasetURL, filter } = getState().world
       dispatch({
         type: Constants.SET_STATUS,
         status: STATUS.LOADING
       })
 
-      return SEMPREquery({ q: ['q', {utterance: q, context, schema, datasetURL}], sessionId: sessionId })
+      return SEMPREquery({ q: ['q', {utterance: query, context, schema, datasetURL, filter}], sessionId: sessionId })
       .then((response) => {
         const candidates = response.candidates
-        /* Remove no-ops */
-        // const responses = candidates.filter((a) => {
-        //   return a.value!==context
-        // })
         dispatch({
           type: Constants.SET_ISSUED_QUERY,
           issuedQuery: query
         })
-
-        // dispatch({
-        //   type: Constants.SET_STATUS,
-        //   status: 'Rendering'
-        // })
-
         dispatch({
           type: Constants.SET_RESPONSES,
           responses: candidates

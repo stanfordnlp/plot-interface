@@ -12,6 +12,7 @@ const ajv = new Ajv({
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
 
+export const vegaliteKeywords = require('../schema/vega-lite/keywords.json').keywords
 const vegaValidator = ajv.compile(require('../schema/vega/v4.2.0.json'));
 const vegaLiteValidator = ajv.compile(require('../schema/vega-lite/v3.0.0-rc5.json'));
 

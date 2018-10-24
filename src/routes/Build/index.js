@@ -45,7 +45,7 @@ class Build extends PureComponent {
         <div className='Candidates'>
           <div className="chart-container">
             <Header size='medium'>Current Example</Header>
-            <div style={{display: "flex"}}>
+            <div style={{display: "flex", alignItems: 'flex-start'}}>
               <Toolbar/>
               <div>
                 {
