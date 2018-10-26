@@ -101,9 +101,9 @@ class Toolbar extends React.Component {
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
-          Open in Editor
+          Open in Editor...
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item onClick={() => window.open("https://github.com/stanfordnlp/plot-interface/blob/master/Help.md", '_blank')}>
           Help
         </Menu.Item>
         {/* <Menu.Item onClick={() => {}}>
