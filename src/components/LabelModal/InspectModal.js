@@ -3,26 +3,27 @@ import { connect } from "react-redux"
 import PropTypes from 'prop-types';
 import VegaLite from "components/Plot/VegaLite"
 import { Checkbox, Button, Modal, Input, Menu, Popup} from 'semantic-ui-react'
+import Actions from 'actions/world'
 // import {prettyStringify, editorURL} from 'helpers/vega-utils'
 import {execute} from 'helpers/util'
 
-const inputProps = (schema) => {
-  const {type} = schema
-  console.log(schema)
-  if (type === 'number') {
-    const props = {type: 'number', step: 0.5}
-    const {minimum, maximum} = schema
-    if (minimum !== undefined)
-      props.min = minimum
-    if (maximum !== undefined)
-      props.max = maximum
-    if (minimum!== undefined && maximum!== undefined)
-      props.step = (maximum - minimum) / 10
-    return props
-  } else {
-    return {type: 'text', disabled: true}
-  }
-}
+// const inputProps = (schema) => {
+//   const {type} = schema
+//   console.log(schema)
+//   if (type === 'number') {
+//     const props = {type: 'number', step: 0.5}
+//     const {minimum, maximum} = schema
+//     if (minimum !== undefined)
+//       props.min = minimum
+//     if (maximum !== undefined)
+//       props.max = maximum
+//     if (minimum!== undefined && maximum!== undefined)
+//       props.step = (maximum - minimum) / 10
+//     return props
+//   } else {
+//     return {type: 'text', disabled: true}
+//   }
+// }
 
 
 class LabelModal extends Component {
@@ -50,21 +51,28 @@ class LabelModal extends Component {
     this.setState({value: value})
   }
 
+  accept() {
+    const {spec, patch} = this.state
+    this.props.dispatch(Actions.accept(spec, patch));
+  }
+
   render() {
     const {context, candidate} = this.props
     const {schema} = candidate
     const {overlay, spec, value, patch} = this.state
     const path = patch.path
 
-    if (schema.type === 'number')
-      patch.value = parseFloat(value)
-
-    const newSpec = JSON.parse(JSON.stringify(spec))
-    const patchedSpec = JSON.parse(JSON.stringify(execute(newSpec, [patch])))
-    console.log(patchedSpec, patch)
+    let coercedValue
+    try {
+      coercedValue = JSON.parse(value);
+    } catch(e) {
+      coercedValue = value
+    }
+    patch.value = coercedValue
+    // deep copy spec if you'd not see a permanat ef
+    const patchedSpec = JSON.parse(JSON.stringify(execute(spec, [patch])))
 
     const currentPlot = (
-      <div className="half-panel">
         <div style={{top: '0px', paddingLeft: '100px', position: "relative"}}>
           <div className={this.state.overlay? "overlay-top" : "overlay-bot"} >
             <VegaLite spec={patchedSpec} dataValues={this.props.dataValues} bigSize={true}/>
@@ -73,10 +81,8 @@ class LabelModal extends Component {
             <VegaLite spec={context} dataValues={this.props.dataValues} bigSize={true}/>
           </div>
         </div>
-    </div>
     )
 
-    console.log(patch)
     const PatchUI = (
       <Input
         value={String(value)}
@@ -88,7 +94,7 @@ class LabelModal extends Component {
           size="large"
           flowing
         />
-        <input {...inputProps(schema)}/>
+        <input/>
       </Input>
     )
 
@@ -102,7 +108,7 @@ class LabelModal extends Component {
         // contentLabel="label-modal"
       >
       <Modal.Header>
-        Compare
+        Compare and Edit
       </Modal.Header>
       {PatchUI}
       <Menu tabular>
@@ -120,8 +126,9 @@ class LabelModal extends Component {
       {currentPlot}
 
       <Modal.Actions>
-        <Checkbox label="show new" onChange={() => this.toggleOverlay()} checked={this.state.overlay}/>
+        <Checkbox toggle label="show new" onChange={() => this.toggleOverlay()} checked={this.state.overlay}/>
         {/* <Button onClick={() => window.open(editorURL(prettyStringify(patchedSpec)), '_blank')}>Open in Editor</Button> */}
+        <Button primary onClick={() => this.accept()}>Use</Button>
         <Button negative onClick={() => this.props.onClose()}>Close</Button>
       </Modal.Actions>
     </Modal>

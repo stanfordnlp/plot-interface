@@ -4,18 +4,30 @@ import AceEditor from 'react-ace'
 import {prettyStringify} from 'helpers/vega-utils'
 // import * as ace from 'brace'
 // var Range = ace.acequire('ace/range').Range
-import "./styles.css"
 import 'brace/mode/json';
+import 'brace/theme/monokai';
 import 'brace/theme/github';
 
 class DiffEditor extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      specString : prettyStringify(props.initial),
-      context: props.context,
+
+  componentDidMount() {
+    if (this.props.fold)
+      this.fold()
+  }
+  componentDidUpdate() {
+    if (this.props.fold)
+      this.fold()
+  }
+
+  fold() {
+    console.log('fold called')
+    if (this.refs.aceEditor) {
+      // console.log('ref set', this.refs.aceEditor.editor.session)
+      setTimeout(() => { this.refs.aceEditor.editor.session.foldAll(1,100); }, 100);
+      // this.refs.aceEditor.session.foldAll(1,100)
     }
   }
+
   render() {
     return (
       <AceEditor
@@ -23,8 +35,8 @@ class DiffEditor extends PureComponent {
         mode="json"
         theme="github"
         width="100%"
-        value={this.props.value}
-        readOnly={true}
+        height="600px"
+        {...this.props}
       />
     )
   }

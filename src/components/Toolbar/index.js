@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
-import { Dropdown, Checkbox, Menu, Button} from 'semantic-ui-react'
+import { Dropdown, Checkbox, Menu, Icon} from 'semantic-ui-react'
 import {prettyStringify, editorURL, vegaliteKeywords} from 'helpers/vega-utils'
 import {examplesList} from 'helpers/vega-utils';
 import {initialState} from 'store/world'

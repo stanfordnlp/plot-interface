@@ -6,6 +6,7 @@ import hash from 'string-hash'
 import InnerChart from './InnerChart'
 import { Button, Label, Header } from 'semantic-ui-react'
 import InspectModal from 'components/LabelModal/InspectModal'
+import TeachingModal from 'components/LabelModal/TeachingModal'
 
 import './candidate.css'
 
@@ -23,7 +24,7 @@ class Plot extends React.PureComponent {
     const {logger} = this.props;
     const hasError = logger.warns.length > 0 || logger.errors.length > 0;
     this.config = { showTools: true, iconSize: 20}
-    this.state = { isClosed: false, labeling: false, hasError, ...props}
+    this.state = { isClosed: false, inspectModal: false, teachModal: false, hasError, ...props}
   }
 
   accept() {
@@ -37,6 +38,10 @@ class Plot extends React.PureComponent {
 
   onLabel() {
     this.setState({inspectModal: true})
+  }
+
+  onTeach() {
+    this.setState({teachModal: true})
   }
 
   onClick(e) {
@@ -56,7 +61,8 @@ class Plot extends React.PureComponent {
     return (
       <div className='chart-container'>
         <Button.Group basic>
-          <Button icon='magnify' content='Inspect' onClick={() => this.onLabel()} />
+          <Button icon='magnify' content='Open' onClick={() => this.onLabel()} />
+          <Button icon='comment' content='Teach' onClick={() => this.onTeach()} />
           <Button icon='check' content='Use' onClick={(e) => this.accept()} />
           {/* <Button icon='close' onClick={(e) => this.remove()} /> */}
         </Button.Group>
@@ -74,6 +80,9 @@ class Plot extends React.PureComponent {
 
         {this.state.inspectModal?
           <InspectModal candidate={candidate} onClose={() => this.setState({inspectModal: false})}/>: null}
+
+        {this.state.teachModal?
+          <TeachingModal candidate={candidate} onClose={() => this.setState({teachModal: false})}/>: null}
       </div>
     )
   }

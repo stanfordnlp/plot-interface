@@ -88,9 +88,9 @@ const Actions = {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { issuedQuery, context, schema, datasetURL } = getState().world
-
-      const q = ['accept', {utterance: issuedQuery, taergetFormula: formula,
-        context, schema, targetValue: spec, datasetURL}]
+      const q = ['accept', {utterance: issuedQuery,
+        targetFormula: formula,
+        targetValue: spec,   context, schema, datasetURL}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
