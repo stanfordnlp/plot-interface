@@ -16,7 +16,8 @@ const initialData = [
   {"a": "E", "b": 4},
   {"a": "E", "b": 7}
 ];
-const initialState = {
+
+export const initialState = {
   context: emptyContext,
   responses: [],
   status: STATUS.TRY,

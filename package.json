@@ -26,7 +26,6 @@
     "react": "^16.4.2",
     "react-ace": "^6.1.4",
     "react-ace-editor": "0.0.2",
-    "react-autosuggest": "^9.3.1",
     "react-dom": "^16.4.2",
     "react-icons": "^3.0.4",
     "react-modal": "^3.5.1",
@@ -41,7 +40,7 @@
     "rfc6902": "^2.4.0",
     "schema": "https://github.com/vega/schema",
     "semantic-ui-css": "^2.4.0",
-    "semantic-ui-react": "^0.82.5",
+    "semantic-ui-react": "0.83",
     "string-hash": "^1.1.3",
     "vega": "4.2.0",
     "vega-lite": "^3.0.0-rc0"
