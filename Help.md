@@ -1,16 +1,15 @@
 # Help
 
 This interface translates naturalized commands to actions in the [VegaLite] data visualization language.
-To use this tool, **type a command** like "remove ticks", "change x label to XYZ", "move the axis label down" and press enter.
-Use *select an example* to try another example (from [VegaLite examples](https://vega.github.io/vega-lite/examples/)).
+To use this tool, **type a command** like `remove ticks`, `change x label to XYZ`, `move the axis label down` and press enter.
+Use **select an example** to try another example (from [VegaLite examples]).
 
 If you are happy with the result, click **Use**, which then set that modification as the Current Example, and you can proceed with further modifications.
 
 ## Example commands
 
-Currently this tool handles plot formatting operations, try:
+### Simple Bar Chart
 
-Simple Bar Chart
 * make bar narrow
 * put XYZ as the plot title
 * add a title to the plot
@@ -21,11 +20,23 @@ Simple Bar Chart
 * make y label giant
 * move legend to the bottom
 
-Stacked Bar Chart (Legend)
+### Stacked Bar Chart (has legend)
 * remove entire legend
 * remove legend label
 * put a red box around the legend
 * add more space between plot and legend
 * move legend to the top
 
-[VegaLite](https://vega.github.io/vega-lite/)
+## Caveats
+
+### Usage
+* If you want to change a string, use `XYZ` (which is in the training set).
+* red, green, blue are the only allowed colors
+
+### Technical
+* The current scope is just plot formatting operations, which does not include data processing and significant changes of the visualization type.
+* Also not supporting direct operations on composed plots (layered, faceted, etc.)
+
+
+[VegaLite]: https://vega.github.io/vega-lite/
+[VegaLite examples]: https://vega.github.io/vega-lite/examples/.
