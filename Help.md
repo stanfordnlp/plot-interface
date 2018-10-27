@@ -1,8 +1,8 @@
 # Help
 
-This interface translates naturalized commands to actions in the [VegaLite] data visualization language.
+This interface translates naturalized commands to actions in the [Vega-Lite] data visualization language.
 To use this tool, **type a command** like `remove ticks`, `change x label to XYZ`, `move the axis label down` and press enter.
-Use **select an example** to try another example (from [VegaLite Examples]).
+Use **select an example** to try another example (from [Vega-Lite Examples]).
 
 If you are happy with the result, **Open** the plot and click **Use**, which then set that modification as the Current Example, and you can proceed with further modifications.
 
@@ -30,7 +30,7 @@ If you are happy with the result, **Open** the plot and click **Use**, which the
 
 ## Tips
 
-If you are familiar with VegaLite or willing to read [VegaLite Docs], you can use the **Filters** to help retrieve the desired action. There are two filters: `value type` and `VegaLite keywords`. If you select a type, then only modifications of that type e.g. `number` are be returned. If you select a few keywords, which are the same keywords that appear in the VegaLite specification, then only modifications containing those keywords are returned. e.g. `title`, `axisX`.
+If you are familiar with Vega-Lite or willing to read [Vega-Lite Docs], you can use the **Filters** to help retrieve the desired action. There are two filters: `value type` and `VegaLite keywords`. If you select a type, then only modifications of that type e.g. `number` are be returned. If you select a few keywords, which are the same keywords that appear in the Vega-Lite specification, then only modifications containing those keywords are returned. e.g. `title`, `axisX`.
 
 ### Caveats
 
@@ -49,6 +49,6 @@ Any fields containing the following are not modified: `$schema`,
     `geoshape`, `geojson`, `latitute`, `longitute`,
     `timeUnit`
 
-[VegaLite]: https://vega.github.io/vega-lite/
-[VegaLite Examples]: https://vega.github.io/vega-lite/examples/.
-[VegaLite Docs]: https://vega.github.io/vega-lite/docs/
+[Vega-Lite]: https://vega.github.io/vega-lite/
+[Vega-Lite Examples]: https://vega.github.io/vega-lite/examples/.
+[Vega-Lite Docs]: https://vega.github.io/vega-lite/docs/
