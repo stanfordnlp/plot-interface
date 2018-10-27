@@ -118,7 +118,7 @@ class LabelModal extends Component {
     )
 
     return (
-      <Modal size="fullscreen"
+      <Modal size="large"
         // closeIcon={true}
         open={true}
         onClose={() => this.props.onClose()}

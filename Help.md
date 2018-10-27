@@ -4,7 +4,7 @@ This interface translates naturalized commands to actions in the [VegaLite] data
 To use this tool, **type a command** like `remove ticks`, `change x label to XYZ`, `move the axis label down` and press enter.
 Use **select an example** to try another example (from [VegaLite Examples]).
 
-If you are happy with the result, click **Use**, which then set that modification as the Current Example, and you can proceed with further modifications.
+If you are happy with the result, **Open** the plot and click **Use**, which then set that modification as the Current Example, and you can proceed with further modifications.
 
 ## Example commands
 
@@ -41,6 +41,13 @@ If you are familiar with VegaLite or willing to read [VegaLite Docs], you can us
 * Only support plot formatting operations, which does not include data processing and significant changes of the visualization type
 * Does not support direct operations on composed plots (layered, faceted, etc.)
 
+Any fields containing the following are not modified: `$schema`,
+    `vconcat`, `hconcat`, `layer`, `spec`, `repeat`, `facet`,
+    `condition`, `selection`, `cursor`, `tooltip`,
+    `transform`, `data`,
+    `impute`, `aggregate`, `bin`,
+    `geoshape`, `geojson`, `latitute`, `longitute`,
+    `timeUnit`
 
 [VegaLite]: https://vega.github.io/vega-lite/
 [VegaLite Examples]: https://vega.github.io/vega-lite/examples/.

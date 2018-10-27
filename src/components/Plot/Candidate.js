@@ -63,14 +63,14 @@ class Plot extends React.PureComponent {
         <Button.Group basic>
           <Button icon='magnify' content='Open' onClick={() => this.onLabel()} />
           <Button icon='comment' content='Teach' onClick={() => this.onTeach()} />
-          <Button icon='check' content='Use' onClick={(e) => this.accept()} />
+          {/* <Button icon='check' content='Use' onClick={(e) => this.accept()} />*/}
           {/* <Button icon='close' onClick={(e) => this.remove()} /> */}
         </Button.Group>
         <div>
           <Label>{candidate.formula}</Label>
         </div>
         <div>
-          <div className='chart' onClick={e => this.onClick(e)}>
+          <div className='chart' onClick={e => this.onLabel(e)}>
             <InnerChart dataURL={this.state.dataURL}/>
           </div>
           <div>

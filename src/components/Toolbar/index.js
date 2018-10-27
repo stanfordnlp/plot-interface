@@ -6,6 +6,7 @@ import {prettyStringify, editorURL, vegaliteKeywords} from 'helpers/vega-utils'
 import {examplesList} from 'helpers/vega-utils';
 import {initialState} from 'store/world'
 
+const helpLink = "https://github.com/stanfordnlp/plot-interface/blob/master/Help.md#help"
 const valueTypeOptions = ['any', 'number', 'string', 'boolean', 'null', 'array', 'object'].map((v) =>
     {return {key: v, value: v, text: v}}
 );
@@ -103,7 +104,7 @@ class Toolbar extends React.Component {
         <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
           Open in Editor...
         </Menu.Item>
-        <Menu.Item onClick={() => window.open("https://github.com/stanfordnlp/plot-interface/blob/master/Help.md", '_blank')}>
+        <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
           Help
         </Menu.Item>
         {/* <Menu.Item onClick={() => {}}>
