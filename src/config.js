@@ -17,6 +17,7 @@ const config = {
   maxDisplay: 5,
   processingInterval: 3,
   noChangeScore: 0.05,
+  initialExample: "bar", // set to undefined for random
 }
 
 

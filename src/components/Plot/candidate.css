@@ -7,6 +7,13 @@
   height: auto;
 }
 
+.chart-highlight {
+  border: solid;
+  border-width: 4px;
+  /* margin: 10px; */
+}
+
+
 .chart-header {
   padding: 5px 5px 5px;
   margin-bottom: 5px;
@@ -14,16 +21,4 @@
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
-}
-
-.all-overlays {
-  position:relative;
-}
-
-.canonical {
-  margin-top: 7px;
-  margin: 5px;
-  width: inherit;
-  /* font-size: 1em; */
-  color: green;
 }

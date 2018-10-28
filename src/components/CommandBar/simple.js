@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import Actions from "actions/world"
 import Mousetrap from 'mousetrap'
 // eslint-disable-next-line
-import { Input, Icon, Segment } from 'semantic-ui-react'
+import { Input, Icon, Button, Label} from 'semantic-ui-react'
 import "./styles.css"
 
 class CommandBar extends React.Component {
@@ -37,18 +37,21 @@ class CommandBar extends React.Component {
 
   render() {
     return (
-      <Input className="CommandBar" icon placeholder='type a command...'
+      <Input className="CommandBar" icon placeholder='type a command... e.g. move y axis left'
         ref={(input) => { this.commandBar = input; }}
         onChange={(e, v) => this.onChange(e, v)}
         value={this.props.query}
         onKeyDown ={e => this.handleKeyDown(e)}
         autoFocus
         size="large"
-        >
-          <input/>
-          <Icon name='search' link={true} onClick={e => this.handleClick(e)}/>
-        </Input>
-    );
+        action
+        inverted
+      >
+        <input/>
+        {/*<Label><Icon name='terminal' link={true} onClick={e => this.handleClick(e)}/></Label>*/}
+        <Button primary content='Enter' onClick={e => this.handleClick(e)} />
+      </Input>
+    )
   }
 }
 

@@ -2,9 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
 import { Dropdown, Checkbox, Menu, Icon} from 'semantic-ui-react'
+
+import TeachingModal from 'components/LabelModal/EditorModal'
 import {prettyStringify, editorURL, vegaliteKeywords} from 'helpers/vega-utils'
 import {examplesList} from 'helpers/vega-utils';
 import {initialState} from 'store/world'
+
+import config from 'config'
 
 const helpLink = "https://github.com/stanfordnlp/plot-interface/blob/master/Help.md#help"
 const valueTypeOptions = ['any', 'number', 'string', 'boolean', 'null', 'array', 'object'].map((v) =>
@@ -18,6 +22,11 @@ const keywordOptions = vegaliteKeywords.map((v) =>
 );
 
 class Toolbar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {editModal: false, importModal: false}
+  }
+
   toggleShowErrors() {
     this.props.dispatch(Actions.setState({showErrors: !this.props.showErrors}));
   }
@@ -34,7 +43,7 @@ class Toolbar extends React.Component {
   setFilterKeys(value) {
     const {dispatch, filter} = this.props
     dispatch(Actions.setState({'filter': {...filter, 'keywords': value}}))
-    dispatch(Actions.tryQuery())
+    dispatch(Actions.tryQuery("filter"))
   }
 
   search(options, value) {
@@ -47,27 +56,55 @@ class Toolbar extends React.Component {
   setFilterType(value) {
     const {dispatch, filter} = this.props
     dispatch(Actions.setState({'filter': {...filter, 'type': value}}))
-    dispatch(Actions.tryQuery())
+    dispatch(Actions.tryQuery("filter"))
   }
 
   clearFilter() {
     const {dispatch} = this.props
     dispatch(Actions.setState({'filter': initialState.filter}))
-    dispatch(Actions.tryQuery())
+    dispatch(Actions.tryQuery("filter_clear"))
   }
 
   render() {
-    const {filter} = this.props
+    const {filter, context} = this.props
     return (
       <Menu vertical style={{minWidth: '300px'}}>
-
         <Menu.Item>
           <Menu.Header>Select an example</Menu.Header>
           <Dropdown id="example-selector" placeholder='select an example' search selection fluid
             options={exampleOptions}
             onChange={(e, data) => this.setExample(data.value)}
+            defaultValue={config.initialExample}
           />
         </Menu.Item>
+
+
+        <Menu.Item onClick={() => this.setState({importModal: true})}>
+          Import spec
+        </Menu.Item>
+        {this.state.importModal?
+          <TeachingModal header={"Import spec"} spec={{"paste your spec here": "!"}} context={{}}
+            onClose={() => {
+              this.setState({importModal: false})
+            }}/>: null}
+
+        <Menu.Item onClick={() => this.setState({editModal: true})}>
+          Edit current spec
+        </Menu.Item>
+
+        {this.state.editModal?
+          <TeachingModal header={"Edit spec"}  spec={context} context={context} onClose={() => this.setState({editModal: false})}/>: null}
+
+
+        <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
+          Open in Vega editor...
+        </Menu.Item>
+        <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
+          Help
+        </Menu.Item>
+        {/* <Menu.Item onClick={() => {}}>
+          Render more
+        </Menu.Item> */}
         <Menu.Item>
           <Menu.Header>
             Filters
@@ -101,15 +138,6 @@ class Toolbar extends React.Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
-        <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
-          Open in Editor...
-        </Menu.Item>
-        <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
-          Help
-        </Menu.Item>
-        {/* <Menu.Item onClick={() => {}}>
-          Render more
-        </Menu.Item> */}
       </Menu>
     )
   }

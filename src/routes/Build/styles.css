@@ -7,6 +7,14 @@ div.Candidates {
   flex-wrap: wrap;
 }
 
+div.flex-list {
+  display: flex;
+  align-items: stretch;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
 .editor-container > div {
   margin: 10px;
 }

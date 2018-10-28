@@ -1,19 +1,20 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { NavLink as Link } from "react-router-dom"
-import { Icon, Menu, Button } from 'semantic-ui-react'
+import { Icon, Segment, Button } from 'semantic-ui-react'
 import CommandBar from "../CommandBar/simple"
-import "./styles.css"
 
 const Header = ({ search }) => {
   // console.log(search)
-  const activeItem = 'bio'
   return (
   <div className="Header">
-    <Menu inverted attached='top'>
-      {/* <Icon name="settings" size="large" link={true} styles={{margin: "10px"}}/> */}
-      <CommandBar/>
-    </Menu>
+    <div style={{
+      left: "50px",
+      top: "25px",
+      position: "absolute",
+    }}>
+    <Icon name="question" size="big"/> </div>
+    <CommandBar/>
   </div>
   )
 }

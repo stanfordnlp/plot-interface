@@ -1,14 +1,17 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
-import { Card, Dropdown, Container, Header} from 'semantic-ui-react'
+import { Icon, Header} from 'semantic-ui-react'
 
 // import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
 import Toolbar from "components/Toolbar"
+import CommandBar from "components/CommandBar/simple"
+
 import Actions from "actions/world"
 import {examplesList} from '../../helpers/vega-utils';
+import config from 'config'
 import "./styles.css"
 
 class Build extends PureComponent {
@@ -24,7 +27,7 @@ class Build extends PureComponent {
     // const {dispatch} = this.props
     // const name = getParameterByName('example')
     // dispatch(Actions.labelInit(name))
-    this.setExample('bar', 'Simple Bar Chart')
+    this.setExample(config.initialExample)
   }
 
   onLabel = (candidate) => {
@@ -41,29 +44,24 @@ class Build extends PureComponent {
         {return {key: ex.name, value: ex.name, text: ex.title}}
     );
     return (
-      <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <div className='Candidates'>
-          <div className="chart-container">
-            <Header size='medium'>Current Example</Header>
-            <div style={{display: "flex", alignItems: 'flex-start'}}>
-              <Toolbar/>
-              <div>
-                {
-                  this.props.isInitial?
-                  'no current plot'
-                  :
-                  <VegaLite
-                    spec={this.props.context}
-                    dataValues={this.props.dataValues}
-                  />
-                }
+        <div className='flex-list'>
+            <Toolbar/>
+            {
+              this.props.isInitial?
+              'no current plot'
+              :
+              <div className="chart-container chart-highlight pinhalfp" style={{marginRight: "25px"}}>
+                <Header size='medium'>Current plot</Header>
+                <VegaLite
+                  spec={this.props.context}
+                  dataValues={this.props.dataValues}
+                />
+                {/* <Icon className="pinhalfc" name="arrow right" size="big"/> */}
               </div>
-            </div>
+            }
+            <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
           </div>
-          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
-        </div>
-      </div>
-    );
+    )
   }
 }
 

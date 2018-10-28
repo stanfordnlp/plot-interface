@@ -5,8 +5,9 @@ import Actions from 'actions/world'
 import hash from 'string-hash'
 import InnerChart from './InnerChart'
 import { Button, Label, Header } from 'semantic-ui-react'
-import InspectModal from 'components/LabelModal/InspectModal'
 import TeachingModal from 'components/LabelModal/TeachingModal'
+import InspectModal from 'components/LabelModal/InspectModal'
+import PathEditor from "components/Plot/PathEditor"
 
 import './candidate.css'
 
@@ -57,17 +58,17 @@ class Plot extends React.PureComponent {
     const errors = this.state.logger.errors.map((v, i) => <li className='display-errors' key={'error'+i}>{v}</li>)
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
     const {candidate} = this.props
-
+    const patch = candidate.canonical_patch[0]
     return (
       <div className='chart-container'>
         <Button.Group basic>
-          <Button icon='magnify' content='Open' onClick={() => this.onLabel()} />
-          <Button icon='comment' content='Teach' onClick={() => this.onTeach()} />
-          {/* <Button icon='check' content='Use' onClick={(e) => this.accept()} />*/}
-          {/* <Button icon='close' onClick={(e) => this.remove()} /> */}
+           <Button icon='magnify' content='Open' onClick={() => this.onLabel()} />
+           {/*<Button icon='comment' content='Teach' onClick={() => this.onTeach()} />*/}
+           {/*<Button icon='check' content='Use' onClick={(e) => this.accept()} />*/}
+           <Button icon='close' onClick={(e) => this.remove()} />
         </Button.Group>
         <div>
-          <Label>{candidate.formula}</Label>
+          <PathEditor value={patch.value} onChange={(e, d) => {} } path={patch.path} schema={candidate.schema}/>
         </div>
         <div>
           <div className='chart' onClick={e => this.onLabel(e)}>
@@ -77,16 +78,14 @@ class Plot extends React.PureComponent {
             <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
         </div>
-
         {this.state.inspectModal?
           <InspectModal candidate={candidate} onClose={() => this.setState({inspectModal: false})}/>: null}
-
         {this.state.teachModal?
           <TeachingModal candidate={candidate} onClose={() => this.setState({teachModal: false})}/>: null}
       </div>
     )
-  }
 
+  }
   render() {
     if (!this.props.showErrors && this.state.hasError)
       return null;
@@ -94,7 +93,7 @@ class Plot extends React.PureComponent {
       return null;
     return (
       this.renderChart()
-    );
+    )
   }
 }
 

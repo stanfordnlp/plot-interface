@@ -84,7 +84,7 @@ export function vegaLiteToDataURLWithErrors(vegaLiteSpec, values) {
     .then(dataURL => {return {dataURL, logger: vegaWithErrors.logger}})
     .catch(e => {
       console.log('vegaLiteToDataURLWithErrors error', e, vegaLiteSpec)
-      return {dataURL: 'data:,'+encodeURIComponent('empty spec'), logger: vegaWithErrors.logger}
+      return {dataURL: 'chart not shown: spec has errors', logger: vegaWithErrors.logger}
     })
 }
 
@@ -94,7 +94,7 @@ export function vegaToDataURL(vegaSpec, values) {
   try {
     if (Object.keys(vegaSpec).length === 0 && vegaSpec.constructor === Object) {
       // console.log(vegaSpec)
-      return Promise.resolve('data:,'+encodeURIComponent('empty spec'))
+      return Promise.resolve('chart not shown: spec has errors')
     }
     runtime = vega.parse(vegaSpec)
     let dataView = new vega.View(runtime)
