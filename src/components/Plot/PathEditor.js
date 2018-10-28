@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import PropTypes from 'prop-types';
 import { Input, Popup, Label} from 'semantic-ui-react'
 import Markdown from 'react-markdown';
 
@@ -24,7 +23,7 @@ import Markdown from 'react-markdown';
 
 class PathEditor extends Component {
   static propTypes = {
-    onChange: PropTypes.func.isRequired,
+    // onChange: PropTypes.func.isRequired,
   }
 
   render() {
@@ -33,8 +32,7 @@ class PathEditor extends Component {
       <Input
         value={String(value)}
         onChange={(e, d) => this.props.onChange(e, d)}
-        label
-
+        labelPosition="left"
       >
           <Popup
             trigger={<Label> {path} </Label>}

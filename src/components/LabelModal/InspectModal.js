@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import PropTypes from 'prop-types';
 import VegaLite from "components/Plot/VegaLite"
 import PathEditor from "components/Plot/PathEditor"
+// eslint-disable-next-line
 import { Checkbox, Button, Modal, Input, Menu, Popup, Label} from 'semantic-ui-react'
 import Actions from 'actions/world'
 // import {prettyStringify, editorURL} from 'helpers/vega-utils'

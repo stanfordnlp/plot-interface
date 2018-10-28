@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
+// eslint-disable-next-line 
 import { Dropdown, Checkbox, Menu, Icon} from 'semantic-ui-react'
 
 import TeachingModal from 'components/LabelModal/EditorModal'

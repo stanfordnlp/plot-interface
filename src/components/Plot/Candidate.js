@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import hash from 'string-hash'
 import InnerChart from './InnerChart'
+// eslint-disable-next-line 
 import { Button, Label, Header } from 'semantic-ui-react'
 import TeachingModal from 'components/LabelModal/TeachingModal'
 import InspectModal from 'components/LabelModal/InspectModal'
@@ -68,10 +69,10 @@ class Plot extends React.PureComponent {
            <Button icon='close' onClick={(e) => this.remove()} />
         </Button.Group>
         <div>
-          <PathEditor value={patch.value} onChange={(e, d) => {} } path={patch.path} schema={candidate.schema}/>
+          <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
         </div>
         <div>
-          <div className='chart' onClick={e => this.onLabel(e)}>
+          <div className='chart openable-chart' onClick={e => this.onLabel(e)}>
             <InnerChart dataURL={this.state.dataURL}/>
           </div>
           <div>

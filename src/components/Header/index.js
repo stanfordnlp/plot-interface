@@ -1,7 +1,9 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { NavLink as Link } from "react-router-dom"
+
+// eslint-disable-next-line
 import { Icon, Segment, Button } from 'semantic-ui-react'
+
 import CommandBar from "../CommandBar/simple"
 
 const Header = ({ search }) => {

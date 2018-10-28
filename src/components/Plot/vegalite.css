@@ -5,6 +5,10 @@
   object-fit: scale-down;
 }
 
+.openable-chart {
+  cursor: pointer;
+}
+
 .big-chart {
   padding: 0px;
   max-width: 800px;

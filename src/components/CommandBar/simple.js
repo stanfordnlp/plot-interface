@@ -48,7 +48,6 @@ class CommandBar extends React.Component {
         inverted
       >
         <input/>
-        {/*<Label><Icon name='terminal' link={true} onClick={e => this.handleClick(e)}/></Label>*/}
         <Button primary content='Enter' onClick={e => this.handleClick(e)} />
       </Input>
     )

@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from 'prop-types';
 import VegaLite from "components/Plot/VegaLite"
+// eslint-disable-next-line
 import {Grid, Header, Checkbox, Button, Modal, Input, Menu} from 'semantic-ui-react'
 import Actions from 'actions/world'
 import UserActions from "actions/user"
