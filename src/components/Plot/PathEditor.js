@@ -19,7 +19,10 @@ import Markdown from 'react-markdown';
 //     return {type: 'text', disabled: true}
 //   }
 // }
-
+const defaultMd = "This schema is not documented. Try searching on [VegaLite Docs](https://vega.github.io/vega-lite/docs)..."
+function LinkRenderer(props) {
+  return <a href={props.href} target="_blank">{props.children}</a>
+}
 
 class PathEditor extends Component {
   static propTypes = {
@@ -35,12 +38,16 @@ class PathEditor extends Component {
         labelPosition="left"
       >
           <Popup
-            trigger={<Label> {path} </Label>}
+            trigger={<Label as='a'> {path} </Label>}
+            on="click"
+            // hoverable
+            flowing
             content={
-              <Markdown source={schema.description} />
+              schema.description === undefined?
+              <Markdown source={defaultMd} renderers={{link: LinkRenderer}}/> :
+              <Markdown source={schema.description} renderers={{link: LinkRenderer}}/>
             }
             size="large"
-            flowing
         />
         <input disabled={this.props.onChange === undefined}/>
       </Input>

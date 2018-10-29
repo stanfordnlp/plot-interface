@@ -37,7 +37,7 @@ class CommandBar extends React.Component {
 
   render() {
     return (
-      <Input className="CommandBar" icon placeholder='type a command... e.g. move y axis left'
+      <Input className="CommandBar" icon placeholder='type a command... e.g. label x as "test value"'
         ref={(input) => { this.commandBar = input; }}
         onChange={(e, v) => this.onChange(e, v)}
         value={this.props.query}
