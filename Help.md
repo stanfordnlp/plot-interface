@@ -1,15 +1,29 @@
-# Help
-
 This interface translates naturalized commands to actions in the [VegaLite] data visualization language.
-To use this tool, **type a command** like `remove ticks`, `change x label to "XYZ"`, `move the axis label down` and press enter.
 
-If you are happy with the result, **Open** the plot and click **Use**, which then set that modification as the Current plot, and you can proceed with further modifications.
+# Basics
 
-Use **select an example** to try another example from [VegaLite Examples] or **Import spec** to try your own spec.
+The *current plot* always displayed at the top left.
+This tool modifies the **Current plot** based on naturalized commands,
+which can be typed into the input at the top. For example,
+
+* remove ticks
+* change x label to "XYZ"
+* move the axis label down
+* bar red
+* y label font size 25
+
+Type a command and press enter to retrieve candidate modifications.
+If you like a candidate, click **Use**, which sets the candidate as the Current plot,
+then you can issue more commands.
+
+Use **Select an example** to try another example from [VegaLite Examples] or use **Import spec** to try your own spec.
+
+Currently, this tool can only perform *plot formatting* operations, which means the data is never modified,
+and it does not make significant change to the type of plot.
 
 ## Example commands
 
-### Simple Bar Chart
+### Example: Simple Bar Chart
 * y label font size 25
 * put "something" as the plot title
 * more horizontal grids
@@ -25,13 +39,14 @@ Use **select an example** to try another example from [VegaLite Examples] or **I
 * add a title to the plot
 * bars should be hollow
 
-### Stacked Bar Chart (has legend)
+### Example: Stacked Bar Chart (has legend)
 * remove entire legend
 * remove legend label
 * put a red box around the legend
 * add more space between plot and legend
 * move legend to the top
 * move legend to the bottom
+
 
 ## Tips
 
@@ -43,7 +58,9 @@ If you are familiar with VegaLite or willing to read [VegaLite Docs], you can us
 
 
 ## Technical
+
 * Only support plot formatting operations, which does not include data processing and significant changes of the visualization type
+
 * Does not support direct operations on composed plots (layered, faceted, etc.)
 
 Any fields containing the following are not modified: `$schema`,
