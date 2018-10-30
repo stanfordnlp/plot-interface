@@ -31,7 +31,7 @@ class Plot extends React.PureComponent {
 
   accept() {
     const {value, formula} = this.props.candidate
-    this.props.dispatch(Actions.accept(value, formula));
+    this.props.dispatch(Actions.accept(value, formula, 'Candidate.accept'));
   }
 
   remove() {

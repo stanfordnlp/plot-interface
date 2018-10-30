@@ -41,7 +41,7 @@ class CommandBar extends React.Component {
   }
 
   sendQuery() {
-    this.props.dispatch(Actions.tryQuery())
+    this.props.dispatch(Actions.tryQuery('click'))
   }
 
   sendRandomQuery() {

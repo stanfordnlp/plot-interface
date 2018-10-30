@@ -53,7 +53,7 @@ class LabelModal extends Component {
       return
     }
 
-    this.props.dispatch(Actions.label(value, this.state.spec, "custom_edits"))
+    this.props.dispatch(Actions.label(value, this.state.spec, "", "TeachingModal"))
     .then((response) => {
       if (response) {
         this.props.dispatch(UserActions.increaseCount(1))
@@ -84,7 +84,7 @@ class LabelModal extends Component {
 
   accept() {
     const {spec} = this.state
-    this.props.dispatch(Actions.accept(spec, "custom_edits"));
+    this.props.dispatch(Actions.accept(spec, "", "TeachingModal.accept"));
   }
 
   render() {

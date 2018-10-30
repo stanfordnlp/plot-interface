@@ -56,7 +56,7 @@ class LabelModal extends Component {
 
   accept() {
     const {spec, patch} = this.state
-    this.props.dispatch(Actions.accept(spec, patch));
+    this.props.dispatch(Actions.accept(spec, patch, 'InspectModal.accept'));
   }
 
   render() {

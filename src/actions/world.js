@@ -86,13 +86,13 @@ const Actions = {
   },
 
   // spec is returned by the server, and maybe guaranteed to be correct?
-  accept: (spec, formula) => {
+  accept: (spec, formula, type='accept') => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { issuedQuery, context, schema, datasetURL } = getState().world
       const q = ['accept', {utterance: issuedQuery,
         targetFormula: formula,
-        targetValue: spec, context, schema, datasetURL, type: 'accept'}]
+        targetValue: spec, context, schema, datasetURL, type}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({

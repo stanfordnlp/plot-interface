@@ -37,7 +37,7 @@ class LabelModal extends Component {
 
   accept() {
     const {spec} = this.state
-    this.props.dispatch(Actions.accept(spec, "custom_edits"));
+    this.props.dispatch(Actions.accept(spec, "", "EditorModal.accept"));
     this.props.onClose()
   }
 
