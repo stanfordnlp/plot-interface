@@ -106,9 +106,6 @@ class Toolbar extends React.Component {
         <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
           Open in Vega editor...
         </Menu.Item>
-        <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
-          Help
-        </Menu.Item>
         {/* <Menu.Item onClick={() => {}}>
           Render more
         </Menu.Item> */}
@@ -138,7 +135,7 @@ class Toolbar extends React.Component {
                 value={filter.keywords}
                 onChange={(e, d) => {this.setFilterKeys(d.value)}}
               />
-              <Form.Checkbox slider 
+              <Form.Checkbox slider
                 label="Show formulas and errors"
                 onClick={() => {this.toggleShowErrors(); this.toggleShowFormulas()}}
               />
@@ -146,6 +143,11 @@ class Toolbar extends React.Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
+        <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
+          <Icon name='help' />
+          Help
+        </Menu.Item>
+
       </Menu>
     )
   }

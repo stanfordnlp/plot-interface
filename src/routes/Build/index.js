@@ -46,8 +46,8 @@ class Build extends PureComponent {
           this.props.isInitial?
           'no current plot'
           :
-          <div className="chart-container chart-highlight" style={{marginRight: "25px"}}>
-            <Header size='medium'>Current plot</Header>
+          <div className="chart-container chart-highlight">
+            <Header>Current plot</Header>
             <VegaLite
               spec={this.props.context}
               dataValues={this.props.dataValues}

@@ -47,7 +47,6 @@ and it does not make significant change to the type of plot.
 * move legend to the top
 * move legend to the bottom
 
-
 ## Tips
 
 * Put double quotes around "string values"
