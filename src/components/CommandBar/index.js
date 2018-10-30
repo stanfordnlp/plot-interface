@@ -3,13 +3,23 @@ import { connect } from "react-redux"
 import Actions from "actions/world"
 import Mousetrap from 'mousetrap'
 // eslint-disable-next-line
-import { Input, Icon, Button, Label} from 'semantic-ui-react'
+import { Input, Icon, Button, Label, Checkbox} from 'semantic-ui-react'
 import "./styles.css"
+
+const examplesUtts = [
+  'y label font size 25',
+  'put "something" as the plot title',
+  'more horizontal grids',
+  'move x label down by 50',
+  'remove x axis ticks',
+  'remove x label',
+  'make grid darkblue',
+]
 
 class CommandBar extends React.Component {
   componentDidMount() {
     Mousetrap.prototype.stopCallback = () => false;
-    Mousetrap.bind("ctrl+m", (e) => { this.commandBar.focus() })
+    // Mousetrap.bind("ctrl+m", (e) => { this.commandBar.focus() })
     // setTimeout(this.commandBar.focus(), 2000)
   }
   componentWillUnmount() {
@@ -27,12 +37,18 @@ class CommandBar extends React.Component {
     }
   }
   handleClick() {
-    this.commandBar.focus()
     this.sendQuery()
   }
 
   sendQuery() {
     this.props.dispatch(Actions.tryQuery())
+  }
+
+  sendRandomQuery() {
+    const randomCmd = examplesUtts[Math.floor(Math.random()*examplesUtts.length)];
+    console.log(randomCmd)
+    this.props.dispatch(Actions.setQuery(randomCmd))
+    this.props.dispatch(Actions.tryQuery('rand_example'))
   }
 
   render() {
@@ -45,10 +61,12 @@ class CommandBar extends React.Component {
         autoFocus
         size="large"
         action
-        inverted
       >
         <input/>
-        <Button primary content='Enter' onClick={e => this.handleClick(e)} />
+        <Button primary content='Enter'
+          onClick={e => this.handleClick(e)} />
+        <Button primary icon='question' content='Random'
+          onClick={e => this.sendRandomQuery(e)} />
       </Input>
     )
   }

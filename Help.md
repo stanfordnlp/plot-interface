@@ -2,24 +2,28 @@
 
 This interface translates naturalized commands to actions in the [VegaLite] data visualization language.
 To use this tool, **type a command** like `remove ticks`, `change x label to "XYZ"`, `move the axis label down` and press enter.
-Use **select an example** to try another example (from [VegaLite Examples]).
 
-If you are happy with the result, **Open** the plot and click **Use**, which then set that modification as the Current Example, and you can proceed with further modifications.
+If you are happy with the result, **Open** the plot and click **Use**, which then set that modification as the Current plot, and you can proceed with further modifications.
+
+Use **select an example** to try another example from [VegaLite Examples] or **Import spec** to try your own spec.
 
 ## Example commands
 
 ### Simple Bar Chart
-
-* make bar narrow
-* bars should be hollow
+* y label font size 25
 * put "something" as the plot title
-* add a title to the plot
 * more horizontal grids
+* move x label down by 50
+* remove x axis ticks
 * remove x label
+* make grid darkblue
+* add vertical grid
 * remove x axis ticks
 * remove both axis ticks
 * make y label giant
-* move legend to the bottom
+* make bar narrow
+* add a title to the plot
+* bars should be hollow
 
 ### Stacked Bar Chart (has legend)
 * remove entire legend
@@ -27,6 +31,7 @@ If you are happy with the result, **Open** the plot and click **Use**, which the
 * put a red box around the legend
 * add more space between plot and legend
 * move legend to the top
+* move legend to the bottom
 
 ## Tips
 

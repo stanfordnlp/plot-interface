@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
-// eslint-disable-next-line 
-import { Dropdown, Checkbox, Menu, Icon} from 'semantic-ui-react'
+// eslint-disable-next-line
+import { Dropdown, Checkbox, Menu, Icon, Label, Form} from 'semantic-ui-react'
 
 import TeachingModal from 'components/LabelModal/EditorModal'
 import {prettyStringify, editorURL, vegaliteKeywords} from 'helpers/vega-utils'
@@ -68,6 +68,12 @@ class Toolbar extends React.Component {
 
   render() {
     const {filter, context} = this.props
+    let filterEmpty = false
+    if (filter.type === 'any' && filter.keywords.length === 0) {
+      filterEmpty = true
+    }
+    console.log(filter, filterEmpty)
+
     return (
       <Menu vertical style={{minWidth: '300px'}}>
         <Menu.Item>
@@ -110,26 +116,33 @@ class Toolbar extends React.Component {
           <Menu.Header>
             Filters
           </Menu.Header>
+          <Label>{filterEmpty? " no filters used" : "using filters!"}</Label>
           <Menu.Menu>
+            <Menu.Item onClick={() => {this.clearFilter()} }>
+              Clear filters
+            </Menu.Item>
             <Menu.Item>
-              <Dropdown placeholder='type of value' search fluid selection
+              <Form size="small">
+              <Form.Dropdown
+                label="Type of value"
+                search selection
                 options={valueTypeOptions}
                 value={filter.type}
                 onChange={(e, d) => {this.setFilterType(d.value)}}
               />
-            </Menu.Item>
 
-            <Menu.Item>
-              <Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
+              <Form.Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
+                label="Contains keywords"
                 search={(opts, v) => this.search(opts, v)}
                 options={keywordOptions}
                 value={filter.keywords}
                 onChange={(e, d) => {this.setFilterKeys(d.value)}}
               />
+              </Form>
             </Menu.Item>
 
-            <Menu.Item onClick={() => {this.clearFilter()} }>
-              Clear filters
+            <Menu.Item>
+
             </Menu.Item>
             <Menu.Item>
               <Checkbox toggle

@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 // eslint-disable-next-line
 import { Icon, Segment, Button } from 'semantic-ui-react'
 
-import CommandBar from "../CommandBar/simple"
+import CommandBar from "../CommandBar"
 
 const Header = ({ search }) => {
   // console.log(search)

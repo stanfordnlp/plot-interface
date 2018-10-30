@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import hash from 'string-hash'
+import { Label } from 'semantic-ui-react'
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import config from 'config'
 
@@ -98,7 +99,7 @@ class Candidates extends PureComponent {
   }
 
   render() {
-    const {showFormulas, responses, onLabel, verifierMode} = this.props
+    const {showFormulas, responses, onLabel, verifierMode, filter} = this.props
     const {plotData} = this.state
     let plots = []
     if (this.state && plotData) {
@@ -156,10 +157,21 @@ class Candidates extends PureComponent {
       plotsPlus = plotsPlus.concat(plots);
     }
 
+    let message = 'There are no candidates, enter a command. '
+    if (responses.length > 0) {
+      message = `retrieved ${responses.length}, processed ${this.numProcessed}. `
+      if (this.numDistinct < config.maxDisplay) {
+        message += `Only found ${this.numDistinct} distinct answers without errors. Check filters in the menu. `
+      }
+    }
+
+
     return (
       <React.Fragment>
         {plotsPlus}
-        {this.numDistinct < config.maxDisplay? <div>{`${this.numDistinct} out of ${config.maxDisplay} (testing ${this.numProcessed} out of ${responses.length})`}</div> : null}
+        <Label size="large" style={{alignSelf: 'flex-start'}}>
+          {message}
+        </Label>
       </React.Fragment>
     );
   }

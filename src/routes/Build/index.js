@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
 // eslint-disable-next-line
-import { Icon, Header} from 'semantic-ui-react'
+import { Icon, Header, Container} from 'semantic-ui-react'
 
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
@@ -35,7 +35,7 @@ class Build extends PureComponent {
 
   setExample(name) {
     const {dispatch} = this.props
-    dispatch(Actions.labelInit(name))
+    dispatch(Actions.initContext(name))
   }
 
   render() {
@@ -46,7 +46,7 @@ class Build extends PureComponent {
           this.props.isInitial?
           'no current plot'
           :
-          <div className="chart-container chart-highlight pinhalfp" style={{marginRight: "25px"}}>
+          <div className="chart-container chart-highlight" style={{marginRight: "25px"}}>
             <Header size='medium'>Current plot</Header>
             <VegaLite
               spec={this.props.context}
@@ -55,7 +55,9 @@ class Build extends PureComponent {
             {/* <Icon className="pinhalfc" name="arrow right" size="big"/> */}
           </div>
         }
-        <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+        {/* <div className='flex-list'> */}
+          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+        {/* </div> */}
       </div>
     )
   }

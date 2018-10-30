@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Actions from 'actions/world'
 import hash from 'string-hash'
 import InnerChart from './InnerChart'
-// eslint-disable-next-line 
+// eslint-disable-next-line
 import { Button, Label, Header } from 'semantic-ui-react'
 import TeachingModal from 'components/LabelModal/TeachingModal'
 import InspectModal from 'components/LabelModal/InspectModal'
@@ -35,6 +35,10 @@ class Plot extends React.PureComponent {
   }
 
   remove() {
+    const {value, formula} = this.props.candidate
+    const {issuedQuery} = this.props
+    // label: (utterance, spec, formula, type='label')
+    this.props.dispatch(Actions.label(issuedQuery, value, formula, 'reject'));
     this.setState({isClosed: true})
   }
 
@@ -65,7 +69,7 @@ class Plot extends React.PureComponent {
         <Button.Group basic>
            <Button icon='magnify' content='Open' onClick={() => this.onLabel()} />
            {/*<Button icon='comment' content='Teach' onClick={() => this.onTeach()} />*/}
-           {/*<Button icon='check' content='Use' onClick={(e) => this.accept()} />*/}
+           <Button icon='check' content='Use' onClick={(e) => this.accept()} />
            <Button icon='close' onClick={(e) => this.remove()} />
         </Button.Group>
         <div>
@@ -101,5 +105,6 @@ class Plot extends React.PureComponent {
 const mapStateToProps = (state) => ({
   // context: state.world.context,
   showErrors: state.world.showErrors,
+  issuedQuery: state.world.issuedQuery,
 })
 export default connect(mapStateToProps)(Plot);

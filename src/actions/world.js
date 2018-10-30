@@ -53,7 +53,7 @@ const Actions = {
   },
 
   // send the current query
-  tryQuery: () => {
+  tryQuery: (mode) => {
     return (dispatch, getState) => {
       const { sessionId } = getState().user
       const { context, query, schema, datasetURL, filter } = getState().world
@@ -62,7 +62,9 @@ const Actions = {
         status: STATUS.LOADING
       })
 
-      return SEMPREquery({ q: ['q', {utterance: query, context, schema, datasetURL, filter}], sessionId: sessionId })
+      // make this easy to filter, just issue a different
+      const qcommand = !mode? 'q' : 'q_' + mode
+      return SEMPREquery({ q: [qcommand, {utterance: query, context, schema, datasetURL, filter}], sessionId: sessionId })
       .then((response) => {
         const candidates = response.candidates
         dispatch({
@@ -90,7 +92,7 @@ const Actions = {
       const { issuedQuery, context, schema, datasetURL } = getState().world
       const q = ['accept', {utterance: issuedQuery,
         targetFormula: formula,
-        targetValue: spec,   context, schema, datasetURL}]
+        targetValue: spec, context, schema, datasetURL, type: 'accept'}]
       SEMPREquery({ q: q, sessionId: sessionId }, () => { })
 
       dispatch({
@@ -156,6 +158,20 @@ const Actions = {
               candidates = candidates.slice(0, config.numCandidates)
               dispatch(Actions.setState({context, responses: candidates}))
             });
+          })
+        }).catch(e => console.log('labelInit', e))
+      }
+  },
+
+  initContext: (name) => {
+    return (dispatch, getState) => {
+      dispatch(Actions.clear())
+      responsesFromExamples(name).then(
+        initial => {
+          const context = initial[0].value
+          console.log('initContext', context)
+          dispatch(Actions.updateContext(context)).then(() => {
+            dispatch(Actions.setState({context}))
           })
         }).catch(e => console.log('labelInit', e))
       }
