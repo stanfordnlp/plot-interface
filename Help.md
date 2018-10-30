@@ -1,6 +1,7 @@
+# Help
 This interface translates naturalized commands to actions in the [VegaLite] data visualization language.
 
-# Basics
+## Get started 
 
 The *current plot* always displayed at the top left.
 This tool modifies the **Current plot** based on naturalized commands,
