@@ -157,7 +157,7 @@ class Candidates extends PureComponent {
       plotsPlus = plotsPlus.concat(plots);
     }
 
-    let message = 'There are no candidates, enter a command. '
+    let message = 'Enter a command to get some candidates'
     if (responses.length > 0) {
       message = `retrieved ${responses.length}, processed ${this.numProcessed}. `
       if (this.numDistinct < config.maxDisplay) {

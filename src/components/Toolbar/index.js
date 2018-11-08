@@ -38,7 +38,7 @@ class Toolbar extends React.Component {
 
   setExample(name) {
     const {dispatch} = this.props
-    dispatch(Actions.labelInit(name))
+    dispatch(Actions.initContext(name))
   }
 
   setFilterKeys(value) {
