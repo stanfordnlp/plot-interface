@@ -66,7 +66,8 @@ class Plot extends React.PureComponent {
     const patch = candidate.canonical_patch[0]
     const {xbests} = candidate
     const xbestsOptions = xbests.map((x, i) => {return {'value': x , 'text': x, 'key':i}})
-    const randBest = xbestsOptions[Math.floor(Math.random()*xbestsOptions.length)].value
+    // const randBest = xbestsOptions[Math.floor(Math.random()*xbestsOptions.length)].value
+    const randBest = xbestsOptions[0].value
     return (
       <div className='chart-container'>
         <Button.Group basic>
@@ -81,6 +82,7 @@ class Plot extends React.PureComponent {
         <div>
           <Dropdown inline scrolling options={xbestsOptions} defaultValue={randBest}/>
         </div>
+
         <div>
           <div className='chart openable-chart' onClick={e => this.onLabel(e)}>
             <InnerChart dataURL={this.state.dataURL}/>
@@ -88,6 +90,9 @@ class Plot extends React.PureComponent {
           <div>
             <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
+        </div>
+        <div>
+          <Label>{this.props.header}</Label>
         </div>
         {this.state.inspectModal?
           <InspectModal candidate={candidate} onClose={() => this.setState({inspectModal: false})}/>: null}
@@ -110,6 +115,7 @@ class Plot extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
   // context: state.world.context,
+  responses: state.world.responses,
   showErrors: state.world.showErrors,
   issuedQuery: state.world.issuedQuery,
 })

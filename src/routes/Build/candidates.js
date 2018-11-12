@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import hash from 'string-hash'
-import { Label } from 'semantic-ui-react'
+import { Label, Button } from 'semantic-ui-react'
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import config from 'config'
 
@@ -21,12 +21,13 @@ class Candidates extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      plotData: []
+      plotData: [],
     }
     this.numProcessed = 0
     this.numDistinct = 0
     this.indProcessing = 0
-    this.hashes = new Set()
+    this.additional = 0
+    this.hashesInd = {}
     const {context, dataValues} = this.props
     this.contextPromise = vegaLiteToDataURLWithErrors(context, dataValues)
   }
@@ -35,7 +36,8 @@ class Candidates extends PureComponent {
     this.numProcessed = 0
     this.numDistinct = 0
     this.indProcessing = 0
-    this.hashes = new Set()
+    this.additional = 0
+    this.hashesInd = new Set()
     this.setState({plotData: []})
   }
 
@@ -45,28 +47,35 @@ class Candidates extends PureComponent {
       this.clear()
       return
     }
-
-    if (responses.length > 0 && this.indProcessing < responses.length && this.numDistinct < config.maxDisplay) {
-      const endInd = Math.min(responses.length, this.indProcessing + config.processingInterval)
-      this.processPlotData(this.indProcessing, endInd)
-    }
+    this.loadMore(0)
   }
 
   componentWillUnmount() {
     this.clear()
   }
 
+  loadMore(additional=0) {
+    const {responses} = this.props
+    this.additional += additional
+    // console.log(this.indProcessing, config.maxDisplay + this.additional, this.numDistinct)
+    if (responses.length > 0 && this.indProcessing < responses.length && this.numDistinct < config.maxDisplay + this.additional) {
+      const endInd = Math.min(responses.length, this.indProcessing + config.processingInterval)
+      this.processPlotData(this.indProcessing, endInd)
+    }
+
+    if (additional !== 0) { // should just render... refactor at some point, perhaps one of these should be state instead
+      this.forceUpdate()
+    }
+  }
   // set state plotData
   processPlotData(start: Integer, end: Integer) {
     const {responses, dataValues} = this.props
     const {plotData} = this.state
-    const {hashes} = this
+    const {hashes, hashesInd} = this
     console.log(`processing responses ${start} to ${end} out of ${responses.length}`);
 
     this.contextPromise.then(contextVega => {
       const contextHash = hash(contextVega.dataURL)
-      hashes.add(contextHash)
-
       for (let i = start; i < end; i++) {
         const r = responses[i]
         vegaLiteToDataURLWithErrors(r.value, dataValues)
@@ -79,17 +88,21 @@ class Candidates extends PureComponent {
               dataHash: dataHash,
               candidate: r,
               // changed, no dup, and no error
-              noDup:  contextHash !== dataHash && !hashes.has(dataHash),
+              noDup:  contextHash !== dataHash && (hashesInd[dataHash] === undefined || hashesInd[dataHash] === i),
+              dupInd: hashesInd[dataHash],
               noError: vega.logger.errors.length + vega.logger.warns.length === 0,
             }
-            hashes.add(p.dataHash)
+            if (p.noDup) {
+              hashesInd[p.dataHash] = i
+            }
+
             // console.log('processing', i, p.noDup, p.formula)
             plotData[i] = p
             this.numProcessed = plotData.filter(p => p.rank).length
             this.numDistinct = plotData.filter(p => p.noDup && p.noError).length
-            if (i === end - 1 || this.numDistinct === config.maxDisplay) {
+            if (i === end - 1) {
                 // console.log('num distinct', this.numDistinct)
-                this.indProcessing += config.processingInterval
+                this.indProcessing = end
                 this.forceUpdate()
             }
           })
@@ -107,14 +120,16 @@ class Candidates extends PureComponent {
         <this.props.candidate
           key={r.rank}
           candidate={r.candidate}
-          header={`${showFormulas? r.rank : ''} ${r.noError? '': '(hasError)'} ${r.noDup? '': '(isSame)'}`}
+          header={`${r.rank}: ${r.noDup? 'no dup': 'same as ' + r.dupInd}, ${r.noError? 'no error': ', has error'}`}
           dataURL={r.dataURL}
           logger={r.logger}
           plotData={r}
           onLabel={onLabel}
+          // onClose={() => {this.loadMore(1)}}
         />
         )
       )
+      console.log(this.indProcessing, config.maxDisplay + this.additional, this.numDistinct, plots.length)
     }
 
     let plotsPlus = [];
@@ -141,8 +156,9 @@ class Candidates extends PureComponent {
       );
     }
 
-    if (!showFormulas && plots.length > config.maxDisplay) {
-      plots = plots.slice(0, config.maxDisplay)
+    const allowed = this.additional + config.maxDisplay
+    if (!showFormulas && plots.length > allowed) {
+      plots = plots.slice(0, allowed)
     }
 
     // console.log(plots.length, config.maxDisplay, verifierMode)
@@ -159,7 +175,7 @@ class Candidates extends PureComponent {
 
     let message = 'Enter a command to get some candidates'
     if (responses.length > 0) {
-      message = `retrieved ${responses.length}, processed ${this.numProcessed}. `
+      message = `retrieved ${responses.length}, processed ${this.indProcessing}. `
       if (this.numDistinct < config.maxDisplay) {
         message += `Only found ${this.numDistinct} distinct answers without errors. Check filters in the menu. `
       }
@@ -169,9 +185,13 @@ class Candidates extends PureComponent {
     return (
       <React.Fragment>
         {plotsPlus}
-        <Label size="large" style={{alignSelf: 'flex-start'}}>
+        <div style={{alignSelf: 'flex-start'}}>
+          <Label size="large" >
           {message}
-        </Label>
+          </Label>
+          {this.indProcessing <responses.length? <Label size="large" as="a" onClick={() => this.loadMore(10)}>Load more...</Label>
+          : <Label size="large"> The end </Label>}
+        </div>
       </React.Fragment>
     );
   }

@@ -15,7 +15,7 @@ export function SEMPREquery(cmds) {
       return response.json()
     })
     .catch((ex) => {
-      window.alert("ServerError: " + ex + "\nCheck the slack channel for updates.")
-      // throw new Error('ServerError')
+      // window.alert("Server Error: " + ex)
+      throw new Error('ServerError')
     })
 }

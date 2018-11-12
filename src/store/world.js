@@ -31,6 +31,7 @@ export const initialState = {
   exampleId: "",
   showErrors: false,
   showFormulas: false,
+  numClosed: 0,
   filter: {type: "any", keywords: []},
 }
 

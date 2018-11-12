@@ -8,29 +8,35 @@ import './styles.css'
 const getInner = q => q.q[1]
 
 class Tester extends PureComponent {
-  total = 100000
+  total = 100
   constructor(props) {
     super(props);
     this.state = {
       numDone: 0,
       numError: 0
     };
+    this.intervals = []
   }
 
   componentDidMount() {
     this.startTime = performance.now();
+    this.intervals = []
+    this.callTimes = []
     for (let i = 0; i < this.total; i++){
       const sessionId = ""
       setTimeout( () => {
+        this.callTimes[i] = performance.now()
         SEMPREquery({q: ['q', {utterance: '', context: this.props.context, random: true, amount: 100}], sessionId: sessionId})
         .then(() => {
           this.setState({numDone: this.state.numDone+1})
+          this.intervals[i] = performance.now() - this.callTimes[i]
+          this.finalTime = performance.now();
         })
         .catch(() => {
           this.setState({numError: this.state.numError+1})
         })
 
-      }, Math.random()*10000);
+      }, Math.random()*1000);
     }
   }
 
@@ -39,6 +45,7 @@ class Tester extends PureComponent {
         <div>
           <p> Server stress test: {this.state.numDone} : {this.state.numError} / {this.total} </p>
           <p> {this.finalTime - this.startTime} </p>
+          {this.intervals.map(i => {return <p>{i}</p>})}
         </div>
     );
   }
