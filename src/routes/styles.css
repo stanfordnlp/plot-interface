@@ -40,7 +40,7 @@ body {
 }
 
 .ui.compact.table td {
-    padding: .0em .0em;
+    padding: .0em .0em 0em 0em;
     padding-right: 0.25em;
     padding-left: 0.25em;
 }

@@ -39,26 +39,26 @@ class Build extends PureComponent {
     const {context, isInitial, dataValues, responses, candidate, showFormulas} = this.props
     return (
       <div className='flex-list'>
-        <Toolbar/>
-        {
-          isInitial?
-          'no current plot'
-          :
-          <div className="chart-container chart-highlight">
-            <Header>Current plot</Header>
-            <VegaLite
-              spec={context}
-              dataValues={dataValues}
-            />
+        <div className='flex-list' style={{alignSelf: 'flex-start'}}>
+          <Toolbar/>
+          {
+            isInitial?
+            'no current plot'
+            :
+            <div className="chart-container chart-highlight">
+              <Header>Current plot</Header>
+              <VegaLite
+                spec={context}
+                dataValues={dataValues}
+              />
 
-          </div>
-        }
+            </div>
+          }
+        </div>
         {
           showFormulas?
-          <div className="chart-container">
-            <CandidatesTable responses={responses}/>
-          </div> :
-          <Candidates candidate={candidate}/>
+          <CandidatesTable responses={responses}/>
+          : <Candidates candidate={candidate}/>
         }
       </div>
     )

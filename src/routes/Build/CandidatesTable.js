@@ -25,12 +25,13 @@ class CandidatesList extends PureComponent {
     const {responses} = this.props
     const {openIndex} =  this.state
     return (
-      <Table collapsing basic compact>
+      <Table collapsing compact>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Description</Table.HeaderCell>
-            <Table.HeaderCell>Action</Table.HeaderCell>
+            <Table.HeaderCell>Command</Table.HeaderCell>
+            <Table.HeaderCell>VegaLite Action</Table.HeaderCell>
+            <Table.HeaderCell>Probability</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -68,6 +69,9 @@ class CandidatesList extends PureComponent {
                 </Table.Cell>
                 <Table.Cell>
                   <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
+                </Table.Cell>
+                <Table.Cell>
+                  {candidate.score > 1e-3? (candidate.score*100).toFixed(1): '<1e' + Math.ceil(Math.log10(candidate.score*100))}
                 </Table.Cell>
               </Table.Row>
             )
