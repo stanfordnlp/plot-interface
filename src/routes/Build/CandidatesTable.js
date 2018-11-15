@@ -24,6 +24,7 @@ class CandidatesList extends PureComponent {
   render() {
     const {responses} = this.props
     const {openIndex} =  this.state
+
     return (
       <Table collapsing compact>
         <Table.Header>

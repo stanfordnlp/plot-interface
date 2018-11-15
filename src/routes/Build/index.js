@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
 // eslint-disable-next-line
-import { Icon, Header, Container} from 'semantic-ui-react'
+import { Icon, Header, Container, Label} from 'semantic-ui-react'
 
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
@@ -37,6 +37,7 @@ class Build extends PureComponent {
 
   render() {
     const {context, isInitial, dataValues, responses, candidate, showFormulas} = this.props
+    const noResponse = !responses || responses.length===0
     return (
       <div className='flex-list'>
         <div className='flex-list' style={{alignSelf: 'flex-start'}}>
@@ -51,14 +52,24 @@ class Build extends PureComponent {
                 spec={context}
                 dataValues={dataValues}
               />
-
             </div>
           }
         </div>
+        {noResponse?
+          <div style={{alignSelf: 'flex-start'}}>
+            <Label size="large" >
+              Enter a command to see some candidates
+            </Label>
+          </div>
+          : null
+        }
         {
           showFormulas?
-          <CandidatesTable responses={responses}/>
-          : <Candidates candidate={candidate}/>
+            noResponse? null:
+            <CandidatesTable responses={responses}/>
+            :
+            noResponse? null:
+            <Candidates candidate={candidate}/>
         }
       </div>
     )
@@ -71,5 +82,6 @@ const mapStateToProps = (state) => ({
   dataValues: state.world.dataValues,
   count: state.user.count,
   showFormulas: state.world.showFormulas,
+  responses: state.world.responses,
 })
 export default connect(mapStateToProps)(Build)

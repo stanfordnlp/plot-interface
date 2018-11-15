@@ -50,6 +50,11 @@ class Candidates extends PureComponent {
     this.loadMore(0)
   }
 
+  componentDidMount() {
+    this.clear()
+    this.loadMore(0)
+  }
+
   componentWillUnmount() {
     this.clear()
   }
@@ -134,8 +139,6 @@ class Candidates extends PureComponent {
 
     let plotsPlus = [];
 
-
-
     const allowed = this.additional + config.maxDisplay
     if (!showFormulas && plots.length > allowed) {
       plots = plots.slice(0, allowed)
@@ -153,7 +156,7 @@ class Candidates extends PureComponent {
       plotsPlus = plotsPlus.concat(plots);
     }
 
-    let message = 'Enter a command to get some candidates'
+    let message = ''
     if (responses.length > 0) {
       message = `retrieved ${responses.length}, processed ${this.indProcessing}. `
       if (this.numDistinct < config.maxDisplay) {

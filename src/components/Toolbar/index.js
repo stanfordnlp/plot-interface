@@ -75,7 +75,7 @@ class Toolbar extends React.Component {
     console.log(filter, filterEmpty)
 
     return (
-      <Menu vertical style={{minWidth: '300px'}}>
+      <Menu vertical style={{minWidth: '300px', 'marginTop': '1em'}}>
         <Menu.Item>
           <Menu.Header>Select an example</Menu.Header>
           <Dropdown id="example-selector" placeholder='select an example' search selection fluid
