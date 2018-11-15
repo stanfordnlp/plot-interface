@@ -84,7 +84,9 @@ class Plot extends React.PureComponent {
         </div>
 
         <div>
-          <div className='chart openable-chart' onClick={e => this.onLabel(e)}>
+          <div className='chart'
+            // onClick={e => this.onLabel(e)}
+          >
             <InnerChart dataURL={this.state.dataURL}/>
           </div>
           <div>

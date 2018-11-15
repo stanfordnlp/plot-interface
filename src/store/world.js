@@ -30,7 +30,7 @@ export const initialState = {
   issuedQuery: "",
   exampleId: "",
   showErrors: false,
-  showFormulas: false,
+  showFormulas: true,
   numClosed: 0,
   filter: {type: "any", keywords: []},
 }

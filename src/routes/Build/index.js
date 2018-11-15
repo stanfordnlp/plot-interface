@@ -8,6 +8,7 @@ import { Icon, Header, Container} from 'semantic-ui-react'
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
 import Toolbar from "components/Toolbar"
+import CandidatesTable from './CandidatesTable'
 
 import Actions from "actions/world"
 import config from 'config'
@@ -29,35 +30,36 @@ class Build extends PureComponent {
     this.setExample(config.initialExample)
   }
 
-  onLabel = (candidate) => {
-    this.labelModal.onLabel(candidate)
-  };
-
   setExample(name) {
     const {dispatch} = this.props
     dispatch(Actions.initContext(name))
   }
 
   render() {
+    const {context, isInitial, dataValues, responses, candidate, showFormulas} = this.props
     return (
       <div className='flex-list'>
         <Toolbar/>
         {
-          this.props.isInitial?
+          isInitial?
           'no current plot'
           :
           <div className="chart-container chart-highlight">
             <Header>Current plot</Header>
             <VegaLite
-              spec={this.props.context}
-              dataValues={this.props.dataValues}
+              spec={context}
+              dataValues={dataValues}
             />
-            {/* <Icon className="pinhalfc" name="arrow right" size="big"/> */}
+
           </div>
         }
-        {/* <div className='flex-list'> */}
-          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
-        {/* </div> */}
+        {
+          showFormulas?
+          <div className="chart-container">
+            <CandidatesTable responses={responses}/>
+          </div> :
+          <Candidates candidate={candidate}/>
+        }
       </div>
     )
   }
@@ -68,5 +70,6 @@ const mapStateToProps = (state) => ({
   context: state.world.context,
   dataValues: state.world.dataValues,
   count: state.user.count,
+  showFormulas: state.world.showFormulas,
 })
 export default connect(mapStateToProps)(Build)

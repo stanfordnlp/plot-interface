@@ -133,28 +133,8 @@ class Candidates extends PureComponent {
     }
 
     let plotsPlus = [];
-    if (showFormulas) {
-      plotsPlus.push(
-        <div className="debug-container" key="debug-table" style={{overflow: 'scroll'}}>
-          <table>
-            <tbody>
-            {
-              responses.map((c, r) => {
-                return (
-                  <tr key={r} className={r % 2 ? 'even' : 'odd'}>
-                    <td>{r}</td>
-                    <td>{c.canonical}</td>
-                    {/* <td>{c.prob.toPrecision(4)}</td> */}
-                    <td>{c.score.toPrecision(4)}</td>
-                  </tr>
-                );
-              })
-            }
-            </tbody>
-          </table>
-        </div>
-      );
-    }
+
+
 
     const allowed = this.additional + config.maxDisplay
     if (!showFormulas && plots.length > allowed) {
@@ -181,13 +161,12 @@ class Candidates extends PureComponent {
       }
     }
 
-
     return (
       <React.Fragment>
         {plotsPlus}
         <div style={{alignSelf: 'flex-start'}}>
           <Label size="large" >
-          {message}
+            {message}
           </Label>
           {this.indProcessing <responses.length? <Label size="large" as="a" onClick={() => this.loadMore(10)}>Load more...</Label>
           : <Label size="large"> The end </Label>}

@@ -136,9 +136,9 @@ class Toolbar extends React.Component {
                 onChange={(e, d) => {this.setFilterKeys(d.value)}}
               />
               <Form.Checkbox slider
-                label="Show formulas and errors"
+                label="Show list"
                 checked={this.props.showFormulas}
-                onClick={() => {this.toggleShowErrors(); this.toggleShowFormulas()}}
+                onClick={() => this.toggleShowFormulas()}
               />
               </Form>
             </Menu.Item>
