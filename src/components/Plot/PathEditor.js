@@ -39,8 +39,8 @@ class PathEditor extends Component {
       >
           <Popup
             trigger={<Label as='a'> {path} </Label>}
-            on="click"
-            // hoverable
+            on="hover"
+            hoverable
             flowing
             content={
               schema.description === undefined?

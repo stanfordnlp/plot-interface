@@ -36,8 +36,12 @@ class Build extends PureComponent {
   }
 
   render() {
-    const {context, isInitial, dataValues, responses, candidate, showFormulas} = this.props
+    const {context, isInitial, dataValues, responses, candidate, showFormulas, issuedQuery} = this.props
     const noResponse = !responses || responses.length===0
+    let message = "No candidates yet, enter a command."
+    if (!noResponse) {
+      message = "Showing candidates for: " + issuedQuery
+    }
     return (
       <div className='flex-list'>
         <div className='flex-list' style={{alignSelf: 'flex-start'}}>
@@ -55,23 +59,21 @@ class Build extends PureComponent {
             </div>
           }
         </div>
-        {noResponse?
-          <div style={{alignSelf: 'flex-start'}}>
-            <Label size="large" >
-              Enter a command to see some candidates
-            </Label>
-          </div>
-          : null
-        }
-        {
-          showFormulas?
-            noResponse? null:
-            <CandidatesTable responses={responses}/>
-            :
-            noResponse? null:
-            <Candidates candidate={candidate}/>
-        }
-      </div>
+
+          {
+            showFormulas?
+              noResponse? null:
+              <div>
+                <Label size="large" >
+                  {message}
+                </Label>
+                <CandidatesTable responses={responses}/>
+             </div>
+              :
+              noResponse? null:
+              <Candidates candidate={candidate}/>
+          }
+        </div>
     )
   }
 }
@@ -80,6 +82,7 @@ const mapStateToProps = (state) => ({
   isInitial: Object.keys(state.world.context).length === 0,
   context: state.world.context,
   dataValues: state.world.dataValues,
+  issuedQuery: state.world.issuedQuery,
   count: state.user.count,
   showFormulas: state.world.showFormulas,
   responses: state.world.responses,

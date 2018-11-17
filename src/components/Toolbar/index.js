@@ -32,8 +32,8 @@ class Toolbar extends React.Component {
     this.props.dispatch(Actions.setState({showErrors: !this.props.showErrors}));
   }
 
-  toggleShowFormulas() {
-    this.props.dispatch(Actions.setState({showFormulas: !this.props.showFormulas}));
+  toggleShowFormulas(value) {
+    this.props.dispatch(Actions.setState({showFormulas: value}));
   }
 
   setExample(name) {
@@ -113,21 +113,13 @@ class Toolbar extends React.Component {
           <Menu.Header>
             Filters
           </Menu.Header>
-          <Label>{filterEmpty? " no filters used" : "using filters!"}</Label>
+          <Label color={filterEmpty? undefined : "red"}>{filterEmpty? " no filters used" : "using filters!"}</Label>
           <Menu.Menu>
             <Menu.Item onClick={() => {this.clearFilter()} }>
               Clear filters
             </Menu.Item>
             <Menu.Item>
               <Form size="small">
-              <Form.Dropdown
-                label="Type of value"
-                search selection
-                options={valueTypeOptions}
-                value={filter.type}
-                onChange={(e, d) => {this.setFilterType(d.value)}}
-              />
-
               <Form.Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
                 label="Contains keywords"
                 search={(opts, v) => this.search(opts, v)}
@@ -135,12 +127,35 @@ class Toolbar extends React.Component {
                 value={filter.keywords}
                 onChange={(e, d) => {this.setFilterKeys(d.value)}}
               />
-              <Form.Checkbox slider
-                label="Show list"
-                checked={this.props.showFormulas}
-                onClick={() => this.toggleShowFormulas()}
-              />
+              {/* <Form.Dropdown
+                label="Type of value"
+                search selection
+                options={valueTypeOptions}
+                value={filter.type}
+                onChange={(e, d) => {this.setFilterType(d.value)}}
+              /> */}
+              <Form.Field>
+                <Checkbox
+                  slider
+                  label='Show list'
+                  name='checkboxRadioGroup'
+                  value='this'
+                  checked={this.props.showFormulas}
+                  onChange={() => this.toggleShowFormulas(true)}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  slider
+                  label='Show graphics'
+                  name='checkboxRadioGroup'
+                  value='that'
+                  checked={!this.props.showFormulas}
+                  onChange={() => this.toggleShowFormulas(false)}
+                />
+              </Form.Field>
               </Form>
+
             </Menu.Item>
           </Menu.Menu>
         </Menu.Item>

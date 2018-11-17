@@ -15,11 +15,11 @@ class LabelModal extends Component {
 
   constructor(props) {
     super(props)
-    const {context, spec} = props
+    const {context, candidate} = props
     this.state = {
       overlay: true,
       inputValue: "",
-      spec: spec,
+      spec: candidate.value,
       context: context,
     }
   }
@@ -173,4 +173,11 @@ class LabelModal extends Component {
   }
 }
 
-export default connect()(LabelModal)
+const mapStateToProps = (state) => ({
+  issuedQuery: state.world.issuedQuery,
+  context: state.world.context,
+  dataValues: state.world.dataValues,
+  schema: state.world.schema,
+})
+
+export default connect(mapStateToProps)(LabelModal)

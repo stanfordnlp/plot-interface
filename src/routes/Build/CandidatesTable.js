@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
+// eslint-disable-next-line
 import { Label, Button, Table, Menu, Icon, Dropdown, Popup} from 'semantic-ui-react'
-import config from 'config'
 import PathEditor from "components/Plot/PathEditor"
 import InspectModal from 'components/LabelModal/InspectModal'
 import VegaLite from "components/Plot/VegaLite"
@@ -32,7 +32,7 @@ class CandidatesList extends PureComponent {
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell>Command</Table.HeaderCell>
             <Table.HeaderCell>VegaLite Action</Table.HeaderCell>
-            <Table.HeaderCell>Probability</Table.HeaderCell>
+            <Table.HeaderCell>Probability %</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -52,7 +52,7 @@ class CandidatesList extends PureComponent {
                       <VegaLite spec={responses[r].value}/>
                     }
                   />
-                  <Button basic icon='magnify' onClick={()=>this.setState({openIndex: r})}/>
+                  <Button basic icon='edit' onClick={()=>this.setState({openIndex: r})}/>
                   </Button.Group>
                 </Table.Cell>
                 {/* <Table.Cell>
@@ -61,7 +61,7 @@ class CandidatesList extends PureComponent {
                 <Table.Cell>
                 <Dropdown inline text={randBest}>
                  <Dropdown.Menu>
-                   <Dropdown.Header icon='tags' content='Other descriptions' />
+                   <Dropdown.Header content='Other descriptions' />
                    <Dropdown.Menu scrolling>
                      {xbestsOptions.map(option => <Dropdown.Item key={option.value} {...option} />)}
                    </Dropdown.Menu>
@@ -72,7 +72,7 @@ class CandidatesList extends PureComponent {
                   <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
                 </Table.Cell>
                 <Table.Cell>
-                  {candidate.score > 1e-3? (candidate.score*100).toFixed(1): '<1e' + Math.ceil(Math.log10(candidate.score*100))}
+                  {candidate.score > 1e-4? (candidate.score*100).toFixed(2): '>1e' + Math.floor(Math.log10(candidate.score*100))}
                 </Table.Cell>
               </Table.Row>
             )

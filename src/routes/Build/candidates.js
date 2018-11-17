@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import hash from 'string-hash'
-import { Label, Button } from 'semantic-ui-react'
+import { Label} from 'semantic-ui-react'
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import config from 'config'
 
@@ -76,7 +76,7 @@ class Candidates extends PureComponent {
   processPlotData(start: Integer, end: Integer) {
     const {responses, dataValues} = this.props
     const {plotData} = this.state
-    const {hashes, hashesInd} = this
+    const {hashesInd} = this
     console.log(`processing responses ${start} to ${end} out of ${responses.length}`);
 
     this.contextPromise.then(contextVega => {

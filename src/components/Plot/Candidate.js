@@ -71,8 +71,8 @@ class Plot extends React.PureComponent {
     return (
       <div className='chart-container'>
         <Button.Group basic>
-           <Button icon='magnify' content='Open' onClick={() => this.onLabel()} />
-           {/*<Button icon='comment' content='Teach' onClick={() => this.onTeach()} />*/}
+           <Button icon='edit' content='Open' onClick={() => this.onLabel()} />
+           {/* <Button icon='comment' content='Teach' onClick={() => this.onTeach()} /> */}
            <Button icon='check' content='Use' onClick={(e) => this.accept()} />
            <Button icon='close' onClick={(e) => this.remove()} />
         </Button.Group>
@@ -93,9 +93,9 @@ class Plot extends React.PureComponent {
             <ul> {[equalMsg, ...errors.concat(warns)]} </ul>
           </div>
         </div>
-        <div>
+        {/* <div>
           <Label>{this.props.header}</Label>
-        </div>
+        </div> */}
         {this.state.inspectModal?
           <InspectModal candidate={candidate} onClose={() => this.setState({inspectModal: false})}/>: null}
         {this.state.teachModal?
