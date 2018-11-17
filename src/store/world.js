@@ -30,9 +30,10 @@ export const initialState = {
   issuedQuery: "",
   exampleId: "",
   showErrors: false,
-  showFormulas: true,
+  showFormulas: false,
   numClosed: 0,
   filter: {type: "any", keywords: []},
+  loading: false,
 }
 
 export default function reducer(state = initialState, action = {}) {

@@ -33,7 +33,7 @@ class Toolbar extends React.Component {
   }
 
   toggleShowFormulas(value) {
-    this.props.dispatch(Actions.setState({showFormulas: value}));
+    this.props.dispatch(Actions.setState({showFormulas: !this.props.showFormulas}));
   }
 
   setExample(name) {
@@ -77,7 +77,7 @@ class Toolbar extends React.Component {
     return (
       <Menu vertical style={{minWidth: '300px', 'marginTop': '1em'}}>
         <Menu.Item>
-          <Menu.Header>Select an example</Menu.Header>
+          <Menu.Header>Change example: </Menu.Header>
           <Dropdown id="example-selector" placeholder='select an example' search selection fluid
             options={exampleOptions}
             onChange={(e, data) => this.setExample(data.value)}
@@ -120,13 +120,14 @@ class Toolbar extends React.Component {
             </Menu.Item>
             <Menu.Item>
               <Form size="small">
-              <Form.Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
-                label="Contains keywords"
-                search={(opts, v) => this.search(opts, v)}
-                options={keywordOptions}
-                value={filter.keywords}
-                onChange={(e, d) => {this.setFilterKeys(d.value)}}
-              />
+                <Form.Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
+                  label="Contains keywords"
+                  search={(opts, v) => this.search(opts, v)}
+                  options={keywordOptions}
+                  value={filter.keywords}
+                  onChange={(e, d) => {this.setFilterKeys(d.value)}}
+                />
+              </Form>
               {/* <Form.Dropdown
                 label="Type of value"
                 search selection
@@ -134,30 +135,33 @@ class Toolbar extends React.Component {
                 value={filter.type}
                 onChange={(e, d) => {this.setFilterType(d.value)}}
               /> */}
-              <Form.Field>
-                <Checkbox
-                  slider
-                  label='Show list'
-                  name='checkboxRadioGroup'
-                  value='this'
-                  checked={this.props.showFormulas}
-                  onChange={() => this.toggleShowFormulas(true)}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Checkbox
-                  slider
-                  label='Show graphics'
-                  name='checkboxRadioGroup'
-                  value='that'
-                  checked={!this.props.showFormulas}
-                  onChange={() => this.toggleShowFormulas(false)}
-                />
-              </Form.Field>
-              </Form>
-
             </Menu.Item>
           </Menu.Menu>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.Header>Display</Menu.Header>
+          <Form>
+            <Form.Field>
+              <Checkbox
+                slider
+                label='text'
+                name='checkboxRadioGroup'
+                value='this'
+                checked={this.props.showFormulas}
+                onChange={() => this.toggleShowFormulas()}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                slider
+                label='graphics'
+                name='checkboxRadioGroup'
+                value='that'
+                checked={!this.props.showFormulas}
+                onChange={() => this.toggleShowFormulas()}
+              />
+            </Form.Field>
+          </Form>
         </Menu.Item>
         <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
           <Icon name='help' />

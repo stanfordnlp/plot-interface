@@ -10,12 +10,7 @@ const Header = ({ search }) => {
   // console.log(search)
   return (
   <div className="Header">
-    <div style={{
-      left: "50px",
-      top: "25px",
-      position: "absolute",
-    }}>
-    <Icon name="question" size="big"/> </div>
+    <Icon size="big" style={{width: "120px", fontSize: "2em"}} name="question"/> 
     <CommandBar/>
   </div>
   )

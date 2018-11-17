@@ -17,11 +17,12 @@ body {
   height: 70px; /* Mirrored by .after-header padding-bottom */
   background-color: #24292e;
   display: flex;
-  /* flex-direction: column; */
-  /* justify-content: center; */
+  align-items: center;
+  vertical-align: middle;
   /* flex-wrap: wrap; */
   color: #FFF;
   /* font-size: 1.8rem; */
+  padding: 9px;
   top: 0;
   z-index: 100;
 }
@@ -53,4 +54,8 @@ body {
   position: absolute;
   left: 100%;
   top: 50%;
+}
+
+.ui.disabled.dropdown, .ui.dropdown .menu>.disabled.item {
+  opacity: 1;
 }

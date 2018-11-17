@@ -76,6 +76,7 @@ const Actions = {
           responses: candidates
         })
 
+        dispatch(Actions.setState({loading: false}))
         return true
       })
       .catch((e) => {

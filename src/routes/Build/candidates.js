@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 import hash from 'string-hash'
-import { Label} from 'semantic-ui-react'
+import { Label, Button } from 'semantic-ui-react'
 import {vegaLiteToDataURLWithErrors} from 'helpers/vega-utils'
 import config from 'config'
 
@@ -168,11 +168,11 @@ class Candidates extends PureComponent {
       <React.Fragment>
         {plotsPlus}
         <div style={{alignSelf: 'flex-start'}}>
+          {this.indProcessing <responses.length? <Button basic onClick={() => this.loadMore(10)}>Load more...</Button>
+          : <Label size="large"> The end </Label>}
           <Label size="large" >
             {message}
           </Label>
-          {this.indProcessing <responses.length? <Label size="large" as="a" onClick={() => this.loadMore(10)}>Load more...</Label>
-          : <Label size="large"> The end </Label>}
         </div>
       </React.Fragment>
     );

@@ -70,17 +70,24 @@ class Plot extends React.PureComponent {
     const randBest = xbestsOptions[0].value
     return (
       <div className='chart-container'>
-        <Button.Group basic>
-           <Button icon='edit' content='Open' onClick={() => this.onLabel()} />
+        <Button.Group primary>
+           <Button icon='edit' content='Refine' onClick={() => this.onLabel()} />
            {/* <Button icon='comment' content='Teach' onClick={() => this.onTeach()} /> */}
            <Button icon='check' content='Use' onClick={(e) => this.accept()} />
-           <Button icon='close' onClick={(e) => this.remove()} />
+           {/* <Button icon='close' onClick={(e) => this.remove()} /> */}
         </Button.Group>
         <div>
           <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
         </div>
         <div>
-          <Dropdown inline scrolling options={xbestsOptions} defaultValue={randBest}/>
+          <Dropdown inline text={randBest}>
+           <Dropdown.Menu>
+             <Dropdown.Header content='Other commands'/>
+             <Dropdown.Menu scrolling >
+               {xbestsOptions.map(option => <Dropdown.Item key={option.value} disabled="true" {...option} />)}
+             </Dropdown.Menu>
+           </Dropdown.Menu>
+          </Dropdown>
         </div>
 
         <div>

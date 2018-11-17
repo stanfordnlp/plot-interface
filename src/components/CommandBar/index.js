@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import Actions from "actions/world"
 import Mousetrap from 'mousetrap'
 // eslint-disable-next-line
-import { Input, Icon, Button, Label, Checkbox} from 'semantic-ui-react'
+import { Input, Icon, Button, Label, Checkbox, Loader} from 'semantic-ui-react'
 import "./styles.css"
 
 const examplesUtts = [
@@ -36,15 +36,18 @@ class CommandBar extends React.Component {
       this.sendQuery()
     }
   }
+
   handleClick() {
     this.sendQuery()
   }
 
   sendQuery() {
+    this.props.dispatch(Actions.setState({loading: true}))
     this.props.dispatch(Actions.tryQuery('click'))
   }
 
   sendRandomQuery() {
+    this.props.dispatch(Actions.setState({loading: true}))
     const randomCmd = examplesUtts[Math.floor(Math.random()*examplesUtts.length)];
     console.log(randomCmd)
     this.props.dispatch(Actions.setQuery(randomCmd))
@@ -53,7 +56,7 @@ class CommandBar extends React.Component {
 
   render() {
     return (
-      <Input className="CommandBar" icon placeholder='type a command... e.g. label x as "test value"'
+      <Input className="CommandBar" placeholder='type a command... e.g. label x as "test value"'
         ref={(input) => { this.commandBar = input; }}
         onChange={(e, v) => this.onChange(e, v)}
         value={this.props.query}
@@ -61,8 +64,10 @@ class CommandBar extends React.Component {
         autoFocus
         size="large"
         action
+        icon="search"
       >
-        <input/>
+        <Loader style={{left: "380px"}} active={this.props.loading}/>
+        <input style={{width: "400px"}}/>
         <Button primary content='Enter'
           onClick={e => this.handleClick(e)} />
         <Button primary icon='question' content='Random'
@@ -74,7 +79,8 @@ class CommandBar extends React.Component {
 
 const mapStateToProps = (state) => ({
   query: state.world.query,
-  isInitial: Object.keys(state.world.context).length === 0
+  isInitial: Object.keys(state.world.context).length === 0,
+  loading: state.world.loading,
 })
 
 export default connect(mapStateToProps)(CommandBar)

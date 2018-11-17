@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
 // eslint-disable-next-line
-import { Icon, Header, Container, Label} from 'semantic-ui-react'
+import { Icon, Header, Container, Label, Dimmer, Loader} from 'semantic-ui-react'
 
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
@@ -40,11 +40,11 @@ class Build extends PureComponent {
     const noResponse = !responses || responses.length===0
     let message = "No candidates yet, enter a command."
     if (!noResponse) {
-      message = "Showing candidates for: " + issuedQuery
+      message = "Current command: " + issuedQuery
     }
     return (
       <div className='flex-list'>
-        <div className='flex-list' style={{alignSelf: 'flex-start'}}>
+        <div style={{display: 'flex', flexDirection: 'row', alignSelf: 'flex-start'}}>
           <Toolbar/>
           {
             isInitial?
@@ -59,7 +59,6 @@ class Build extends PureComponent {
             </div>
           }
         </div>
-
           {
             showFormulas?
               noResponse? null:

@@ -26,62 +26,75 @@ class CandidatesList extends PureComponent {
     const {openIndex} =  this.state
 
     return (
-      <Table collapsing compact>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Command</Table.HeaderCell>
-            <Table.HeaderCell>VegaLite Action</Table.HeaderCell>
-            <Table.HeaderCell>Probability %</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-        {
-          responses.map((candidate,r) => {
-            const patch = candidate.canonical_patch[0]
-            const {xbests} = candidate
-            const xbestsOptions = xbests.map((x, i) => {return {'value': x , 'text': x, 'key':i}})
-            const randBest = xbestsOptions[0].value
-            return (
-              <Table.Row key={r}>
-                <Table.Cell>
-                  <Button.Group>
-                  <Popup flowing position="bottom left"
-                    trigger={<Button basic icon='unhide' />}
-                    content={
-                      <VegaLite spec={responses[r].value}/>
-                    }
-                  />
-                  <Button basic icon='edit' onClick={()=>this.setState({openIndex: r})}/>
-                  </Button.Group>
-                </Table.Cell>
-                {/* <Table.Cell>
-                  {randBest}
-                </Table.Cell> */}
-                <Table.Cell>
-                <Dropdown inline text={randBest}>
-                 <Dropdown.Menu>
-                   <Dropdown.Header content='Other descriptions' />
-                   <Dropdown.Menu scrolling>
-                     {xbestsOptions.map(option => <Dropdown.Item key={option.value} {...option} />)}
+      <div>
+        <Label>
+          <Icon name="unhide"/>
+          Preview
+        </Label>
+        <Label>
+          <Icon name="edit"/>
+          Refine
+        </Label>
+
+        <Table collapsing compact>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell>Command</Table.HeaderCell>
+              <Table.HeaderCell>VegaLite Action</Table.HeaderCell>
+              <Table.HeaderCell>Probability %</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+          {
+            responses.map((candidate,r) => {
+              const patch = candidate.canonical_patch[0]
+              const {xbests} = candidate
+              const xbestsOptions = xbests.map((x, i) => {return {'value': x , 'text': x, 'key':i}})
+              const randBest = xbestsOptions[0].value
+              return (
+                <Table.Row key={r}>
+                  <Table.Cell>
+                    <Button.Group>
+                    <Popup flowing position="bottom left"
+                      trigger={<Button basic icon='unhide' />}
+                      content={
+                        <VegaLite spec={responses[r].value}/>
+                      }
+                    />
+                    <Button basic icon='edit' onClick={()=>this.setState({openIndex: r})}/>
+                    </Button.Group>
+                  </Table.Cell>
+                  {/* <Table.Cell>
+                    {randBest}
+                  </Table.Cell> */}
+                  <Table.Cell>
+                  <Dropdown inline text={randBest}>
+                   <Dropdown.Menu>
+                     <Dropdown.Header icon='tags' content='Other commands' />
+                     <Dropdown.Menu scrolling>
+                       {xbestsOptions.map(option => <Dropdown.Item key={option.value} disabled={true} {...option} />)}
+                     </Dropdown.Menu>
                    </Dropdown.Menu>
-                 </Dropdown.Menu>
-                </Dropdown>
-                </Table.Cell>
-                <Table.Cell>
-                  <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
-                </Table.Cell>
-                <Table.Cell>
-                  {candidate.score > 1e-4? (candidate.score*100).toFixed(2): '>1e' + Math.floor(Math.log10(candidate.score*100))}
-                </Table.Cell>
-              </Table.Row>
-            )
-          })
-        }
-      </Table.Body>
-      {openIndex === -1? null :
-        <InspectModal candidate={responses[openIndex]} onClose={() => this.setState({openIndex: -1})}/>}
-    </Table>
+                  </Dropdown>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
+                  </Table.Cell>
+                  <Table.Cell>
+                    {candidate.score > 1e-5? (candidate.score*100).toFixed(2): '>1e' + Math.floor(Math.log10(candidate.score*100))}
+                  </Table.Cell>
+                </Table.Row>
+              )
+            })
+          }
+        </Table.Body>
+        {openIndex === -1? null :
+          <InspectModal candidate={responses[openIndex]} onClose={() => this.setState({openIndex: -1})}/>}
+        </Table>
+
+      </div>
+
     );
   }
 }
