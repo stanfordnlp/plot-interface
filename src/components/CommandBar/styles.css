@@ -1,16 +1,15 @@
 .CommandBar {
   /* height: calc( 50px - 12px ); */
   /* display: flex; */
-  width: 500px;
-  margin: 6px;
+  width: 600px;
   /* background-color: rgba(255,255,255,1); */
-}
-
-.CommandBar button {
-  display: inline;
-  float: left;
 }
 
 .CommandBar input {
   color: black;
+}
+
+.Header .CommandBar {
+  /* left: 120px; */
+  /* margin: 9px */
 }

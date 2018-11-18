@@ -2,7 +2,14 @@
   padding: 0px;
   max-height: 600px;
   max-width: 600px;
+  /* good for popups for know the min-height to decide direction */
+  min-height: 300px;
+  min-width: 100px;
   object-fit: scale-down;
+}
+
+.openable-chart {
+  cursor: pointer;
 }
 
 .big-chart {

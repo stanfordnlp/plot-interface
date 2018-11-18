@@ -1,10 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
-import { Dropdown, Checkbox, Menu, Icon} from 'semantic-ui-react'
+// eslint-disable-next-line
+import { Dropdown, Checkbox, Menu, Icon, Label, Form} from 'semantic-ui-react'
+
+import TeachingModal from 'components/LabelModal/EditorModal'
 import {prettyStringify, editorURL, vegaliteKeywords} from 'helpers/vega-utils'
 import {examplesList} from 'helpers/vega-utils';
 import {initialState} from 'store/world'
+
+import config from 'config'
 
 const helpLink = "https://github.com/stanfordnlp/plot-interface/blob/master/Help.md#help"
 const valueTypeOptions = ['any', 'number', 'string', 'boolean', 'null', 'array', 'object'].map((v) =>
@@ -18,23 +23,28 @@ const keywordOptions = vegaliteKeywords.map((v) =>
 );
 
 class Toolbar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {editModal: false, importModal: false}
+  }
+
   toggleShowErrors() {
     this.props.dispatch(Actions.setState({showErrors: !this.props.showErrors}));
   }
 
-  toggleShowFormulas() {
+  toggleShowFormulas(value) {
     this.props.dispatch(Actions.setState({showFormulas: !this.props.showFormulas}));
   }
 
   setExample(name) {
     const {dispatch} = this.props
-    dispatch(Actions.labelInit(name))
+    dispatch(Actions.initContext(name))
   }
 
   setFilterKeys(value) {
     const {dispatch, filter} = this.props
     dispatch(Actions.setState({'filter': {...filter, 'keywords': value}}))
-    dispatch(Actions.tryQuery())
+    dispatch(Actions.tryQuery("filter"))
   }
 
   search(options, value) {
@@ -47,69 +57,117 @@ class Toolbar extends React.Component {
   setFilterType(value) {
     const {dispatch, filter} = this.props
     dispatch(Actions.setState({'filter': {...filter, 'type': value}}))
-    dispatch(Actions.tryQuery())
+    dispatch(Actions.tryQuery("filter"))
   }
 
   clearFilter() {
     const {dispatch} = this.props
     dispatch(Actions.setState({'filter': initialState.filter}))
-    dispatch(Actions.tryQuery())
+    dispatch(Actions.tryQuery("filter_clear"))
   }
 
   render() {
-    const {filter} = this.props
-    return (
-      <Menu vertical style={{minWidth: '300px'}}>
+    const {filter, context} = this.props
+    let filterEmpty = false
+    if (filter.type === 'any' && filter.keywords.length === 0) {
+      filterEmpty = true
+    }
+    console.log(filter, filterEmpty)
 
+    return (
+      <Menu vertical style={{minWidth: '300px', 'marginTop': '1em'}}>
         <Menu.Item>
-          <Menu.Header>Select an example</Menu.Header>
+          <Menu.Header>Change example: </Menu.Header>
           <Dropdown id="example-selector" placeholder='select an example' search selection fluid
             options={exampleOptions}
             onChange={(e, data) => this.setExample(data.value)}
+            defaultValue={config.initialExample}
           />
         </Menu.Item>
-        <Menu.Item>
-          <Menu.Header>
-            Filters
-          </Menu.Header>
-          <Menu.Menu>
-            <Menu.Item>
-              <Dropdown placeholder='type of value' search fluid selection
-                options={valueTypeOptions}
-                value={filter.type}
-                onChange={(e, d) => {this.setFilterType(d.value)}}
-              />
-            </Menu.Item>
 
-            <Menu.Item>
-              <Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
-                search={(opts, v) => this.search(opts, v)}
-                options={keywordOptions}
-                value={filter.keywords}
-                onChange={(e, d) => {this.setFilterKeys(d.value)}}
-              />
-            </Menu.Item>
 
-            <Menu.Item onClick={() => {this.clearFilter()} }>
-              Clear filters
-            </Menu.Item>
-            <Menu.Item>
-              <Checkbox toggle
-                label="Show formulas and errors"
-                onClick={() => {this.toggleShowErrors(); this.toggleShowFormulas()}}
-              />
-            </Menu.Item>
-          </Menu.Menu>
+        <Menu.Item onClick={() => this.setState({importModal: true})}>
+          Import spec
         </Menu.Item>
+        {this.state.importModal?
+          <TeachingModal header={"Import spec"} spec={{"paste your spec here": "!"}} context={{}}
+            onClose={() => {
+              this.setState({importModal: false})
+            }}/>: null}
+
+        <Menu.Item onClick={() => this.setState({editModal: true})}>
+          Edit current spec
+        </Menu.Item>
+
+        {this.state.editModal?
+          <TeachingModal header={"Edit spec"}  spec={context} context={context} onClose={() => this.setState({editModal: false})}/>: null}
+
+
         <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
-          Open in Editor...
-        </Menu.Item>
-        <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
-          Help
+          Open in Vega editor...
         </Menu.Item>
         {/* <Menu.Item onClick={() => {}}>
           Render more
         </Menu.Item> */}
+        <Menu.Item>
+          <Menu.Header>
+            Filters
+          </Menu.Header>
+          <Label color={filterEmpty? undefined : "red"}>{filterEmpty? " no filters used" : "using filters!"}</Label>
+          <Menu.Menu>
+            <Menu.Item onClick={() => {this.clearFilter()} }>
+              Clear filters
+            </Menu.Item>
+            <Menu.Item>
+              <Form size="small">
+                <Form.Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
+                  label="Contains keywords"
+                  search={(opts, v) => this.search(opts, v)}
+                  options={keywordOptions}
+                  value={filter.keywords}
+                  onChange={(e, d) => {this.setFilterKeys(d.value)}}
+                />
+              </Form>
+              {/* <Form.Dropdown
+                label="Type of value"
+                search selection
+                options={valueTypeOptions}
+                value={filter.type}
+                onChange={(e, d) => {this.setFilterType(d.value)}}
+              /> */}
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.Header>Display</Menu.Header>
+          <Form>
+            <Form.Field>
+              <Checkbox
+                slider
+                label='text'
+                name='checkboxRadioGroup'
+                value='this'
+                checked={this.props.showFormulas}
+                onChange={() => this.toggleShowFormulas()}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                slider
+                label='graphics'
+                name='checkboxRadioGroup'
+                value='that'
+                checked={!this.props.showFormulas}
+                onChange={() => this.toggleShowFormulas()}
+              />
+            </Form.Field>
+          </Form>
+        </Menu.Item>
+        <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
+          <Icon name='help' />
+          Help
+        </Menu.Item>
+
       </Menu>
     )
   }

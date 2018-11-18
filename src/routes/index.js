@@ -14,6 +14,7 @@ import Candidate from "components/Plot/Candidate.js"
 import LabelCandidate from "components/Plot/LabelCandidate.js"
 import VerifierCandidate from "components/Plot/VerifierCandidate.js"
 import Viewer from "./Viewer"
+import Tester from "./Viewer/tester"
 import Header from "components/Header"
 import LabelHeader from "components/Header/LabelHeader"
 import VerifierHeader from "components/Header/VerifierHeader"
@@ -33,6 +34,7 @@ class Routes extends React.Component {
         <Route exact path="/" component={() => <Redirect to="/build"/>} />
         <Switch>
           <Route path="/viewer" component={Viewer} />
+          <Route path="/tester" component={Tester} />
           {/* <Redirect exact strict from="/" to="/build"/> */}
           <Route path="/build" component={(props) => ( <div className="after-header">
               <Header search={props.location.search}/>

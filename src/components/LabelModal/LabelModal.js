@@ -4,7 +4,6 @@ import Actions from "actions/world"
 import UserActions from "actions/user"
 import VegaLite from "components/Plot/VegaLite"
 import { Checkbox, Button, Modal, Input} from 'semantic-ui-react'
-import SplitPane from 'react-split-pane';
 import config from 'config'
 // import CurrentDataTable from 'components/DataTable/CurrentDataTable'
 import "./styles.css"
@@ -103,19 +102,6 @@ class LabelModal extends Component {
           </div>
         </div>
     </div>
-    )
-
-    const newPlot = (
-      <div className="half-panel">
-        <div className="label">
-          New plot
-        </div>
-        <div style={{top: '0px', position: "relative", width: "100%"}}>
-          <div className={"overlay-top"} >
-            <VegaLite spec={spec} dataValues={this.props.dataValues} onError={e => this.setState({hasError: e})} bigSize={true}/>
-          </div>
-        </div>
-      </div>
     )
 
     return (

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Icon} from 'semantic-ui-react'
 import dl from 'datalib'
-import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/md'
 import Actions from "actions/world"
 
 import "./styles.css"
@@ -51,11 +51,11 @@ class DataTable extends Component {
     const fmt = dl.format.auto.number()
 
     let prev = page > 0 ? (
-      <MdKeyboardArrowLeft className='md-button' size={30} onClick={() => this.prevPage()} />
+      <Icon name='md-button' size="large" onClick={() => this.prevPage()} />
     ) : null;
 
     let next = page + 1 < max / limit ? (
-      <MdKeyboardArrowRight className='md-button' size={30} onClick={() => this.nextPage()} />
+      <Icon name='md-button' size="large" onClick={() => this.nextPage()} />
     ) : null;
 
     return (
@@ -78,13 +78,13 @@ class DataTable extends Component {
             </tbody>
           </table>
         </div>
-        {/* <div className="paging">
-          <span>{fmt(start + 1)}–{stop > max ? fmt(max) : fmt(stop)} of {fmt(max)}</span>
-          <span className="pager">{prev} {next}</span>
-        </div> */}
+        <div className="paging">
+        <span>{fmt(start + 1)}–{stop > max ? fmt(max) : fmt(stop)} of {fmt(max)}</span>
+        <span className="pager">{prev} {next}</span>
       </div>
-    );
-  }
+    </div>
+  );
+}
 }
 
 

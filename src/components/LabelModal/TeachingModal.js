@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from 'prop-types';
 import VegaLite from "components/Plot/VegaLite"
+// eslint-disable-next-line
 import {Grid, Header, Checkbox, Button, Modal, Input, Menu} from 'semantic-ui-react'
 import Actions from 'actions/world'
 import UserActions from "actions/user"
@@ -9,19 +10,17 @@ import UserActions from "actions/user"
 import Editor from './SimpleEditor'
 class LabelModal extends Component {
   static propTypes = {
-    candidate: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props)
-    const {candidate} = props
+    const {context, candidate} = props
     this.state = {
       overlay: true,
       inputValue: "",
       spec: candidate.value,
-      patch: candidate.canonical_patch[0],
-      value: candidate.canonical_patch[0].value,
+      context: context,
     }
   }
 
@@ -54,7 +53,7 @@ class LabelModal extends Component {
       return
     }
 
-    this.props.dispatch(Actions.label(value, this.state.spec, this.state.patch))
+    this.props.dispatch(Actions.label(value, this.state.spec, "", "TeachingModal"))
     .then((response) => {
       if (response) {
         this.props.dispatch(UserActions.increaseCount(1))
@@ -77,7 +76,6 @@ class LabelModal extends Component {
     console.log(v)
     try {
       const value = JSON.parse(v);
-
       this.setState({spec: value})
     } catch(e) {
 
@@ -85,8 +83,8 @@ class LabelModal extends Component {
   }
 
   accept() {
-    const {spec, patch} = this.state
-    this.props.dispatch(Actions.accept(spec, patch));
+    const {spec} = this.state
+    this.props.dispatch(Actions.accept(spec, "", "TeachingModal.accept"));
   }
 
   render() {
@@ -127,8 +125,7 @@ class LabelModal extends Component {
         // contentLabel="label-modal"
       >
       <Modal.Header>
-        Teaching tool
-        <Header as="h5"> 1) Demonstrate what you want by editing the code, 2) Type the command corresponding to your edits, 3) Click on submit label </Header>
+        Editing tool
       </Modal.Header>
 
       <Menu tabular>
@@ -142,10 +139,6 @@ class LabelModal extends Component {
           active={overlay}
           onClick={() => {this.setState({overlay: true})}}
         />
-
-        <Menu.Item position="right">
-
-        </Menu.Item>
       </Menu>
       <Grid columns={2} stackable textAlign='left'>
         <Grid.Row verticalAlign='top' style={{paddingBottom: "0em"}}>
@@ -164,7 +157,7 @@ class LabelModal extends Component {
             // style={{width: "50%"}}
             action={<Button primary content='Submit label' onClick={() => this.label(this.state.inputValue)} />}
           />
-          {currentCode}
+            {currentCode}
           </Grid.Column>
         </Grid.Row>
 

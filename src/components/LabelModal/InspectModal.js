@@ -2,7 +2,9 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from 'prop-types';
 import VegaLite from "components/Plot/VegaLite"
-import { Checkbox, Button, Modal, Input, Menu, Popup} from 'semantic-ui-react'
+import PathEditor from "components/Plot/PathEditor"
+// eslint-disable-next-line
+import { Checkbox, Button, Modal, Input, Menu, Popup, Label} from 'semantic-ui-react'
 import Actions from 'actions/world'
 // import {prettyStringify, editorURL} from 'helpers/vega-utils'
 import {execute} from 'helpers/util'
@@ -48,12 +50,13 @@ class LabelModal extends Component {
   }
 
   setValue(e, value) {
+    console.log("called set value..", e, value)
     this.setState({value: value})
   }
 
   accept() {
     const {spec, patch} = this.state
-    this.props.dispatch(Actions.accept(spec, patch));
+    this.props.dispatch(Actions.accept(spec, patch, 'InspectModal.accept'));
   }
 
   render() {
@@ -83,21 +86,6 @@ class LabelModal extends Component {
         </div>
     )
 
-    const PatchUI = (
-      <Input
-        value={String(value)}
-        onChange={(e, d) => this.setValue(e, d.value)}
-      >
-        <Popup
-          trigger={<Button> {path} </Button>}
-          content={schema.description}
-          size="large"
-          flowing
-        />
-        <input/>
-      </Input>
-    )
-
     return (
       <Modal size="large"
         // closeIcon={true}
@@ -110,7 +98,7 @@ class LabelModal extends Component {
       <Modal.Header>
         Compare and Edit
       </Modal.Header>
-      {PatchUI}
+      <PathEditor value={value} onChange={(e, d) => this.setValue(e, d.value)} path={path} schema={schema}/>
       <Menu tabular>
         <Menu.Item
           name='old plot'

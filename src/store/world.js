@@ -31,7 +31,9 @@ export const initialState = {
   exampleId: "",
   showErrors: false,
   showFormulas: false,
+  numClosed: 0,
   filter: {type: "any", keywords: []},
+  loading: false,
 }
 
 export default function reducer(state = initialState, action = {}) {

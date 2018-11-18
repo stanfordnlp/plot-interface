@@ -1,14 +1,17 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
-import { Card, Dropdown, Container, Header} from 'semantic-ui-react'
 
-// import CurrentDataTable from 'components/DataTable/CurrentDataTable'
+// eslint-disable-next-line
+import { Icon, Header, Container, Label, Dimmer, Loader} from 'semantic-ui-react'
+
 import Candidates from './candidates.js'
 import VegaLite from "components/Plot/VegaLite"
 import Toolbar from "components/Toolbar"
+import CandidatesTable from './CandidatesTable'
+
 import Actions from "actions/world"
-import {examplesList} from '../../helpers/vega-utils';
+import config from 'config'
 import "./styles.css"
 
 class Build extends PureComponent {
@@ -24,46 +27,53 @@ class Build extends PureComponent {
     // const {dispatch} = this.props
     // const name = getParameterByName('example')
     // dispatch(Actions.labelInit(name))
-    this.setExample('bar', 'Simple Bar Chart')
+    this.setExample(config.initialExample)
   }
-
-  onLabel = (candidate) => {
-    this.labelModal.onLabel(candidate)
-  };
 
   setExample(name) {
     const {dispatch} = this.props
-    dispatch(Actions.labelInit(name))
+    dispatch(Actions.initContext(name))
   }
 
   render() {
-    const exampleOptions = examplesList().map((ex, i) =>
-        {return {key: ex.name, value: ex.name, text: ex.title}}
-    );
+    const {context, isInitial, dataValues, responses, candidate, showFormulas, issuedQuery} = this.props
+    const noResponse = !responses || responses.length===0
+    let message = "No candidates yet, enter a command."
+    if (!noResponse) {
+      message = "Current command: " + issuedQuery
+    }
     return (
-      <div style={{position: 'relative', height: `calc(100vh - ${50}px)`}}>
-        <div className='Candidates'>
-          <div className="chart-container">
-            <Header size='medium'>Current Example</Header>
-            <div style={{display: "flex", alignItems: 'flex-start'}}>
-              <Toolbar/>
-              <div>
-                {
-                  this.props.isInitial?
-                  'no current plot'
-                  :
-                  <VegaLite
-                    spec={this.props.context}
-                    dataValues={this.props.dataValues}
-                  />
-                }
-              </div>
+      <div className='flex-list'>
+        <div style={{display: 'flex', flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Toolbar/>
+          {
+            isInitial?
+            'no current plot'
+            :
+            <div className="chart-container chart-highlight">
+              <Header>Current plot</Header>
+              <VegaLite
+                spec={context}
+                dataValues={dataValues}
+              />
             </div>
-          </div>
-          <Candidates onLabel={this.onLabel} candidate={this.props.candidate}/>
+          }
         </div>
-      </div>
-    );
+          {
+            showFormulas?
+              noResponse? null:
+              <div>
+                <Label size="large" >
+                  {message}
+                </Label>
+                <CandidatesTable responses={responses}/>
+             </div>
+              :
+              noResponse? null:
+              <Candidates candidate={candidate}/>
+          }
+        </div>
+    )
   }
 }
 
@@ -71,6 +81,9 @@ const mapStateToProps = (state) => ({
   isInitial: Object.keys(state.world.context).length === 0,
   context: state.world.context,
   dataValues: state.world.dataValues,
+  issuedQuery: state.world.issuedQuery,
   count: state.user.count,
+  showFormulas: state.world.showFormulas,
+  responses: state.world.responses,
 })
 export default connect(mapStateToProps)(Build)

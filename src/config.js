@@ -17,8 +17,8 @@ const config = {
   maxDisplay: 5,
   processingInterval: 3,
   noChangeScore: 0.05,
+  initialExample: "bar", // set to undefined for random
 }
-
 
 function getExamples(exjson) {
 // https://raw.githubusercontent.com/vega/vega-lite/master/_data/examples.json

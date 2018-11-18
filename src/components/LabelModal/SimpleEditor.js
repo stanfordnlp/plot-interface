@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react"
 // import JsonPatch from 'fast-json-patch'
 import AceEditor from 'react-ace'
-import {prettyStringify} from 'helpers/vega-utils'
 // import * as ace from 'brace'
 // var Range = ace.acequire('ace/range').Range
 import 'brace/mode/json';

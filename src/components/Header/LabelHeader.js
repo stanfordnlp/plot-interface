@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 // import hash from 'string-hash'
 import config from "config"
-import "./styles.css"
 
 const Header = ({ search, sessionId, count }) => {
   const done = count >= config.numLabels
