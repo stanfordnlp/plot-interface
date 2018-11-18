@@ -1,7 +1,10 @@
 # Help
-This interface translates naturalized commands to actions in the [VegaLite] data visualization language.
 
-## Get started 
+This interface translates naturalized commands to actions in the [Vega-Lite] data visualization language.
+To use this tool, **type a command** like `remove ticks`, `change x label to XYZ`, `move the axis label down` and press enter.
+Use **select an example** to try another example (from [Vega-Lite Examples]).
+
+## Get started
 
 The *current plot* always displayed at the top left.
 This tool modifies the **Current plot** based on naturalized commands,
@@ -71,8 +74,7 @@ Any fields containing the following are not modified: `$schema`,
     `geoshape`, `geojson`, `latitute`, `longitute`,
     `timeUnit`
 
-[VegaLite]: https://vega.github.io/vega-lite/
-[VegaLite Examples]: https://vega.github.io/vega-lite/examples/.
-[VegaLite Docs]: https://vega.github.io/vega-lite/docs/
-
+[Vega-Lite]: https://vega.github.io/vega-lite/
+[Vega-Lite Examples]: https://vega.github.io/vega-lite/examples/.
+[Vega-Lite Docs]: https://vega.github.io/vega-lite/docs/
 [CSS Colors]: https://www.w3schools.com/cssref/css_colors.asp
