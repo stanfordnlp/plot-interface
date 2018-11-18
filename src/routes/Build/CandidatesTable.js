@@ -33,7 +33,7 @@ class CandidatesList extends PureComponent {
         </Label>
         <Label>
           <Icon name="edit"/>
-          Refine
+          Refine and use
         </Label>
 
         <Table collapsing compact>
