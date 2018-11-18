@@ -120,7 +120,7 @@ class Toolbar extends React.Component {
             </Menu.Item>
             <Menu.Item>
               <Form size="small">
-                <Form.Dropdown placeholder='vegalite keywords' fluid multiple selection clearable
+                <Form.Dropdown placeholder='Vega-Lite keywords' fluid multiple selection clearable
                   label="Contains keywords"
                   search={(opts, v) => this.search(opts, v)}
                   options={keywordOptions}

@@ -41,7 +41,7 @@ class CandidatesList extends PureComponent {
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
               <Table.HeaderCell>Command</Table.HeaderCell>
-              <Table.HeaderCell>VegaLite Action</Table.HeaderCell>
+              <Table.HeaderCell>Action</Table.HeaderCell>
               <Table.HeaderCell>Probability %</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
