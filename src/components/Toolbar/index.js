@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Actions from 'actions/world'
 // eslint-disable-next-line
-import { Dropdown, Checkbox, Menu, Icon, Label, Form} from 'semantic-ui-react'
+import { Dropdown, Checkbox, Menu, Icon, Label, Form, Radio} from 'semantic-ui-react'
 
 import TeachingModal from 'components/LabelModal/EditorModal'
 import {prettyStringify, editorURL, vegaliteKeywords} from 'helpers/vega-utils'
@@ -33,6 +33,8 @@ class Toolbar extends React.Component {
   }
 
   toggleShowFormulas(value) {
+    if (!value)
+      value = !this.props.showFormulas
     this.props.dispatch(Actions.setState({showFormulas: !this.props.showFormulas}));
   }
 
@@ -44,7 +46,7 @@ class Toolbar extends React.Component {
   setFilterKeys(value) {
     const {dispatch, filter} = this.props
     dispatch(Actions.setState({'filter': {...filter, 'keywords': value}}))
-    dispatch(Actions.tryQuery("filter"))
+    dispatch(Actions.tryQuery("Toolbar.setFilterKeys"))
   }
 
   search(options, value) {
@@ -57,17 +59,17 @@ class Toolbar extends React.Component {
   setFilterType(value) {
     const {dispatch, filter} = this.props
     dispatch(Actions.setState({'filter': {...filter, 'type': value}}))
-    dispatch(Actions.tryQuery("filter"))
+    dispatch(Actions.tryQuery("Toolbar.setFilterType"))
   }
 
   clearFilter() {
     const {dispatch} = this.props
     dispatch(Actions.setState({'filter': initialState.filter}))
-    dispatch(Actions.tryQuery("filter_clear"))
+    dispatch(Actions.tryQuery("Toolbar.clearFilter"))
   }
 
   render() {
-    const {filter, context} = this.props
+    const {filter, context, issuedQuery} = this.props
     let filterEmpty = false
     if (filter.type === 'any' && filter.keywords.length === 0) {
       filterEmpty = true
@@ -100,7 +102,7 @@ class Toolbar extends React.Component {
         </Menu.Item>
 
         {this.state.editModal?
-          <TeachingModal header={"Edit spec"}  spec={context} context={context} onClose={() => this.setState({editModal: false})}/>: null}
+          <TeachingModal header={`Edit spec ${issuedQuery? "for: " + issuedQuery: ""}`}  spec={context} context={context} onClose={() => this.setState({editModal: false})}/>: null}
 
 
         <Menu.Item onClick={() => window.open(editorURL(prettyStringify(this.props.context)), '_blank')}>
@@ -139,28 +141,24 @@ class Toolbar extends React.Component {
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Display</Menu.Header>
           <Form>
-            <Form.Field>
-              <Checkbox
-                slider
-                label='text'
-                name='checkboxRadioGroup'
-                value='this'
-                checked={this.props.showFormulas}
-                onChange={() => this.toggleShowFormulas()}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Checkbox
-                slider
-                label='graphics'
-                name='checkboxRadioGroup'
-                value='that'
+            <Form.Group inline>
+              <label>Display</label>
+              <Form.Field
+                control={Radio}
+                label='Graphics'
+                value='1'
                 checked={!this.props.showFormulas}
                 onChange={() => this.toggleShowFormulas()}
               />
-            </Form.Field>
+              <Form.Field
+                control={Radio}
+                label='Descriptions'
+                value='2'
+                checked={this.props.showFormulas}
+                onChange={() => this.toggleShowFormulas()}
+              />
+            </Form.Group>
           </Form>
         </Menu.Item>
         <Menu.Item onClick={() => window.open(helpLink, '_blank')}>
@@ -177,6 +175,7 @@ function mapStateToProps(state, ownProps) {
   return {
     showErrors: state.world.showErrors,
     showFormulas: state.world.showFormulas,
+    issuedQuery: state.world.issuedQuery,
     numCandidates: state.world.responses.length,
     filter: state.world.filter,
     context: state.world.context,

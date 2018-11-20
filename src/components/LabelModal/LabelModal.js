@@ -60,7 +60,7 @@ class LabelModal extends Component {
       this.props.dispatch(UserActions.increaseCount(config.noChangeScore))
       this.props.dispatch(Actions.log({type: 'no change', value}))
     } else {
-      this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula))
+      this.props.dispatch(Actions.label(value, this.state.spec, this.state.formula, 'LabelModal'))
       .then((response) => {
         if (response) {
           this.props.dispatch(UserActions.increaseCount(1))

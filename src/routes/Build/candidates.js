@@ -117,7 +117,7 @@ class Candidates extends PureComponent {
   }
 
   render() {
-    const {showFormulas, responses, onLabel, verifierMode, filter} = this.props
+    const {showFormulas, responses, onLabel, verifierMode} = this.props
     const {plotData} = this.state
     let plots = []
     if (this.state && plotData) {
@@ -167,8 +167,8 @@ class Candidates extends PureComponent {
     return (
       <React.Fragment>
         {plotsPlus}
-        <div style={{alignSelf: 'flex-start'}}>
-          {this.indProcessing <responses.length? <Button basic onClick={() => this.loadMore(10)}>Load more...</Button>
+        <div className="chart-container" style={{alignSelf: 'flex-start'}}>
+          {this.indProcessing <responses.length? <Button primary onClick={() => this.loadMore(10)}>Load more...</Button>
           : <Label size="large"> The end </Label>}
           <Label size="large" >
             {message}

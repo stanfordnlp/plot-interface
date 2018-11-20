@@ -9,7 +9,8 @@ import { Button, Label, Header, Popup, Dropdown} from 'semantic-ui-react'
 import TeachingModal from 'components/LabelModal/TeachingModal'
 import InspectModal from 'components/LabelModal/InspectModal'
 import PathEditor from "components/Plot/PathEditor"
-
+import Utterances from "components/Plot/Utterances"
+// import VegaLite from "components/Plot/VegaLite"
 import './candidate.css'
 
 class Plot extends React.PureComponent {
@@ -38,7 +39,7 @@ class Plot extends React.PureComponent {
     const {value, formula} = this.props.candidate
     const {issuedQuery} = this.props
     // label: (utterance, spec, formula, type='label')
-    this.props.dispatch(Actions.label(issuedQuery, value, formula, 'reject'));
+    this.props.dispatch(Actions.label(issuedQuery, value, formula, 'Candidate.remove'));
     this.setState({isClosed: true})
   }
 
@@ -64,10 +65,6 @@ class Plot extends React.PureComponent {
     const warns = this.state.logger.warns.map((v, i) => <li className='display-warns' key={'warn'+i}>{v}</li>)
     const {candidate} = this.props
     const patch = candidate.canonical_patch[0]
-    const {xbests} = candidate
-    const xbestsOptions = xbests.map((x, i) => {return {'value': x , 'text': x, 'key':i}})
-    // const randBest = xbestsOptions[Math.floor(Math.random()*xbestsOptions.length)].value
-    const randBest = xbestsOptions[0].value
     return (
       <div className='chart-container'>
         <Button.Group primary>
@@ -80,14 +77,7 @@ class Plot extends React.PureComponent {
           <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
         </div>
         <div>
-          <Dropdown inline text={randBest}>
-           <Dropdown.Menu>
-             <Dropdown.Header content='Other commands'/>
-             <Dropdown.Menu scrolling >
-               {xbestsOptions.map(option => <Dropdown.Item key={option.value} disabled="true" {...option} />)}
-             </Dropdown.Menu>
-           </Dropdown.Menu>
-          </Dropdown>
+          <Utterances candidate={candidate}/>
         </div>
 
         <div>

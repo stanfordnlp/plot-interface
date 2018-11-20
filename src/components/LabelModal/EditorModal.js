@@ -57,7 +57,6 @@ class LabelModal extends Component {
       </div>
     )
 
-    console.log(this.props)
     return (
       <Modal size="large"
         // closeIcon={true}
@@ -68,7 +67,7 @@ class LabelModal extends Component {
             {this.props.header}
           </Modal.Header>
 
-          <Grid columns={2} stackable textAlign='left'>
+          <Grid columns={2} style={{marginLeft: 0, marginRight: 0}}>
             <Grid.Row verticalAlign='top'>
               <Grid.Column>
                 {currentCode}

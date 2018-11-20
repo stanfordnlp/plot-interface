@@ -6,6 +6,7 @@ import { Label, Button, Table, Menu, Icon, Dropdown, Popup} from 'semantic-ui-re
 import PathEditor from "components/Plot/PathEditor"
 import InspectModal from 'components/LabelModal/InspectModal'
 import VegaLite from "components/Plot/VegaLite"
+import Utterances from "components/Plot/Utterances"
 
 import "./styles.css"
 
@@ -49,9 +50,6 @@ class CandidatesList extends PureComponent {
           {
             responses.map((candidate,r) => {
               const patch = candidate.canonical_patch[0]
-              const {xbests} = candidate
-              const xbestsOptions = xbests.map((x, i) => {return {'value': x , 'text': x, 'key':i}})
-              const randBest = xbestsOptions[0].value
               return (
                 <Table.Row key={r}>
                   <Table.Cell>
@@ -69,20 +67,13 @@ class CandidatesList extends PureComponent {
                     {randBest}
                   </Table.Cell> */}
                   <Table.Cell>
-                  <Dropdown inline text={randBest}>
-                   <Dropdown.Menu>
-                     <Dropdown.Header icon='tags' content='Other commands' />
-                     <Dropdown.Menu scrolling>
-                       {xbestsOptions.map(option => <Dropdown.Item key={option.value} disabled={true} {...option} />)}
-                     </Dropdown.Menu>
-                   </Dropdown.Menu>
-                  </Dropdown>
+                    <Utterances candidate={candidate}/>
                   </Table.Cell>
                   <Table.Cell>
                     <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
                   </Table.Cell>
                   <Table.Cell>
-                    {candidate.score > 1e-5? (candidate.score*100).toFixed(2): '>1e' + Math.floor(Math.log10(candidate.score*100))}
+                    {candidate.score > 1e-4? (candidate.score*100).toFixed(2): '>1e' + Math.floor(Math.log10(candidate.score*100))}
                   </Table.Cell>
                 </Table.Row>
               )
