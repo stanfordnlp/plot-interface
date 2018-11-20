@@ -63,7 +63,7 @@ class Utterances extends React.PureComponent {
     )
     const footerSimple = (
       <div>
-        <Label>These commands shown above also refers to this candidate</Label>
+        <Label>The commands shown above also refers to this candidate</Label>
       </div>
     )
     return (

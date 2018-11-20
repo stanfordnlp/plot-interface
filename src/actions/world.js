@@ -63,8 +63,8 @@ const Actions = {
       })
 
       // make this easy to filter, just issue a different
-      const qmode = !mode? 'default' : mode
-      return SEMPREquery({ q: ['q', {utterance: query, context, schema, datasetURL, filter, qmode }], sessionId: sessionId })
+      const type = !mode? 'default' : mode
+      return SEMPREquery({ q: ['q', {utterance: query, context, schema, datasetURL, filter, type }], sessionId: sessionId })
       .then((response) => {
         const candidates = response.candidates
         dispatch({
