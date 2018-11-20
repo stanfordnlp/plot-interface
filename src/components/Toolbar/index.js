@@ -80,7 +80,7 @@ class Toolbar extends React.Component {
       <Menu vertical style={{minWidth: '300px', 'marginTop': '1em'}}>
         <Menu.Item>
           <Menu.Header>Change example: </Menu.Header>
-          <Dropdown id="example-selector" placeholder='select an example' search selection fluid
+          <Dropdown id="example-selector" placeholder='Change example' search selection fluid
             options={exampleOptions}
             onChange={(e, data) => this.setExample(data.value)}
             defaultValue={config.initialExample}
@@ -147,14 +147,14 @@ class Toolbar extends React.Component {
               <Form.Field
                 control={Radio}
                 label='Graphics'
-                value='1'
+                value='graphics'
                 checked={!this.props.showFormulas}
                 onChange={() => this.toggleShowFormulas()}
               />
               <Form.Field
                 control={Radio}
-                label='Descriptions'
-                value='2'
+                label='Text'
+                value='text'
                 checked={this.props.showFormulas}
                 onChange={() => this.toggleShowFormulas()}
               />

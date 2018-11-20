@@ -42,7 +42,7 @@ class Utterances extends React.PureComponent {
   }
 
   enter(e) {
-    const {selected, spec, formula} = this.state
+    const {selected} = this.state
     this.setState({loading: true})
     this.props.dispatch(Actions.setQuery(selected))
     this.props.dispatch(Actions.tryQuery("Utterances.enter"))
@@ -85,6 +85,5 @@ class Utterances extends React.PureComponent {
 const mapStateToProps = (state) => ({
   issuedQuery: state.world.issuedQuery,
   loading: state.world.loading,
-
 })
 export default connect(mapStateToProps)(Utterances);
