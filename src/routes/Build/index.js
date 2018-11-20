@@ -11,6 +11,7 @@ import Toolbar from "components/Toolbar"
 import CandidatesTable from './CandidatesTable'
 
 import Actions from "actions/world"
+import UserActions from "actions/user"
 import config from 'config'
 import "./styles.css"
 
@@ -27,6 +28,7 @@ class Build extends PureComponent {
     // const {dispatch} = this.props
     // const name = getParameterByName('example')
     // dispatch(Actions.labelInit(name))
+    this.props.dispatch(UserActions.setSessionId())
     this.setExample(config.initialExample)
   }
 

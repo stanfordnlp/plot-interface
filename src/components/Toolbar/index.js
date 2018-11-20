@@ -12,9 +12,10 @@ import {initialState} from 'store/world'
 import config from 'config'
 
 const helpLink = "https://github.com/stanfordnlp/plot-interface/blob/master/Help.md#help"
-const valueTypeOptions = ['any', 'number', 'string', 'boolean', 'null', 'array', 'object'].map((v) =>
-    {return {key: v, value: v, text: v}}
-);
+// const valueTypeOptions = ['any', 'number', 'string', 'boolean', 'null', 'array', 'object'].map((v) =>
+    // {return {key: v, value: v, text: v}}
+// );
+
 const exampleOptions = examplesList().map((ex, i) =>
     {return {key: ex.name, value: ex.name, text: ex.title}}
 );
@@ -33,20 +34,24 @@ class Toolbar extends React.Component {
   }
 
   toggleShowFormulas(value) {
+    const {dispatch} = this.props
     if (!value)
       value = !this.props.showFormulas
-    this.props.dispatch(Actions.setState({showFormulas: !this.props.showFormulas}));
+    dispatch(Actions.setState({showFormulas: value}));
+    dispatch(Actions.log({type: "Toolbar.toggleShowFormulas", value}))
   }
 
   setExample(name) {
     const {dispatch} = this.props
     dispatch(Actions.initContext(name))
+    dispatch(Actions.log({type: "Toolbar.setExample", name}))
   }
 
   setFilterKeys(value) {
     const {dispatch, filter} = this.props
     dispatch(Actions.setState({'filter': {...filter, 'keywords': value}}))
     dispatch(Actions.tryQuery("Toolbar.setFilterKeys"))
+    dispatch(Actions.log({type: "Toolbar.setFilterKeys", value}))
   }
 
   search(options, value) {
