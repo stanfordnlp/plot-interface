@@ -10,12 +10,12 @@ class Utterances extends React.PureComponent {
     candidate: PropTypes.object,
   }
 
+  // key method of https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
   constructor(props) {
     super(props)
     const {candidate} = props
     const {xbests} = candidate
     const xbestsOptions = xbests.map((x, i) => {return {'value': x , 'text': x, 'key':i}})
-    // const selected = xbestsOptions[Math.floor(Math.random()*xbestsOptions.length)].value
     const selected = xbestsOptions[0].value
 
     this.state = {

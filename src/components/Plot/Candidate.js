@@ -77,7 +77,7 @@ class Plot extends React.PureComponent {
           <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
         </div>
         <div>
-          <Utterances candidate={candidate}/>
+          <Utterances key={candidate} candidate={candidate}/>
         </div>
 
         <div>

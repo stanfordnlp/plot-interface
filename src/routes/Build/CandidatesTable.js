@@ -67,7 +67,7 @@ class CandidatesList extends PureComponent {
                     {randBest}
                   </Table.Cell> */}
                   <Table.Cell>
-                    <Utterances candidate={candidate}/>
+                    <Utterances key={candidate} candidate={candidate}/>
                   </Table.Cell>
                   <Table.Cell>
                     <PathEditor value={patch.value} onChange={undefined} path={patch.path} schema={candidate.schema}/>
